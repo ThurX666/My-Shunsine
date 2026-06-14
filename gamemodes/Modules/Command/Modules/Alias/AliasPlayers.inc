@@ -1,0 +1,6 @@
+alias:deny("cancel")
+alias:enter("exit", "en", "ex")
+alias:inventory("inv")
+alias:email("mail")
+alias:savestats("savestat", "saveme", "sm")
+alias:myproperty("mp")

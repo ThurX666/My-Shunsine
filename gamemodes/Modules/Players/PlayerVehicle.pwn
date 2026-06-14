@@ -1,0 +1,8 @@
+#include "./Modules/Players/vehicle/Header.inc"
+#include "./Modules/Players/vehicle/Function.inc"
+#include "./Modules/Players/vehicle/Dialog.inc"
+#include "./Modules/Players/vehicle/Command.inc"
+#include "./Modules/Players/vehicle/Crash.inc"
+#include "./Modules/Players/vehicle/Tirelock.inc"
+#include "./Modules/Players/vehicle/Handbrake.inc"
+#include "./Modules/Players/vehicle/SAMPCallback.inc"

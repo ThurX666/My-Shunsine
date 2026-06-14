@@ -1,0 +1,6 @@
+#include "./Modules/Jobs/LumberJack/Header.inc"
+#include "./Modules/Jobs/LumberJack/Function.inc"
+#include "./Modules/Jobs/LumberJack/Dialog.inc"
+#include "./Modules/Jobs/LumberJack/Command.inc"
+#include "./Modules/Jobs/LumberJack/Task.inc"
+#include "./Modules/Jobs/LumberJack/SAMPCallback.inc"

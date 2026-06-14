@@ -1,0 +1,5 @@
+#include "./Modules/Jobs/fishing/fisharea/Header.inc"
+#include "./Modules/Jobs/fishing/fisharea/Function.inc"
+#include "./Modules/Jobs/fishing/fisharea/Task.inc"
+#include "./Modules/Jobs/fishing/fisharea/Command.inc"
+#include "./Modules/Jobs/fishing/fisharea/SAMPCallback.inc"

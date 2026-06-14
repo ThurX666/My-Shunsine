@@ -1,0 +1,108 @@
+//Map Exported with Texture Studio By: [uL]Pottus////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////and Crayder////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Map Information////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+	Exported on "2023-02-24 21:13:04" by "Sean_Walker"
+	Created by "Sean_Walker"
+*/
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Remove Buildings///////////////////////////////////////////////////////////////////////////////////////////////
+RemoveBuildingForPlayer(playerid, 1410, 809.367, -520.023, 16.062, 0.250);
+RemoveBuildingForPlayer(playerid, 1410, 814.039, -520.023, 16.023, 0.250);
+RemoveBuildingForPlayer(playerid, 1410, 824.218, -517.781, 16.125, 0.250);
+RemoveBuildingForPlayer(playerid, 1410, 824.218, -513.101, 16.406, 0.250);
+RemoveBuildingForPlayer(playerid, 1410, 824.218, -508.421, 16.648, 0.250);
+RemoveBuildingForPlayer(playerid, 1410, 824.218, -503.742, 16.867, 0.250);
+RemoveBuildingForPlayer(playerid, 773, 814.523, -517.531, 15.320, 0.250);
+RemoveBuildingForPlayer(playerid, 3408, 816.796, -519.968, 15.328, 0.250);
+RemoveBuildingForPlayer(playerid, 3314, 815.156, -500.968, 16.328, 0.250);
+RemoveBuildingForPlayer(playerid, 3329, 815.156, -500.968, 16.328, 0.250);
+
+//Objects////////////////////////////////////////////////////////////////////////////////////////////////////////
+new tmpobjid;
+tmpobjid = CreateObject(3314, 815.156005, -500.968994, 16.328100, 0.000000, 0.000000, 0.000018, 300.00); 
+SetObjectMaterial(tmpobjid, 6, 9514, "711_sfw", "ws_carpark2", 0x00000000);
+SetObjectMaterial(tmpobjid, 7, 14581, "ab_mafiasuitea", "walp45S", 0x00000000);
+SetObjectMaterial(tmpobjid, 8, 14651, "ab_trukstpd", "Bow_bar_flooring", 0x00000000);
+SetObjectMaterial(tmpobjid, 9, 14789, "ab_sfgymmain", "ab_panelWall1", 0x00000000);
+SetObjectMaterial(tmpobjid, 11, 10101, "2notherbuildsfe", "flatdoor01_law", 0x00000000);
+SetObjectMaterial(tmpobjid, 12, 14581, "ab_mafiasuitea", "walp45S", 0x00000000);
+tmpobjid = CreateObject(18766, 807.208923, -515.373779, 15.615947, 0.000000, 0.000000, 90.000000, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 14581, "ab_mafiasuitea", "walp45S", 0x00000000);
+tmpobjid = CreateObject(18766, 807.208923, -505.374023, 15.615947, 0.000000, 0.000000, 90.000000, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 14581, "ab_mafiasuitea", "walp45S", 0x00000000);
+tmpobjid = CreateObject(18766, 807.208923, -495.404083, 15.615947, 0.000000, 0.000000, 90.000000, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 14581, "ab_mafiasuitea", "walp45S", 0x00000000);
+tmpobjid = CreateObject(18766, 807.208923, -487.504089, 15.615947, 0.000000, 0.000000, 90.000000, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 14581, "ab_mafiasuitea", "walp45S", 0x00000000);
+tmpobjid = CreateObject(18766, 812.709106, -483.014160, 15.615947, 0.000000, 0.000000, 180.000000, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 14581, "ab_mafiasuitea", "walp45S", 0x00000000);
+tmpobjid = CreateObject(18766, 822.708923, -483.014160, 15.615947, 0.000000, 0.000000, 180.000000, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 14581, "ab_mafiasuitea", "walp45S", 0x00000000);
+tmpobjid = CreateObject(18766, 827.019226, -483.014160, 15.595948, 0.000000, 0.000000, 180.000000, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 14581, "ab_mafiasuitea", "walp45S", 0x00000000);
+tmpobjid = CreateObject(18766, 831.209167, -515.373779, 15.615947, 0.000000, 0.000000, 90.000000, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 14581, "ab_mafiasuitea", "walp45S", 0x00000000);
+tmpobjid = CreateObject(18766, 831.218688, -505.383758, 15.615947, 0.000000, 0.000000, 90.000000, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 14581, "ab_mafiasuitea", "walp45S", 0x00000000);
+tmpobjid = CreateObject(18766, 831.208740, -495.403900, 15.615947, 0.000000, 0.000000, 90.000000, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 14581, "ab_mafiasuitea", "walp45S", 0x00000000);
+tmpobjid = CreateObject(18766, 831.218200, -487.513916, 15.615947, 0.000000, 0.000000, 90.000000, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 14581, "ab_mafiasuitea", "walp45S", 0x00000000);
+tmpobjid = CreateObject(18766, 812.708740, -519.874206, 15.615947, 0.000000, 0.000000, 180.000000, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 14581, "ab_mafiasuitea", "walp45S", 0x00000000);
+tmpobjid = CreateObject(18762, 824.599853, -519.882751, 15.605921, 0.000000, 0.000000, 0.000000, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 14581, "ab_mafiasuitea", "walp45S", 0x00000000);
+tmpobjid = CreateObject(18766, 820.666015, -519.874206, 13.943604, 0.000000, -18.300003, 180.000000, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 14581, "ab_mafiasuitea", "walp45S", 0x00000000);
+tmpobjid = CreateObject(19447, 819.362609, -519.918579, 16.353628, 0.000000, 0.000000, 88.699974, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 19325, "lsmall_shops", "lsmall_window01", 0x00000000);
+tmpobjid = CreateObject(19379, 811.881958, -513.770141, 19.673456, 180.000000, 90.000000, 180.000000, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 14651, "ab_trukstpd", "Bow_bar_flooring", 0x00000000);
+tmpobjid = CreateObject(18762, 816.629394, -519.882751, 17.255924, 0.000000, 0.000000, 0.000000, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 14581, "ab_mafiasuitea", "walp45S", 0x00000000);
+tmpobjid = CreateObject(19379, 811.842224, -515.750549, 19.693456, 180.000000, 90.000000, 180.000000, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 14651, "ab_trukstpd", "Bow_bar_flooring", 0x00000000);
+SetObjectMaterial(tmpobjid, 8, 10101, "2notherbuildsfe", "Bow_Abpave_Gen", 0x00000000);
+tmpobjid = CreateObject(18762, 807.149536, -519.882751, 17.255924, 0.000000, 0.000000, 0.000000, 300.00); 
+SetObjectMaterial(tmpobjid, 0, 14581, "ab_mafiasuitea", "walp45S", 0x00000000);
+tmpobjid = CreateObject(19327, 822.646728, -520.096435, 17.425952, 0.000000, 0.000000, -1.099998, 300.00); 
+SetObjectMaterialText(tmpobjid, "Ethan 0connor", 0, 40, "Ariel", 20, 1, 0xFF000000, 0x00000000, 0);
+tmpobjid = CreateObject(19327, 822.576599, -520.095275, 16.765941, 0.000000, 0.000000, -1.099998, 300.00); 
+SetObjectMaterialText(tmpobjid, "1st Dilimore Complex", 0, 40, "Ariel", 15, 1, 0xFF000000, 0x00000000, 0);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+tmpobjid = CreateObject(19899, 812.913879, -509.511566, 16.263435, 0.000000, 0.000000, 270.000000, 300.00); 
+tmpobjid = CreateObject(19632, 814.407226, -488.081542, 16.875900, 0.000000, 0.000000, -90.900024, 300.00); 
+tmpobjid = CreateObject(19831, 814.350708, -488.054260, 16.335912, 0.000000, 0.000000, 90.000000, 300.00); 
+tmpobjid = CreateObject(2804, 814.355590, -488.101989, 17.175918, 0.000000, 0.000000, 0.000000, 300.00); 
+tmpobjid = CreateObject(19994, 818.018798, -484.565429, 16.325910, 0.000000, 0.000000, -17.899999, 300.00); 
+tmpobjid = CreateObject(2764, 817.840087, -485.828002, 16.735900, 0.000000, 0.000000, 0.000000, 300.00); 
+tmpobjid = CreateObject(19994, 819.023376, -485.908996, 16.255907, 0.000000, 0.000000, -113.999984, 300.00); 
+tmpobjid = CreateObject(19994, 817.617065, -486.942626, 16.255907, 0.000000, 0.000000, 157.800003, 300.00); 
+tmpobjid = CreateObject(19994, 816.599670, -486.075622, 16.255907, 0.000000, 0.000000, 119.199974, 300.00); 
+tmpobjid = CreateObject(2631, 817.863769, -484.868560, 16.335916, 0.000000, 0.000000, 0.000000, 300.00); 
+tmpobjid = CreateObject(2631, 817.863769, -486.778503, 16.335916, 0.000000, 0.000000, 0.000000, 300.00); 
+tmpobjid = CreateObject(11744, 817.986938, -485.877563, 17.179590, 0.000000, 0.000000, 0.000000, 300.00); 
+tmpobjid = CreateObject(19847, 818.065490, -485.650787, 17.269596, 0.000000, 0.000000, -13.199999, 300.00); 
+tmpobjid = CreateObject(19823, 817.633056, -486.131317, 17.179592, 0.000000, 0.000000, 0.000000, 300.00); 
+tmpobjid = CreateObject(19822, 817.861022, -485.399932, 17.149589, 0.000000, 0.000000, 0.000000, 300.00); 
+tmpobjid = CreateObject(11737, 818.242187, -509.300262, 17.015600, 0.000000, 0.000000, 0.000000, 300.00); 
+tmpobjid = CreateObject(2531, 821.492004, -484.093841, 16.335912, 0.000000, 0.000000, 0.000000, 300.00); 
+tmpobjid = CreateObject(1723, 809.776062, -484.051422, 16.285911, 0.000000, 0.000000, 0.399998, 300.00); 
+tmpobjid = CreateObject(2311, 810.009704, -485.643920, 16.335912, 0.000000, 0.000000, 0.000000, 300.00); 
+tmpobjid = CreateObject(1704, 809.493225, -487.609588, 16.135908, 0.000000, 0.000000, 142.200027, 300.00); 
+tmpobjid = CreateObject(1704, 811.929443, -487.330535, 16.225910, 0.000000, 0.000000, -169.199966, 300.00); 
+tmpobjid = CreateObject(2858, 810.167602, -485.579803, 16.865911, 0.000000, 0.000000, 0.000000, 300.00); 
+tmpobjid = CreateObject(2866, 811.249938, -485.714569, 16.845918, 0.000000, 0.000000, 0.000000, 300.00); 
+tmpobjid = CreateObject(2804, 821.507080, -484.061065, 17.405921, 0.000000, 0.000000, -44.599998, 300.00); 
+tmpobjid = CreateObject(19569, 821.408203, -484.221801, 16.965908, 0.000000, 0.000000, 0.000000, 300.00); 
+tmpobjid = CreateObject(19569, 821.648437, -484.221801, 16.965908, 0.000000, 0.000000, 26.000003, 300.00); 
+tmpobjid = CreateObject(1232, 824.627136, -519.837829, 16.008144, 0.000000, 0.000000, 0.000000, 300.00); 
+tmpobjid = CreateObject(1232, 831.297607, -519.837829, 16.008144, 0.000000, 0.000000, 0.000000, 300.00); 
+tmpobjid = CreateObject(2631, 810.633483, -485.678588, 16.335916, 0.000000, 0.000000, 0.000000, 300.00); 
+tmpobjid = CreateObject(19893, 813.311706, -509.741302, 17.508672, 0.000000, 0.000000, 0.000000, 300.00); 

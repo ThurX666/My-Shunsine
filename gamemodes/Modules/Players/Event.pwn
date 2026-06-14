@@ -1,0 +1,6 @@
+#include "./Modules/Players/event/core.inc"
+#include "./Modules/Players/event/function.inc"
+#include "./Modules/Players/event/hook.inc"
+#include "./Modules/Players/event/task.inc"
+#include "./Modules/Players/event/dialog.inc"
+#include "./Modules/Players/event/cmd.inc"

@@ -1,0 +1,5 @@
+#include "./Modules/Jobs/Smuggle/Header.inc"
+#include "./Modules/Jobs/Smuggle/Function.inc"
+#include "./Modules/Jobs/Smuggle/SAMPCallback.inc"
+#include "./Modules/Jobs/Smuggle/Task.inc"
+#include "./Modules/Jobs/Smuggle/Command.inc"

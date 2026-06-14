@@ -1,0 +1,5 @@
+#include "./Modules/Property/gym/Header.inc"
+#include "./Modules/Property/gym/Function.inc"
+#include "./Modules/Property/gym/Task.inc"
+#include "./Modules/Property/gym/Command.inc"
+#include "./Modules/Property/gym/SAMPCallback.inc"

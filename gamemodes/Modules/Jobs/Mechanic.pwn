@@ -1,0 +1,6 @@
+#include "./Modules/Jobs/Mechanic/core.inc"
+#include "./Modules/Jobs/Mechanic/function.inc"
+#include "./Modules/Jobs/Mechanic/dialog.inc"
+#include "./Modules/Jobs/Mechanic/cmd.inc"
+#include "./Modules/Jobs/Mechanic/task.inc"
+#include "./Modules/Jobs/Mechanic/SAMPCallback.inc"

@@ -1,0 +1,5 @@
+#include "./Modules/Players/ask/core.inc"
+#include "./Modules/Players/ask/function.inc"
+#include "./Modules/Players/ask/dialog.inc"
+#include "./Modules/Players/ask/task.inc"
+#include "./Modules/Players/ask/cmd.inc"

@@ -1,0 +1,5 @@
+#include "./Modules/Players/Toys/Header.inc"
+#include "./Modules/Players/Toys/Function.inc"
+#include "./Modules/Players/Toys/Dialog.inc"
+#include "./Modules/Players/Toys/Command.inc"
+#include "./Modules/Players/Toys/SAMPCallback.inc"

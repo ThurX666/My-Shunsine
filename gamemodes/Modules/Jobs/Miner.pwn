@@ -1,0 +1,5 @@
+#include "./Modules/Jobs/Miner/Header.inc"
+#include "./Modules/Jobs/Miner/Function.inc"
+#include "./Modules/Jobs/Miner/Command.inc"
+#include "./Modules/Jobs/Miner/SAMPCallback.inc"
+#include "./Modules/Jobs/Miner/Timer.inc"

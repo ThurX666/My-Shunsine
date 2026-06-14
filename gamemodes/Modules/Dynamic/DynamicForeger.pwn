@@ -1,0 +1,5 @@
+#include "./Modules/Dynamic/Foreger/Header.inc"
+#include "./Modules/Dynamic/Foreger/Function.inc"
+#include "./Modules/Dynamic/Foreger/Command.inc"
+#include "./Modules/Dynamic/Foreger/Timer.inc"
+#include "./Modules/Dynamic/Foreger/SAMPCallback.inc"

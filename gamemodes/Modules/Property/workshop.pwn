@@ -1,0 +1,5 @@
+#include "./Modules/Property/workshop/Header.inc"
+#include "./Modules/Property/workshop/Function.inc"
+#include "./Modules/Property/workshop/Dialog.inc"
+#include "./Modules/Property/workshop/Command.inc"
+#include "./Modules/Property/workshop/SAMPCallback.inc"

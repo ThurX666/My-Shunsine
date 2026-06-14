@@ -1,0 +1,5 @@
+#include "./Modules/Players/damage/core.inc"
+#include "./Modules/Players/damage/function.inc"
+#include "./Modules/Players/damage/dialog.inc"
+#include "./Modules/Players/damage/task.inc"
+#include "./Modules/Players/damage/cmd.inc"

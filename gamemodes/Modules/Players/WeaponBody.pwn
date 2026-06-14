@@ -1,0 +1,5 @@
+#include "./Modules/Players/WeaponBody/Header.inc"
+#include "./Modules/Players/WeaponBody/Function.inc"
+#include "./Modules/Players/WeaponBody/Dialog.inc"
+#include "./Modules/Players/WeaponBody/Command.inc"
+#include "./Modules/Players/WeaponBody/SAMPCallback.inc"
