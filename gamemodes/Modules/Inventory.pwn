@@ -367,13 +367,16 @@ stock OnPlayerUseInventoryItem(playerid, name[])
 
 stock OnPlayerDropInventoryItem(playerid, name[])
 {
+    if(!GetPVarType(playerid, "InventoryAmount"))
+        return Error(playerid, "Klik tombol Amount dan isi jumlah terlebih dahulu.");
+
     // Simpan nama item yang diklik ke memori sementara player
     SetPVarString(playerid, "DropItem", name);
     
-    // Tampilkan dialog untuk memasukkan jumlah barang yang ingin dibuang
+    // Tampilkan konfirmasi dengan jumlah dari tombol Amount
     new str[128];
-    format(str, sizeof(str), "Item: %s\n\nMasukkan jumlah item yang ingin kamu buang:", name);
-    Dialog_Show(playerid, InvDropItem, DIALOG_STYLE_INPUT, "Drop Item", str, "Buang", "Batal");
+    format(str, sizeof(str), "Item: %s\nJumlah: %d\n\nApakah kamu yakin ingin membuang item ini?", name, GetPVarInt(playerid, "InventoryAmount"));
+    Dialog_Show(playerid, InvDropItem, DIALOG_STYLE_MSGBOX, "Drop Item", str, "Buang", "Batal");
     
     return 1;
 }
@@ -392,6 +395,9 @@ stock CreateDropItem(playerid, itemname[], amount)
             DropData[i][dExists] = 1;
             format(DropData[i][dItemName], 32, "%s", itemname);
             DropData[i][dAmount] = amount;
+            DropData[i][dWeaponID] = 0;
+            DropData[i][dWeaponAmmo] = 0;
+            DropData[i][dWeaponTypeSurplus] = 0;
             DropData[i][dInt] = GetPlayerInterior(playerid);
             DropData[i][dWorld] = GetPlayerVirtualWorld(playerid);
             DropData[i][dX] = X + 0.5; // Sedikit di depan player
@@ -412,6 +418,44 @@ stock CreateDropItem(playerid, itemname[], amount)
     return 0; // Jika server kepenuhan item di tanah
 }
 
+stock CreateDropWeapon(playerid, weaponid, ammo, typeammo, offset = 0)
+{
+    for(new i = 0; i < MAX_DROPPED_ITEMS; i++)
+    {
+        if(!DropData[i][dExists])
+        {
+            new Float:X, Float:Y, Float:Z, model = GetWeaponModel(weaponid);
+            if(!model) model = 1239;
+            GetPlayerPos(playerid, X, Y, Z);
+
+            DropData[i][dExists] = 1;
+            format(DropData[i][dItemName], 32, "%s", ReturnWeaponName(weaponid));
+            DropData[i][dAmount] = 1;
+            DropData[i][dInt] = GetPlayerInterior(playerid);
+            DropData[i][dWorld] = GetPlayerVirtualWorld(playerid);
+            DropData[i][dX] = X + 0.5 + (0.25 * offset);
+            DropData[i][dY] = Y + 0.5;
+            DropData[i][dZ] = Z - 0.85;
+            DropData[i][dWeaponID] = weaponid;
+            DropData[i][dWeaponAmmo] = ammo;
+            DropData[i][dWeaponTypeSurplus] = typeammo;
+
+            DropData[i][dObject] = CreateDynamicObject(model, DropData[i][dX], DropData[i][dY], DropData[i][dZ], 90.0, 0.0, 0.0, DropData[i][dWorld], DropData[i][dInt]);
+
+            new labelStr[160];
+            switch(typeammo)
+            {
+                case 1: format(labelStr, sizeof(labelStr), "[Dropped Weapon]\n{FFFFFF}%s\n{FFFF00}Ammo: %d Surplus\n{FFFFFF}Gunakan /pickupitem", ReturnWeaponName(weaponid), ammo);
+                case 2: format(labelStr, sizeof(labelStr), "[Dropped Weapon]\n{FFFFFF}%s\n{FFFF00}Ammo: %d JHP\n{FFFFFF}Gunakan /pickupitem", ReturnWeaponName(weaponid), ammo);
+                default: format(labelStr, sizeof(labelStr), "[Dropped Weapon]\n{FFFFFF}%s\n{FFFF00}Ammo: %d\n{FFFFFF}Gunakan /pickupitem", ReturnWeaponName(weaponid), ammo);
+            }
+            DropData[i][dLabel] = CreateDynamic3DTextLabel(labelStr, 0x00FF00FF, DropData[i][dX], DropData[i][dY], DropData[i][dZ] + 0.3, 5.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 0, DropData[i][dWorld], DropData[i][dInt]);
+            return 1;
+        }
+    }
+    return 0;
+}
+
 CMD:pickupitem(playerid, params[])
 {
     // Animasi mengambil barang dari tanah
@@ -427,6 +471,34 @@ CMD:pickupitem(playerid, params[])
                 new name[32], amount;
                 format(name, sizeof(name), "%s", DropData[i][dItemName]);
                 amount = DropData[i][dAmount];
+
+                if(DropData[i][dWeaponID] > 0)
+                {
+                    new weaponid = DropData[i][dWeaponID];
+
+                    if(pData[playerid][pInjured])
+                        return Error(playerid, "Kamu tidak bisa mengambil senjata saat injured.");
+
+                    if(PlayerHasWeaponInSlot(playerid, weaponid))
+                        return Error(playerid, "Slot senjata kamu sudah terisi.");
+
+                    GivePlayerWeaponEx(playerid, weaponid, DropData[i][dWeaponAmmo], DropData[i][dWeaponTypeSurplus]);
+                    SendClientMessageEx(playerid, COLOR_ARWIN, "PICKUP: {FFFFFF}Anda mengambil %s dengan %d ammo.", ReturnWeaponName(weaponid), DropData[i][dWeaponAmmo]);
+                    SendNearbyMessage(playerid, 20.0, COLOR_PURPLE, "** %s mengambil senjata \"%s\" dari tanah.", ReturnName(playerid), ReturnWeaponName(weaponid));
+
+                    DestroyDynamicObject(DropData[i][dObject]);
+                    DestroyDynamic3DTextLabel(DropData[i][dLabel]);
+
+                    DropData[i][dExists] = 0;
+                    DropData[i][dAmount] = 0;
+                    DropData[i][dItemName][0] = '\0';
+                    DropData[i][dWeaponID] = 0;
+                    DropData[i][dWeaponAmmo] = 0;
+                    DropData[i][dWeaponTypeSurplus] = 0;
+
+                    BarangMasuk(playerid);
+                    return 1;
+                }
 
                 // =============================================
                 // PROSES MENAMBAH BARANG KEMBALI KE PDATA
@@ -491,6 +563,9 @@ CMD:pickupitem(playerid, params[])
                 DropData[i][dExists] = 0;
                 DropData[i][dAmount] = 0;
                 DropData[i][dItemName][0] = '\0';
+                DropData[i][dWeaponID] = 0;
+                DropData[i][dWeaponAmmo] = 0;
+                DropData[i][dWeaponTypeSurplus] = 0;
                 
 				BarangMasuk(playerid); // Refresh inventory setelah mengambil barang
                 return 1; // Hentikan loop jika sudah ketemu & berhasil diambil
@@ -505,6 +580,9 @@ CMD:pickupitem(playerid, params[])
 
 stock OnPlayerGiveInventoryItem(playerid, name[])
 {
+    if(!GetPVarType(playerid, "InventoryAmount"))
+        return Error(playerid, "Klik tombol Amount dan isi jumlah terlebih dahulu.");
+
     // Simpan nama item ke memori player
     SetPVarString(playerid, "GiveItem", name);
     
@@ -1941,15 +2019,35 @@ CMD:inventory(playerid, params[])
     return 1;
 }
 
+Dialog:InvSetAmount(playerid, response, listitem, inputtext[])
+{
+    if(!response) return 1;
+
+    new id = ItemSelected[playerid];
+    if(id == -1 || !InventoryData[playerid][id][invExists]) return Error(playerid, "Pilih item terlebih dahulu!");
+
+    new amount = strval(inputtext);
+    if(amount < 1 || amount > InventoryData[playerid][id][invAmount])
+        return Error(playerid, "Jumlah tidak valid. Maksimal %d.", InventoryData[playerid][id][invAmount]);
+
+    new string[16];
+    SetPVarInt(playerid, "InventoryAmount", amount);
+    format(string, sizeof(string), "%d", amount);
+    PlayerTextDrawSetString(playerid, INVINFO[playerid][6], string);
+    PlayerTextDrawShow(playerid, INVINFO[playerid][6]);
+    return 1;
+}
+
 Dialog:InvDropItem(playerid, response, listitem, inputtext[])
 {
 	if(!response) 
 	{
 		DeletePVar(playerid, "DropItem"); // Hapus memori jika klik Batal
+		DeletePVar(playerid, "InventoryAmount");
 		return 1;
 	}
 	
-	new amount = strval(inputtext); // Membaca angka yang dimasukkan player
+	new amount = GetPVarType(playerid, "InventoryAmount") ? GetPVarInt(playerid, "InventoryAmount") : strval(inputtext);
 	if(amount < 1) return Error(playerid, "Jumlah tidak valid!");
 	
 	new name[32];
@@ -2172,6 +2270,7 @@ Dialog:InvDropItem(playerid, response, listitem, inputtext[])
 
         // Hapus memori sementara PVar agar bersih
         DeletePVar(playerid, "DropItem");
+        DeletePVar(playerid, "InventoryAmount");
         return 1;
     }
 
@@ -2180,6 +2279,7 @@ Dialog:InvDropItem(playerid, response, listitem, inputtext[])
 	
 	// Hapus memori sementara PVar
 	DeletePVar(playerid, "DropItem");
+	DeletePVar(playerid, "InventoryAmount");
 
 	Inventory_Close(playerid); // Tutup inventory setelah drop
 	return 1;
@@ -2189,30 +2289,30 @@ Dialog:InvDropItem(playerid, response, listitem, inputtext[])
 // ==========================================
 Dialog:InvGiveItem(playerid, response, listitem, inputtext[])
 {
-	if(!response) return DeletePVar(playerid, "GiveItem"), 1; // Hapus memori jika klik batal
+	if(!response) return DeletePVar(playerid, "GiveItem"), DeletePVar(playerid, "InventoryAmount"), 1; // Hapus memori jika klik batal
 
 	new targetid = strval(inputtext);
 
 	// Validasi Target
 	if(!IsPlayerConnected(targetid) || targetid == INVALID_PLAYER_ID)
-		return Error(playerid, "Player tersebut tidak ditemukan/offline!"), DeletePVar(playerid, "GiveItem"), 1;
+		return Error(playerid, "Player tersebut tidak ditemukan/offline!"), DeletePVar(playerid, "GiveItem"), DeletePVar(playerid, "InventoryAmount"), 1;
 
 	if(targetid == playerid)
-		return Error(playerid, "Anda tidak bisa memberikan barang ke diri sendiri!"), DeletePVar(playerid, "GiveItem"), 1;
+		return Error(playerid, "Anda tidak bisa memberikan barang ke diri sendiri!"), DeletePVar(playerid, "GiveItem"), DeletePVar(playerid, "InventoryAmount"), 1;
 
 	// Validasi Jarak (Harus berdekatan)
 	new Float:x, Float:y, Float:z;
 	GetPlayerPos(targetid, x, y, z);
 	if(!IsPlayerInRangeOfPoint(playerid, 3.0, x, y, z) || GetPlayerVirtualWorld(playerid) != GetPlayerVirtualWorld(targetid))
-		return Error(playerid, "Player tersebut tidak berada di dekat Anda!"), DeletePVar(playerid, "GiveItem"), 1;
+		return Error(playerid, "Player tersebut tidak berada di dekat Anda!"), DeletePVar(playerid, "GiveItem"), DeletePVar(playerid, "InventoryAmount"), 1;
 
 	// Simpan ID Target ke memori, lalu panggil Dialog 2
 	SetPVarInt(playerid, "GiveTarget", targetid);
 	
 	new name[32], str[256];
 	GetPVarString(playerid, "GiveItem", name, sizeof(name));
-	format(str, sizeof(str), "Item: %s\nTarget: %s (ID: %d)\n\nMasukkan jumlah yang ingin Anda berikan:", name, ReturnName(targetid), targetid);
-	Dialog_Show(playerid, InvGiveAmount, DIALOG_STYLE_INPUT, "Give Item - Jumlah", str, "Berikan", "Batal");
+	format(str, sizeof(str), "Item: %s\nTarget: %s (ID: %d)\nJumlah: %d\n\nApakah Anda yakin ingin memberikan item ini?", name, ReturnName(targetid), targetid, GetPVarInt(playerid, "InventoryAmount"));
+	Dialog_Show(playerid, InvGiveAmount, DIALOG_STYLE_MSGBOX, "Give Item - Jumlah", str, "Berikan", "Batal");
 	
 	return 1;
 }
@@ -2223,9 +2323,9 @@ Dialog:InvGiveItem(playerid, response, listitem, inputtext[])
 Dialog:InvGiveAmount(playerid, response, listitem, inputtext[])
 {
 	// Bersihkan semua memori jika batal
-	if(!response) return DeletePVar(playerid, "GiveItem"), DeletePVar(playerid, "GiveTarget"), 1;
+	if(!response) return DeletePVar(playerid, "GiveItem"), DeletePVar(playerid, "GiveTarget"), DeletePVar(playerid, "InventoryAmount"), 1;
 
-	new amount = strval(inputtext);
+	new amount = GetPVarType(playerid, "InventoryAmount") ? GetPVarInt(playerid, "InventoryAmount") : strval(inputtext);
 	if(amount < 1) return Error(playerid, "Jumlah tidak valid!"), DeletePVar(playerid, "GiveItem"), DeletePVar(playerid, "GiveTarget"), 1;
 
 	new targetid = GetPVarInt(playerid, "GiveTarget");
@@ -2254,6 +2354,14 @@ Dialog:InvGiveAmount(playerid, response, listitem, inputtext[])
 		if(pData[playerid][pSprunk] < amount) return Error(playerid, "Sprunk Anda tidak cukup!");
 		pData[playerid][pSprunk] -= amount; pData[targetid][pSprunk] += amount; sukses = true;
 	}
+	else if(!strcmp(name, "Food", true)) {
+		if(pData[playerid][pFood] < amount) return Error(playerid, "Food Anda tidak cukup!");
+		pData[playerid][pFood] -= amount; pData[targetid][pFood] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Cigarettes", true)) {
+		if(pData[playerid][pRokok] < amount) return Error(playerid, "Cigarettes Anda tidak cukup!");
+		pData[playerid][pRokok] -= amount; pData[targetid][pRokok] += amount; sukses = true;
+	}
 	else if(!strcmp(name, "Bandage", true)) {
 		if(pData[playerid][pBandage] < amount) return Error(playerid, "Perban Anda tidak cukup!");
 		pData[playerid][pBandage] -= amount; pData[targetid][pBandage] += amount; sukses = true;
@@ -2265,6 +2373,22 @@ Dialog:InvGiveAmount(playerid, response, listitem, inputtext[])
 	else if(!strcmp(name, "Medkit", true)) {
 		if(pData[playerid][pMedkit] < amount) return Error(playerid, "Medkit Anda tidak cukup!");
 		pData[playerid][pMedkit] -= amount; pData[targetid][pMedkit] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Neladryl", true)) {
+		if(pData[playerid][pCoughPills] < amount) return Error(playerid, "Pil Neladryl Anda tidak cukup!");
+		pData[playerid][pCoughPills] -= amount; pData[targetid][pCoughPills] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Kratotamax", true)) {
+		if(pData[playerid][pMigrainPills] < amount) return Error(playerid, "Pil Kratotamax Anda tidak cukup!");
+		pData[playerid][pMigrainPills] -= amount; pData[targetid][pMigrainPills] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Lazattavitus", true)) {
+		if(pData[playerid][pFiverPills] < amount) return Error(playerid, "Pil Lazattavitus Anda tidak cukup!");
+		pData[playerid][pFiverPills] -= amount; pData[targetid][pFiverPills] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Component", true)) {
+		if(pData[playerid][pComponent] < amount) return Error(playerid, "Component Anda tidak cukup!");
+		pData[playerid][pComponent] -= amount; pData[targetid][pComponent] += amount; sukses = true;
 	}
 	else if(!strcmp(name, "Material", true)) {
 		if(pData[playerid][pMaterial] < amount) return Error(playerid, "Material Anda tidak cukup!");
@@ -2278,7 +2402,86 @@ Dialog:InvGiveAmount(playerid, response, listitem, inputtext[])
 		if(pData[playerid][pPot] < amount) return Error(playerid, "Pot Anda tidak cukup!");
 		pData[playerid][pPot] -= amount; pData[targetid][pPot] += amount; sukses = true;
 	}
-	// *Tambahkan 'else if' lagi untuk Seed, Fish, dll sesuai nama item kamu*
+	else if(!strcmp(name, "Fish pole", true)) {
+		if(pData[playerid][pFishTool] < amount) return Error(playerid, "Fish Pole Anda tidak cukup!");
+		pData[playerid][pFishTool] -= amount; pData[targetid][pFishTool] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Bait", true)) {
+		if(pData[playerid][pWorm] < amount) return Error(playerid, "Bait Anda tidak cukup!");
+		pData[playerid][pWorm] -= amount; pData[targetid][pWorm] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Toll Card", true)) {
+		if(pData[playerid][pPayToll] < amount) return Error(playerid, "Toll Card Anda tidak cukup!");
+		pData[playerid][pPayToll] -= amount; pData[targetid][pPayToll] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Wheat Seed", true)) {
+		if(pData[playerid][pSeedWheat] < amount) return Error(playerid, "Wheat Seed Anda tidak cukup!");
+		pData[playerid][pSeedWheat] -= amount; pData[targetid][pSeedWheat] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Onion Seed", true)) {
+		if(pData[playerid][pSeedOnion] < amount) return Error(playerid, "Onion Seed Anda tidak cukup!");
+		pData[playerid][pSeedOnion] -= amount; pData[targetid][pSeedOnion] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Carrot Seed", true)) {
+		if(pData[playerid][pSeedCarrot] < amount) return Error(playerid, "Carrot Seed Anda tidak cukup!");
+		pData[playerid][pSeedCarrot] -= amount; pData[targetid][pSeedCarrot] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Potato Seed", true)) {
+		if(pData[playerid][pSeedPotato] < amount) return Error(playerid, "Potato Seed Anda tidak cukup!");
+		pData[playerid][pSeedPotato] -= amount; pData[targetid][pSeedPotato] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Corn Seed", true)) {
+		if(pData[playerid][pSeedCorn] < amount) return Error(playerid, "Corn Seed Anda tidak cukup!");
+		pData[playerid][pSeedCorn] -= amount; pData[targetid][pSeedCorn] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Wheat", true)) {
+		if(pData[playerid][pWheat] < amount) return Error(playerid, "Wheat Anda tidak cukup!");
+		pData[playerid][pWheat] -= amount; pData[targetid][pWheat] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Onion", true)) {
+		if(pData[playerid][pOnion] < amount) return Error(playerid, "Onion Anda tidak cukup!");
+		pData[playerid][pOnion] -= amount; pData[targetid][pOnion] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Carrot", true)) {
+		if(pData[playerid][pCarrot] < amount) return Error(playerid, "Carrot Anda tidak cukup!");
+		pData[playerid][pCarrot] -= amount; pData[targetid][pCarrot] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Potato", true)) {
+		if(pData[playerid][pPotato] < amount) return Error(playerid, "Potato Anda tidak cukup!");
+		pData[playerid][pPotato] -= amount; pData[targetid][pPotato] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Corn", true)) {
+		if(pData[playerid][pCorn] < amount) return Error(playerid, "Corn Anda tidak cukup!");
+		pData[playerid][pCorn] -= amount; pData[targetid][pCorn] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Wild Berries", true)) {
+		if(pData[playerid][pBushForager] < amount) return Error(playerid, "Wild Berries Anda tidak cukup!");
+		pData[playerid][pBushForager] -= amount; pData[targetid][pBushForager] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Sch: Rifle", true)) {
+		if(pData[playerid][pSchematic][0] < amount) return Error(playerid, "Schematic Anda tidak cukup!");
+		pData[playerid][pSchematic][0] -= amount; pData[targetid][pSchematic][0] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Sch: Shotgun", true)) {
+		if(pData[playerid][pSchematic][1] < amount) return Error(playerid, "Schematic Anda tidak cukup!");
+		pData[playerid][pSchematic][1] -= amount; pData[targetid][pSchematic][1] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Sch: Sawn", true)) {
+		if(pData[playerid][pSchematic][2] < amount) return Error(playerid, "Schematic Anda tidak cukup!");
+		pData[playerid][pSchematic][2] -= amount; pData[targetid][pSchematic][2] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Sch: Deagle", true)) {
+		if(pData[playerid][pSchematic][3] < amount) return Error(playerid, "Schematic Anda tidak cukup!");
+		pData[playerid][pSchematic][3] -= amount; pData[targetid][pSchematic][3] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Sch: MP-5", true)) {
+		if(pData[playerid][pSchematic][4] < amount) return Error(playerid, "Schematic Anda tidak cukup!");
+		pData[playerid][pSchematic][4] -= amount; pData[targetid][pSchematic][4] += amount; sukses = true;
+	}
+	else if(!strcmp(name, "Sch: AK-47", true)) {
+		if(pData[playerid][pSchematic][5] < amount) return Error(playerid, "Schematic Anda tidak cukup!");
+		pData[playerid][pSchematic][5] -= amount; pData[targetid][pSchematic][5] += amount; sukses = true;
+	}
 	else {
 		Error(playerid, "Item '%s' tidak dapat dipindahtangankan!", name);
 	}
@@ -2302,6 +2505,7 @@ Dialog:InvGiveAmount(playerid, response, listitem, inputtext[])
 	// Hapus variabel PVar agar tidak nyangkut
 	DeletePVar(playerid, "GiveItem");
 	DeletePVar(playerid, "GiveTarget");
+	DeletePVar(playerid, "InventoryAmount");
 	
 	return 1;
 }
@@ -2327,9 +2531,29 @@ InventoryClickTextDraw(playerid, PlayerText:playertextid)
     }
 
     // ==========================================
-    // 2. KLIK TOMBOL "USE" (GUNAKAN)
+    // 2. KLIK TOMBOL "AMOUNT" (JUMLAH)
     // ==========================================
-    if(playertextid == INVINFO[playerid][2])
+    if(playertextid == INVINFO[playerid][1])
+    {
+        new id = ItemSelected[playerid];
+
+        if(id == -1)
+        {
+            SendClientMessage(playerid, 0xAFAFAFFF, "ERROR: Pilih item terlebih dahulu!");
+        }
+        else
+        {
+            new string[64], str[160];
+            strunpack(string, InventoryData[playerid][id][invItem]);
+            format(str, sizeof(str), "Item: %s\nJumlah tersedia: %d\n\nMasukkan jumlah yang ingin dipakai untuk Give/Drop:", string, InventoryData[playerid][id][invAmount]);
+            Dialog_Show(playerid, InvSetAmount, DIALOG_STYLE_INPUT, "Inventory Amount", str, "Set", "Batal");
+        }
+    }
+
+    // ==========================================
+    // 3. KLIK TOMBOL "USE" (GUNAKAN)
+    // ==========================================
+    else if(playertextid == INVINFO[playerid][2])
     {
         new id = ItemSelected[playerid];
 
@@ -2348,7 +2572,7 @@ InventoryClickTextDraw(playerid, PlayerText:playertextid)
     }
 
     // ==========================================
-    // 3. KLIK TOMBOL "GIVE" (BERIKAN)
+    // 4. KLIK TOMBOL "GIVE" (BERIKAN)
     // ==========================================
     else if(playertextid == INVINFO[playerid][3])
     {
@@ -2369,7 +2593,7 @@ InventoryClickTextDraw(playerid, PlayerText:playertextid)
     }
 
     // ==========================================
-    // 4. KLIK TOMBOL "DROP" (BUANG) 
+    // 5. KLIK TOMBOL "DROP" (BUANG) 
     // *Asumsi INVINFO[4] adalah tombol Drop di Textdraw lu
     // ==========================================
     else if(playertextid == INVINFO[playerid][4]) 
@@ -2391,7 +2615,7 @@ InventoryClickTextDraw(playerid, PlayerText:playertextid)
     }
 
     // ==========================================
-    // 5. KLIK TOMBOL "CLOSE" (TUTUP)
+    // 6. KLIK TOMBOL "CLOSE" (TUTUP)
     // ==========================================
     else if(playertextid == INVINFO[playerid][5])
     {
@@ -2437,6 +2661,8 @@ stock Inventory_Show(playerid)
     // Refresh Item & Reset Klik
     BarangMasuk(playerid);
     ItemSelected[playerid] = -1; 
+    DeletePVar(playerid, "InventoryAmount");
+    PlayerTextDrawSetString(playerid, INVINFO[playerid][6], "Amount");
     
     PlayerPlaySound(playerid, 1039, 0,0,0);
     SelectTextDraw(playerid, -1);
@@ -2484,6 +2710,7 @@ stock Inventory_Close(playerid)
 {
     CancelSelectTextDraw(playerid);
     ItemSelected[playerid] = -1;
+    DeletePVar(playerid, "InventoryAmount");
     
     for(new a = 0; a < 6; a++) PlayerTextDrawHide(playerid, INVNAME[playerid][a]);
     for(new a = 0; a < 11; a++) PlayerTextDrawHide(playerid, INVINFO[playerid][a]);

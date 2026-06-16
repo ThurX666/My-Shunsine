@@ -143,7 +143,7 @@ CMD:factionhelp(playerid)
 	{
 		new str[3500];
 		strcat(str, ""PINK_E"SAMD: /locker /or (/r)adio /od /d(epartement) (/gov)ernment (/m)egaphone /invite /uninvite /setrank /frankname /setbadge\n");
-		strcat(str, ""PINK_E"SAMD: /samdonline /loadinjured /dropinjured /ems /findems /rescue /salve /treatment /surgery /takepills /givepills \n");
+		strcat(str, ""PINK_E"SAMD: /samdonline /loadinjured /dropinjured /ems /findems /rescue /treatment /surgery /takepills /givepills \n");
 		strcat(str, ""YELLOW_E"NOTE: Lama waktu duty anda akan menjadi gaji anda pada saat paycheck!\n");
 		ShowPlayerDialog(playerid, DIALOG_UNUSED, DIALOG_STYLE_MSGBOX, "San Andreas Medical Department", str, "Close", "");
 	}

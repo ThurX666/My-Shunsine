@@ -65,6 +65,9 @@ CMD:acure(playerid, params[])
 
 CMD:givepills(playerid, params[])
 {
+    if(pData[playerid][pFaction] != 3 || !pData[playerid][pOnDuty])
+        return Error(playerid, "You must be an on duty SAMD officer.");
+
     static
         userid,
         id,
@@ -118,8 +121,10 @@ CMD:takepills(playerid, params[])
 {
     if(pData[playerid][pFaction] != 3) 
         return Error(playerid, "You can't take pills from this locker.");
+    if(!pData[playerid][pOnDuty])
+        return Error(playerid, "You must be on duty to take pills.");
 
-    if(!IsPlayerInRangeOfPoint(playerid, 3.0, 1355.18, 1543.21, 2223.08))
+    if(!IsPlayerInRangeOfPoint(playerid, 3.0, 1187.6946, -1333.6653, 3013.4844))
         return Error(playerid, "Go to pharmacy to get the pills.");
 
     Dialog_Show(playerid, TakePills, DIALOG_STYLE_TABLIST_HEADERS, "Medicine", "Obat\tPenyakit\nNeladryl Acetate\tCough\nKratotamax Plus 1.0\tMigrain\nLazattavitus Extra\tHigh Fever", "Take", "Close");
@@ -157,8 +162,8 @@ CMD:surgery(playerid, params[])
     if(player == INVALID_PLAYER_ID || !IsPlayerNearPlayer(playerid, player, 3.0)) return Error(playerid, "That player is disconnected or not near you.");
     if(pData[player][pStartSurgey]) return Error(playerid, "That player is already to surgery.");
     if(!Damage_Count(player)) return SendClientMessageEx(playerid, COLOR_ARWIN, "SURGERY: "WHITE_E"This player is "GREEN_E"healthy");
-    if(IsPlayerInRangeOfPoint(playerid, 10, 1840.7133,-1087.4265,41.6537) || IsPlayerInRangeOfPoint(playerid, 10, 1839.4073,-1101.3788,41.6537) 
-    || IsPlayerInRangeOfPoint(playerid, 10, 1849.7211,-1115.6731,41.6537) || IsPlayerInRangeOfPoint(playerid, 5, 1835.8799,-1115.4319,41.6537))
+    if(IsPlayerInRangeOfPoint(playerid, 8, 1225.4766,-1340.2692,3013.5083) || IsPlayerInRangeOfPoint(playerid, 8, 1225.7388,-1344.9170,3013.5083) 
+    || IsPlayerInRangeOfPoint(playerid, 8, 1208.8163,-1338.2944,3013.5083) || IsPlayerInRangeOfPoint(playerid, 8, 1226.0441,-1324.3016,3013.5083))
     {
         new string[212], fstr[1000];
         format(fstr, sizeof(fstr), "Bullets\tWeapon\tBody\tTime\n");
@@ -175,5 +180,6 @@ CMD:surgery(playerid, params[])
         pData[playerid][pSurgeyID] = player;
         SetPVarInt(player, "SurgeryID", playerid);
     }
+    else return Error(playerid, "You must be in emergency room!");
     return 1;
 }

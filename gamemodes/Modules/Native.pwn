@@ -1243,6 +1243,28 @@ GetFamilyRank(playerid)
 	return rank;
 }
 
+GetPlayerFactionName(playerid)
+{
+	new faction[40];
+	switch(pData[playerid][pFaction])
+	{
+		case 1: format(faction, sizeof(faction), "SAPD");
+		case 2: format(faction, sizeof(faction), "SAGS");
+		case 3: format(faction, sizeof(faction), "SAMD");
+		case 4: format(faction, sizeof(faction), "SANA");
+		default: format(faction, sizeof(faction), "None");
+	}
+	return faction;
+}
+
+GetPlayerFamilyName(playerid)
+{
+	new family[50];
+	if(pData[playerid][pFamily] != -1) format(family, sizeof(family), "%s", fData[pData[playerid][pFamily]][fName]);
+	else format(family, sizeof(family), "None");
+	return family;
+}
+
 SendFamilyMessage(familyid, color, const str[], {Float,_}:...)
 {
     static
@@ -1330,23 +1352,37 @@ DisplayStats(playerid, p2)
 	foreach(new i : PVehicles) if(IsValidPlayerVehicle(p2, i)) {
 		format(nameveh, sizeof(nameveh), "%s %s (VID%d)", nameveh, GetVehicleModelName(pvData[i][cModel]), pvData[i][cID]);
 	}
-	new coordsString[2000], S3MP4K[2000], idiot[212];
+	new coordsString[2000], S3MP4K[3000], idiot[212];
 	format(idiot, sizeof(idiot), ""ARWIN_E"%s(pid: %d)", pData[p2][pName], pData[p2][pID]);
 	//SendClientMessageEx(playerid,COLOR_WHITE,coordsString);
 	format(coordsString, sizeof(coordsString), ""YELLOW_E"IC Information:\n");
 	strcat(S3MP4K, coordsString);
-	new phoneStr[32];
+	new phoneStr[32], factionRank[40], familyRank[40];
 	if(pData[p2][pPhone] > 0) format(phoneStr, sizeof(phoneStr), "%d", pData[p2][pPhone]);
 	else format(phoneStr, sizeof(phoneStr), "Tidak Ada");
-	format(coordsString, sizeof(coordsString), ""WHITE_E"Gender: ["ARWIN_E"%s"WHITE_E"] "WHITE_E"Origin: ["ARWIN_E"%s"WHITE_E"] Money: ["GREEN_E"$%s"WHITE_E"] Bank: ["GREEN_E"$%s"WHITE_E"] Phone number: ["ARWIN_E"%s"WHITE_E"] Phone credit: ["ARWIN_E"%d Points"WHITE_E"]\n",(pData[p2][pGender] == 2) ? ("Female") : ("Male"), GetPlayerAccent(p2), FormatMoney(pData[p2][pMoney]), FormatMoney(pData[p2][pBankMoney]), phoneStr, pData[p2][pPhoneCredit]);
+	if(pData[p2][pFaction] > 0) format(factionRank, sizeof(factionRank), "%s (%d)", pData[p2][pFactionRankName], pData[p2][pFactionRank]);
+	else format(factionRank, sizeof(factionRank), "None");
+	if(pData[p2][pFamily] != -1) format(familyRank, sizeof(familyRank), "%s (%d)", GetFamilyRank(p2), pData[p2][pFamilyRank]);
+	else format(familyRank, sizeof(familyRank), "None");
+	format(coordsString, sizeof(coordsString), ""WHITE_E"Gender: ["ARWIN_E"%s"WHITE_E"] Origin: ["ARWIN_E"%s"WHITE_E"]\n",(pData[p2][pGender] == 2) ? ("Female") : ("Male"), GetPlayerAccent(p2));
+    strcat(S3MP4K, coordsString);
+	format(coordsString, sizeof(coordsString), ""WHITE_E"Money: ["GREEN_E"$%s"WHITE_E"] Bank: ["GREEN_E"$%s"WHITE_E"]\n", FormatMoney(pData[p2][pMoney]), FormatMoney(pData[p2][pBankMoney]));
+    strcat(S3MP4K, coordsString);
+	format(coordsString, sizeof(coordsString), ""WHITE_E"Phone number: ["ARWIN_E"%s"WHITE_E"] Phone credit: ["ARWIN_E"%d Points"WHITE_E"]\n", phoneStr, pData[p2][pPhoneCredit]);
     strcat(S3MP4K, coordsString);
 	format(coordsString, sizeof(coordsString), ""WHITE_E"Jobs: [%s, %s"WHITE_E"]\n", GetJobName(pData[p2][pJob]), GetJobName(pData[p2][pJob2]));
     strcat(S3MP4K, coordsString);
+	format(coordsString, sizeof(coordsString), ""WHITE_E"Faction: ["ARWIN_E"%s"WHITE_E"] Rank: ["ARWIN_E"%s"WHITE_E"]\n", GetPlayerFactionName(p2), factionRank);
+    strcat(S3MP4K, coordsString);
+	format(coordsString, sizeof(coordsString), ""WHITE_E"Family: ["ARWIN_E"%s"WHITE_E"] Rank: ["ARWIN_E"%s"WHITE_E"]\n", GetPlayerFamilyName(p2), familyRank);
+    strcat(S3MP4K, coordsString);
 	format(coordsString, sizeof(coordsString), ""WHITE_E"Married with: ["ARWIN_E"%s"WHITE_E"]\n", GetCoupleName(p2));
     strcat(S3MP4K, coordsString);
-	format(coordsString, sizeof(coordsString), ""YELLOW_E"OOC Information:\n");
+	format(coordsString, sizeof(coordsString), "\n"YELLOW_E"OOC Information:\n");
     strcat(S3MP4K, coordsString);
-	format(coordsString, sizeof(coordsString), ""WHITE_E"User: ["AQUA_E"%s"WHITE_E"] Player rank: ["ARWIN_E"%s"WHITE_E"] Paychecks: ["ARWIN_E"%d"WHITE_E"]  Time played: ["AQUA_E"%d hour(s) %d minute(s) %02d second(s)"WHITE_E"]\n", charData[p2][cName], ORANK(p2), pData[p2][pPaycheck]/60, pData[p2][pHours], pData[p2][pMinutes], pData[p2][pSeconds]);
+	format(coordsString, sizeof(coordsString), ""WHITE_E"User: ["AQUA_E"%s"WHITE_E"] Player rank: ["ARWIN_E"%s"WHITE_E"]\n", charData[p2][cName], ORANK(p2));
+    strcat(S3MP4K, coordsString);
+	format(coordsString, sizeof(coordsString), ""WHITE_E"Paychecks: ["ARWIN_E"%d"WHITE_E"] Time played: ["AQUA_E"%d hour(s) %d minute(s) %02d second(s)"WHITE_E"]\n", pData[p2][pPaycheck]/60, pData[p2][pHours], pData[p2][pMinutes], pData[p2][pSeconds]);
     strcat(S3MP4K, coordsString);
 	format(coordsString, sizeof(coordsString), "Vehicle (%d/%d): ["ARWIN_E"%s"WHITE_E" ]\n",count, limit, nameveh);
     strcat(S3MP4K, coordsString);
@@ -1366,23 +1402,37 @@ DisplayStatsStream(playerid, p2)
 	foreach(new i : PVehicles) if(IsValidPlayerVehicle(p2, i)) {
 		format(nameveh, sizeof(nameveh), "%s %s (VID%d)", nameveh, GetVehicleModelName(pvData[i][cModel]), pvData[i][cID]);
 	}
-	new coordsString[2000], S3MP4K[2000], idiot[212];
+	new coordsString[2000], S3MP4K[3000], idiot[212];
 	format(idiot, sizeof(idiot), ""ARWIN_E"%s", pData[p2][pName]);
 	//SendClientMessageEx(playerid,COLOR_WHITE,coordsString);
 	format(coordsString, sizeof(coordsString), ""YELLOW_E"IC Information:\n");
 	strcat(S3MP4K, coordsString);
-	new phoneStr2[32];
+	new phoneStr2[32], factionRank[40], familyRank[40];
 	if(pData[p2][pPhone] > 0) format(phoneStr2, sizeof(phoneStr2), "%d", pData[p2][pPhone]);
 	else format(phoneStr2, sizeof(phoneStr2), "Tidak Ada");
-	format(coordsString, sizeof(coordsString), ""WHITE_E"Gender: ["ARWIN_E"%s"WHITE_E"] "WHITE_E"Origin: ["ARWIN_E"%s"WHITE_E"] Money: ["GREEN_E"$%s"WHITE_E"] Bank: ["GREEN_E"$%s"WHITE_E"] Phone number: ["ARWIN_E"%s"WHITE_E"] Phone credit: ["ARWIN_E"%d Points"WHITE_E"]\n",(pData[p2][pGender] == 2) ? ("Female") : ("Male"), GetPlayerAccent(p2), FormatMoney(pData[p2][pMoney]), FormatMoney(pData[p2][pBankMoney]), phoneStr2, pData[p2][pPhoneCredit]);
+	if(pData[p2][pFaction] > 0) format(factionRank, sizeof(factionRank), "%s (%d)", pData[p2][pFactionRankName], pData[p2][pFactionRank]);
+	else format(factionRank, sizeof(factionRank), "None");
+	if(pData[p2][pFamily] != -1) format(familyRank, sizeof(familyRank), "%s (%d)", GetFamilyRank(p2), pData[p2][pFamilyRank]);
+	else format(familyRank, sizeof(familyRank), "None");
+	format(coordsString, sizeof(coordsString), ""WHITE_E"Gender: ["ARWIN_E"%s"WHITE_E"] Origin: ["ARWIN_E"%s"WHITE_E"]\n",(pData[p2][pGender] == 2) ? ("Female") : ("Male"), GetPlayerAccent(p2));
+    strcat(S3MP4K, coordsString);
+	format(coordsString, sizeof(coordsString), ""WHITE_E"Money: ["GREEN_E"$%s"WHITE_E"] Bank: ["GREEN_E"$%s"WHITE_E"]\n", FormatMoney(pData[p2][pMoney]), FormatMoney(pData[p2][pBankMoney]));
+    strcat(S3MP4K, coordsString);
+	format(coordsString, sizeof(coordsString), ""WHITE_E"Phone number: ["ARWIN_E"%s"WHITE_E"] Phone credit: ["ARWIN_E"%d Points"WHITE_E"]\n", phoneStr2, pData[p2][pPhoneCredit]);
     strcat(S3MP4K, coordsString);
 	format(coordsString, sizeof(coordsString), ""WHITE_E"Jobs: [%s, %s"WHITE_E"]\n", GetJobName(pData[p2][pJob]), GetJobName(pData[p2][pJob2]));
     strcat(S3MP4K, coordsString);
+	format(coordsString, sizeof(coordsString), ""WHITE_E"Faction: ["ARWIN_E"%s"WHITE_E"] Rank: ["ARWIN_E"%s"WHITE_E"]\n", GetPlayerFactionName(p2), factionRank);
+    strcat(S3MP4K, coordsString);
+	format(coordsString, sizeof(coordsString), ""WHITE_E"Family: ["ARWIN_E"%s"WHITE_E"] Rank: ["ARWIN_E"%s"WHITE_E"]\n", GetPlayerFamilyName(p2), familyRank);
+    strcat(S3MP4K, coordsString);
 	format(coordsString, sizeof(coordsString), ""WHITE_E"Married with: ["ARWIN_E"%s"WHITE_E"] Bank Account: ["LG_E"%d"WHITE_E"]\n", GetCoupleName(p2), pData[p2][pBankRek]);
     strcat(S3MP4K, coordsString);
-	format(coordsString, sizeof(coordsString), ""YELLOW_E"OOC Information:\n");
+	format(coordsString, sizeof(coordsString), "\n"YELLOW_E"OOC Information:\n");
     strcat(S3MP4K, coordsString);
-	format(coordsString, sizeof(coordsString), ""WHITE_E"Player rank: ["ARWIN_E"%s"WHITE_E"] Paychecks: ["ARWIN_E"%d"WHITE_E"]  Time played: ["AQUA_E"%d hour(s) %d minute(s) %02d second(s)"WHITE_E"]\n", ORANK(p2), pData[p2][pPaycheck]/60, pData[p2][pHours], pData[p2][pMinutes], pData[p2][pSeconds]);
+	format(coordsString, sizeof(coordsString), ""WHITE_E"Player rank: ["ARWIN_E"%s"WHITE_E"] Paychecks: ["ARWIN_E"%d"WHITE_E"]\n", ORANK(p2), pData[p2][pPaycheck]/60);
+    strcat(S3MP4K, coordsString);
+	format(coordsString, sizeof(coordsString), ""WHITE_E"Time played: ["AQUA_E"%d hour(s) %d minute(s) %02d second(s)"WHITE_E"]\n", pData[p2][pHours], pData[p2][pMinutes], pData[p2][pSeconds]);
     strcat(S3MP4K, coordsString);
 	format(coordsString, sizeof(coordsString), "Vehicles (%d/%d): ["ARWIN_E"%s"WHITE_E" ] \n",count, limit, nameveh);
     strcat(S3MP4K, coordsString);
@@ -2330,6 +2380,10 @@ SetPlayerPositionEx(playerid, Float:x, Float:y, Float:z, Float:a, time = 2000)
     pData[playerid][pFreeze] = 1;
     SetPlayerPos(playerid, x, y, z + 0.5);
 	SetPlayerFacingAngle(playerid, a);
+	pData[playerid][pPosX] = x;
+	pData[playerid][pPosY] = y;
+	pData[playerid][pPosZ] = z;
+	pData[playerid][pPosA] = a;
 	pData[playerid][pFreezeTimer] = SetTimerEx("SetPlayerToUnfreeze", time, false, "iffff", playerid, x, y, z, a);
 }
 

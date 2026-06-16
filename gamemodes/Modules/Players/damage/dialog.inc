@@ -52,6 +52,11 @@ Dialog:TakePills(playerid, response, listitem, inputtext[])
 {
     if(response)
     {
+        if(pData[playerid][pFaction] != 3 || !pData[playerid][pOnDuty])
+            return Error(playerid, "You must be an on duty SAMD officer.");
+        if(!IsPlayerInRangeOfPoint(playerid, 3.0, 1187.6946, -1333.6653, 3013.4844))
+            return Error(playerid, "Go to pharmacy to get the pills.");
+
         switch(listitem)
         {
             case 0: pData[playerid][pCoughPills] ++;

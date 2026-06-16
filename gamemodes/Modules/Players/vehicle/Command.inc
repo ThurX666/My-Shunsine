@@ -602,7 +602,10 @@ CMD:trunk(playerid, params[])
 		return SendClientMessageEx(playerid, COLOR_ARWIN, "VEHICLE: "WHITE_E"You not in near any vehicles.");
 	if(!IsABoat(vehicleid) && !IsABike(vehicleid) && !IsAPlane(vehicleid) && !IsAHelicopter(vehicleid))
 	{
-		Vehicle_OpenStorage(playerid, vehicleid);
+		if(pData[playerid][pFaction] > 0 && pData[playerid][pOnDuty] && VehData_GoodFactionVeh(vehicleid, pData[playerid][pFaction]) != -1) {
+			VehicleData_OpenStorage(playerid, vehicleid);
+		}
+		else Vehicle_OpenStorage(playerid, vehicleid);
 		SwitchVehicleBoot(vehicleid, true);
 	}
 	return 1;
@@ -619,7 +622,8 @@ CMD:checktrunk(playerid, params[])
 			return SendClientMessageEx(playerid, COLOR_ARWIN, "VEHICLE: "WHITE_E"You not in near any vehicles.");
 		if(!IsABoat(vehicleid) && !IsABike(vehicleid) && !IsAPlane(vehicleid) && !IsAHelicopter(vehicleid))
 		{
-			Vehicle_OpenStorageSAPD(playerid, vehicleid);
+			if(VehData_GoodFactionVeh(vehicleid, pData[playerid][pFaction]) != -1) VehicleData_OpenStorage(playerid, vehicleid);
+			else Vehicle_OpenStorageSAPD(playerid, vehicleid);
 			SwitchVehicleBoot(vehicleid, true);
 		}
 	}

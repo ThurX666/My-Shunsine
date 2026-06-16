@@ -31,9 +31,10 @@ ptask MechanicRepair[500](playerid) {
                     if(vehicleid != INVALID_VEHICLE_ID)
                     {
                         if ((id = Vehicle_GetID(vehicleid)) != -1 && pvData[id][cVeh] == vehicleid && pvData[id][cMesinUpgrade]) {
-                            SetVehicleHealth(vehicleid, 2000.0); 
+                            SetValidVehicleHealth(vehicleid, 2000.0);
+                            pvData[id][cHealth] = 2000.0;
                         }
-                        else SetVehicleHealth(vehicleid, 1000.0);
+                        else SetValidVehicleHealth(vehicleid, 1000.0);
                     }
                     PlayerPlaySound(playerid, 1133, 0.0, 0.0, 0.0);
                     pData[playerid][pActivityTime] = 0;
@@ -141,7 +142,11 @@ ptask MechanicUp[1300](playerid) {
                 
                 if(pData[playerid][pActivityTime] >= 100)
                 {
-                    if ((id = Vehicle_GetID(vehicleid)) != -1 && pvData[id][cVeh] == vehicleid) pvData[id][cMesinUpgrade] = 1;
+                    if ((id = Vehicle_GetID(vehicleid)) != -1 && pvData[id][cVeh] == vehicleid) {
+                        pvData[id][cMesinUpgrade] = 1;
+                        SetValidVehicleHealth(vehicleid, 2000.0);
+                        pvData[id][cHealth] = 2000.0;
+                    }
                     PlayerPlaySound(playerid, 1133, 0.0, 0.0, 0.0);
                     pData[playerid][pActivityTime] = 0;
                     for (new i; i < 3; i++) PlayerTextDrawHide(playerid, ProggresBar[playerid][i]);

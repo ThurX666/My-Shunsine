@@ -100,25 +100,28 @@ CMD:startmine(playerid, params[]) {
 }
 
 CMD:stopmine(playerid, params[]) {
-	if(IsPlayerInRangeOfPoint(playerid, 3.0, 2822.4126,2839.3374,48.3318)) {
-		if(pData[playerid][pStartMine] < 1) return Error(playerid, "Anda tidak melakukan menambang!");
-		SendCustomMessage(playerid, "SIDEJOB", "You stopped mining");
-		pData[playerid][pStartMine] = 0;
-		pTimeMiningOre[playerid] = 0;
-		pMiningOre[playerid] = 0;
-		pTotalCashOre[playerid] = 0;
-		RemovePlayerAttachedObject(playerid, 9);
-		pData[playerid][pStartMine] = 0;
-		new totalMiner = pData[playerid][pMiner];
-		if(totalMiner > 0) {
-			GivePlayerMoneyEx(playerid, totalMiner);
-			SendCustomMessage(playerid, "SIDEJOB", "Kamu berhenti menambang, total uang yang dikumpulkan "GREEN_E"$%s "WHITE_E"telah masuk ke cash kamu", FormatMoney(totalMiner));
-		} else {
-			SendCustomMessage(playerid, "SIDEJOB", "Kamu berhenti menambang, namun belum ada uang yang dikumpulkan");
-		}
-		pData[playerid][pMiner] = 0;
-		RemovePlayerAttachedObject(playerid, 9);
-		DelayPlayer[playerid][DelayMiner] = 300;
+	if(pData[playerid][pStartMine] < 1 && pData[playerid][pMiner] < 1) return Error(playerid, "Anda tidak melakukan menambang!");
+	if(!IsPlayerInRangeOfPoint(playerid, 25.0, 2822.4126,2839.3374,48.3318) && pData[playerid][pEnergy] > 20.0) return Error(playerid, "Kamu harus berada di area mining untuk berhenti.");
+
+	SendCustomMessage(playerid, "SIDEJOB", "You stopped mining");
+	if(pMiningOre[playerid]) {
+		new oreid = GetPVarInt(playerid,"nearOree");
+		if(Iter_Contains(Ores, oreid)) OreData[oreid][oreGettingMiner] = false;
+		DeletePVar(playerid, "nearOree");
 	}
+	pData[playerid][pStartMine] = 0;
+	pTimeMiningOre[playerid] = 0;
+	pMiningOre[playerid] = 0;
+	pTotalCashOre[playerid] = 0;
+	RemovePlayerAttachedObject(playerid, 9);
+	new totalMiner = pData[playerid][pMiner];
+	if(totalMiner > 0) {
+		GivePlayerMoneyEx(playerid, totalMiner);
+		SendCustomMessage(playerid, "SIDEJOB", "Kamu berhenti menambang, total uang yang dikumpulkan "GREEN_E"$%s "WHITE_E"telah masuk ke cash kamu", FormatMoney(totalMiner));
+	} else {
+		SendCustomMessage(playerid, "SIDEJOB", "Kamu berhenti menambang, namun belum ada uang yang dikumpulkan");
+	}
+	pData[playerid][pMiner] = 0;
+	DelayPlayer[playerid][DelayMiner] = 300;
 	return 1;
 }

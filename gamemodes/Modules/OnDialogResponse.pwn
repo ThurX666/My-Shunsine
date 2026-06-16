@@ -2433,6 +2433,59 @@ Dialog:PVehicleStorage(playerid, response, listitem, inputtext[]) {
     return 1;
 }
 
+Dialog:VehicleDataStorage(playerid, response, listitem, inputtext[]) {
+	new vehicleid = pData[playerid][pUseVehicleid];
+    if(response) {
+		if(listitem == 0) VehicleData_WeaponStorage(playerid, vehicleid);
+	} else SwitchVehicleBoot(vehicleid, false);
+    return 1;
+}
+
+Dialog:VehicleDataWeapon(playerid, response, listitem, inputtext[]) {
+    new vehicleid = pData[playerid][pUseVehicleid],
+        id = VehData_GoodFactionVeh(vehicleid, pData[playerid][pFaction]);
+
+    if(id == -1) return Error(playerid, "Kendaraan faction tidak ditemukan.");
+	if(response)  {
+        if(listitem < 0 || listitem >= 4) return 1;
+
+		if(VehicleData[id][Weapon][listitem] != 0)
+		{
+			switch(VehicleData[id][TypeAmmo][listitem]) {
+				case 0: GivePlayerWeaponEx(playerid, VehicleData[id][Weapon][listitem], VehicleData[id][Ammo][listitem], 0);
+				case 1: GivePlayerWeaponEx(playerid, VehicleData[id][Weapon][listitem], VehicleData[id][Ammo][listitem], 1);
+			}
+			SendNearbyMessage(playerid, 30.0, COLOR_PURPLE, "** %s has taken a \"%s\" from their faction vehicle trunk.", ReturnName(playerid), ReturnWeaponName(VehicleData[id][Weapon][listitem]));
+			VehicleData[id][Weapon][listitem] = 0;
+			VehicleData[id][Ammo][listitem] = 0;
+			VehicleData[id][TypeAmmo][listitem] = 0;
+			SaveVehicleData(id);
+			VehicleData_WeaponStorage(playerid, vehicleid);
+		}
+		else
+		{
+			new weaponid = GetWeapon(playerid),
+				ammo = ReturnWeaponAmmo(playerid, weaponid);
+
+			if(!weaponid) return Error(playerid, "You are not holding any weapon!");
+			if(PlayerGuns[playerid][g_aWeaponSlots[weaponid]][weapon_typesurplus] == 2) return Error(playerid, "Senjata bertype JHP tidak bisa disimpan dimobil!");
+
+			SendNearbyMessage(playerid, 30.0, COLOR_PURPLE, "** %s has stored a \"%s\" into their faction vehicle trunk.", ReturnName(playerid), ReturnWeaponName(weaponid));
+			VehicleData[id][Weapon][listitem] = weaponid;
+			VehicleData[id][Ammo][listitem] = ammo;
+			switch(PlayerGuns[playerid][g_aWeaponSlots[weaponid]][weapon_typesurplus]) {
+				case 0: VehicleData[id][TypeAmmo][listitem] = 0;
+				case 1: VehicleData[id][TypeAmmo][listitem] = 1;
+			}
+			ResetWeaponID(playerid, weaponid);
+			SaveVehicleData(id);
+			VehicleData_WeaponStorage(playerid, vehicleid);
+		}
+	}
+	else SwitchVehicleBoot(vehicleid, false);
+    return 1;
+}
+
 Dialog:PVehicleWeapon(playerid, response, listitem, inputtext[]) {
     new vehicleid = pData[playerid][pUseVehicleid];
 	if(response)  {

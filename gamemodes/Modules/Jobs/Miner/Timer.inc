@@ -25,9 +25,7 @@ ptask MiningOre[100](playerid) {
             }
             pData[playerid][pEnergy] -= 4.0;
             if(pData[playerid][pEnergy] <= 20.0) {
-                pData[playerid][pStartMine] = 0;
-                DelayPlayer[playerid][DelayMiner] = 300;
-                SendCustomMessage(playerid, "SIDEJOB", "Energi kamu habis! Gunakan "YELLOW_E"/stopmine "WHITE_E"untuk mengambil uang mining kamu sebesar "GREEN_E"$%s. "WHITE_E"Cooldown "YELLOW_E"300 detik", FormatMoney(pData[playerid][pMiner]));
+                SendCustomMessage(playerid, "SIDEJOB", "Energi kamu habis! Gunakan "YELLOW_E"/stopmine "WHITE_E"untuk mengambil uang mining kamu sebesar "GREEN_E"$%s", FormatMoney(pData[playerid][pMiner]));
                 RemovePlayerAttachedObject(playerid, 9);
             }
             OreData[id][oreSeconds] = 300;

@@ -1,4 +1,185 @@
 //-------------[ Player Commands ]-------------//
+SuitChoiceFromText(const text[])
+{
+	if(!strcmp(text, "batu", true) || !strcmp(text, "rock", true) || !strcmp(text, "b", true)) return 1;
+	if(!strcmp(text, "gunting", true) || !strcmp(text, "scissors", true) || !strcmp(text, "g", true)) return 2;
+	if(!strcmp(text, "kertas", true) || !strcmp(text, "paper", true) || !strcmp(text, "k", true)) return 3;
+	return 0;
+}
+
+SuitChoiceName(choice)
+{
+	static name[8];
+
+	switch(choice)
+	{
+		case 1: format(name, sizeof(name), "batu");
+		case 2: format(name, sizeof(name), "gunting");
+		case 3: format(name, sizeof(name), "kertas");
+		default: format(name, sizeof(name), "-");
+	}
+	return name;
+}
+
+SuitClear(playerid)
+{
+	DeletePVar(playerid, "SuitFrom");
+	DeletePVar(playerid, "SuitTo");
+	DeletePVar(playerid, "SuitChoice");
+	DeletePVar(playerid, "SuitExpire");
+	return 1;
+}
+
+SuitWinner(challengerChoice, targetChoice)
+{
+	if(challengerChoice == targetChoice) return 0;
+	if((challengerChoice == 1 && targetChoice == 2) || (challengerChoice == 2 && targetChoice == 3) || (challengerChoice == 3 && targetChoice == 1)) return 1;
+	return 2;
+}
+
+CMD:suit(playerid, params[])
+{
+	new arg[32], choiceText[16];
+
+	if(sscanf(params, "s[32]S()[16]", arg, choiceText))
+	{
+		Usage(playerid, "/suit [playerid] [batu/gunting/kertas]");
+		Usage(playerid, "/suit accept [batu/gunting/kertas] | /suit deny | /suit cancel");
+		return 1;
+	}
+
+	if(!strcmp(arg, "accept", true))
+	{
+		new challengerid = GetPVarInt(playerid, "SuitFrom");
+		new challengerChoice = GetPVarInt(playerid, "SuitChoice");
+		new targetChoice = SuitChoiceFromText(choiceText);
+
+		if(!GetPVarType(playerid, "SuitFrom")) return Error(playerid, "Tidak ada tantangan suit yang masuk.");
+		if(!targetChoice) return Usage(playerid, "/suit accept [batu/gunting/kertas]");
+		if(!IsPlayerConnected(challengerid))
+		{
+			SuitClear(playerid);
+			return Error(playerid, "Player yang menantang sudah tidak terhubung.");
+		}
+		if(gettime() > GetPVarInt(playerid, "SuitExpire"))
+		{
+			SuitClear(challengerid);
+			SuitClear(playerid);
+			return Error(playerid, "Tantangan suit sudah kadaluarsa.");
+		}
+		if(!NearPlayer(playerid, challengerid, 5.0))
+		{
+			SuitClear(challengerid);
+			SuitClear(playerid);
+			return Error(playerid, "Kamu harus dekat dengan player yang menantang suit.");
+		}
+		if(pData[playerid][pInjured] || pData[challengerid][pInjured])
+		{
+			SuitClear(challengerid);
+			SuitClear(playerid);
+			return Error(playerid, "Suit dibatalkan karena salah satu player sedang injured.");
+		}
+
+		new winner = SuitWinner(challengerChoice, targetChoice);
+		new challengerChoiceName[8], targetChoiceName[8];
+		format(challengerChoiceName, sizeof(challengerChoiceName), "%s", SuitChoiceName(challengerChoice));
+		format(targetChoiceName, sizeof(targetChoiceName), "%s", SuitChoiceName(targetChoice));
+
+		SendClientMessageEx(challengerid, COLOR_ARWIN, "SUIT: "WHITE_E"%s memilih %s, %s memilih %s.", ReturnName2(challengerid), challengerChoiceName, ReturnName2(playerid), targetChoiceName);
+		SendClientMessageEx(playerid, COLOR_ARWIN, "SUIT: "WHITE_E"%s memilih %s, %s memilih %s.", ReturnName2(challengerid), challengerChoiceName, ReturnName2(playerid), targetChoiceName);
+
+		if(!winner)
+		{
+			SendClientMessageEx(challengerid, COLOR_ARWIN, "SUIT: "WHITE_E"Hasil seri.");
+			SendClientMessageEx(playerid, COLOR_ARWIN, "SUIT: "WHITE_E"Hasil seri.");
+			SendNearbyMessage(challengerid, 15.0, COLOR_PURPLE, "** Hasil suit %s melawan %s seri. (%s vs %s)", ReturnName2(challengerid), ReturnName2(playerid), challengerChoiceName, targetChoiceName);
+		}
+		else if(winner == 1)
+		{
+			SendClientMessageEx(challengerid, COLOR_ARWIN, "SUIT: "WHITE_E"Kamu menang melawan %s.", ReturnName2(playerid));
+			SendClientMessageEx(playerid, COLOR_ARWIN, "SUIT: "WHITE_E"Kamu kalah melawan %s.", ReturnName2(challengerid));
+			SendNearbyMessage(challengerid, 15.0, COLOR_PURPLE, "** Hasil suit: %s menang melawan %s. (%s vs %s)", ReturnName2(challengerid), ReturnName2(playerid), challengerChoiceName, targetChoiceName);
+		}
+		else
+		{
+			SendClientMessageEx(challengerid, COLOR_ARWIN, "SUIT: "WHITE_E"Kamu kalah melawan %s.", ReturnName2(playerid));
+			SendClientMessageEx(playerid, COLOR_ARWIN, "SUIT: "WHITE_E"Kamu menang melawan %s.", ReturnName2(challengerid));
+			SendNearbyMessage(challengerid, 15.0, COLOR_PURPLE, "** Hasil suit: %s menang melawan %s. (%s vs %s)", ReturnName2(playerid), ReturnName2(challengerid), targetChoiceName, challengerChoiceName);
+		}
+
+		SuitClear(challengerid);
+		SuitClear(playerid);
+		return 1;
+	}
+	else if(!strcmp(arg, "deny", true))
+	{
+		new challengerid = GetPVarInt(playerid, "SuitFrom");
+
+		if(!GetPVarType(playerid, "SuitFrom")) return Error(playerid, "Tidak ada tantangan suit yang masuk.");
+		if(IsPlayerConnected(challengerid))
+		{
+			SendClientMessageEx(challengerid, COLOR_ARWIN, "SUIT: "WHITE_E"%s menolak tantangan suit kamu.", ReturnName2(playerid));
+			SuitClear(challengerid);
+		}
+		SendClientMessageEx(playerid, COLOR_ARWIN, "SUIT: "WHITE_E"Kamu menolak tantangan suit.");
+		SuitClear(playerid);
+		return 1;
+	}
+	else if(!strcmp(arg, "cancel", true))
+	{
+		new targetid = GetPVarInt(playerid, "SuitTo");
+
+		if(!GetPVarType(playerid, "SuitTo")) return Error(playerid, "Kamu tidak memiliki tantangan suit yang aktif.");
+		if(IsPlayerConnected(targetid))
+		{
+			SendClientMessageEx(targetid, COLOR_ARWIN, "SUIT: "WHITE_E"%s membatalkan tantangan suit.", ReturnName2(playerid));
+			SuitClear(targetid);
+		}
+		SendClientMessageEx(playerid, COLOR_ARWIN, "SUIT: "WHITE_E"Kamu membatalkan tantangan suit.");
+		SuitClear(playerid);
+		return 1;
+	}
+
+	new targetid, challengeChoiceText[16];
+	if(sscanf(params, "us[16]", targetid, challengeChoiceText)) return Usage(playerid, "/suit [playerid] [batu/gunting/kertas]");
+
+	new choice = SuitChoiceFromText(challengeChoiceText);
+	if(!choice)
+	{
+		Usage(playerid, "/suit [playerid] [batu/gunting/kertas]");
+		return 1;
+	}
+	if(targetid == INVALID_PLAYER_ID || !IsPlayerConnected(targetid)) return Error(playerid, "Player tidak ditemukan.");
+	if(targetid == playerid) return Error(playerid, "Kamu tidak bisa suit dengan diri sendiri.");
+	if(!NearPlayer(playerid, targetid, 5.0)) return Error(playerid, "Kamu harus dekat dengan player tersebut.");
+	if(pData[playerid][pInjured] || pData[targetid][pInjured]) return Error(playerid, "Player injured tidak bisa bermain suit.");
+
+	if(GetPVarType(playerid, "SuitTo"))
+	{
+		new oldTarget = GetPVarInt(playerid, "SuitTo");
+		if(IsPlayerConnected(oldTarget) && GetPVarInt(oldTarget, "SuitExpire") >= gettime()) return Error(playerid, "Kamu masih memiliki tantangan suit aktif. Gunakan /suit cancel.");
+		SuitClear(playerid);
+		if(IsPlayerConnected(oldTarget)) SuitClear(oldTarget);
+	}
+	if(GetPVarType(targetid, "SuitFrom"))
+	{
+		new oldChallenger = GetPVarInt(targetid, "SuitFrom");
+		if(GetPVarInt(targetid, "SuitExpire") >= gettime()) return Error(playerid, "Player tersebut masih memiliki tantangan suit aktif.");
+		SuitClear(targetid);
+		if(IsPlayerConnected(oldChallenger)) SuitClear(oldChallenger);
+	}
+
+	SetPVarInt(playerid, "SuitTo", targetid);
+	SetPVarInt(targetid, "SuitFrom", playerid);
+	SetPVarInt(targetid, "SuitChoice", choice);
+	SetPVarInt(targetid, "SuitExpire", gettime() + 60);
+
+	SendClientMessageEx(playerid, COLOR_ARWIN, "SUIT: "WHITE_E"Kamu menantang %s. Tunggu dia menggunakan /suit accept [batu/gunting/kertas].", ReturnName2(targetid));
+	SendClientMessageEx(targetid, COLOR_ARWIN, "SUIT: "WHITE_E"%s menantang kamu suit. Gunakan /suit accept [batu/gunting/kertas] atau /suit deny.", ReturnName2(playerid));
+	SendNearbyMessage(playerid, 15.0, COLOR_PURPLE, "** %s mengajak %s bermain suit.", ReturnName2(playerid), ReturnName2(targetid));
+	return 1;
+}
+
 /*CMD:changelog(playerid)
 {
     Dialog_Show(playerid, ShowOnly, DIALOG_STYLE_MSGBOX, "NEW UPDATES", ""WHITE"Available update on {9ACD32} v0.3.2d"WHITE"\n\n \

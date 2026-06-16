@@ -1816,6 +1816,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 			pData[playerid][pWorld] = GetPlayerVirtualWorld(playerid);
 			GetPlayerPos(playerid, pData[playerid][pPosX], pData[playerid][pPosY], pData[playerid][pPosZ]);
 			GetPlayerFacingAngle(playerid, pData[playerid][pPosA]);
+			AutoDropPlayerGuns(playerid);
 			// ApplyAnimation(playerid, "PED", "BIKE_fall_off", 4.0, 0, 0, 0, 1, 0, 1);
 			ApplyAnimation(playerid, "PED", "KO_skid_front", 4.0, 0, 0, 0, 1, 0, 1);
 			TextDrawShowForPlayer(playerid, injuredtextdraw);

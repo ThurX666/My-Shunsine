@@ -988,7 +988,7 @@ Dialog:VehDepoCompo(playerid, response, listitem, inputtext[])
 					Dialog_Show(playerid, VehDepoCompo, DIALOG_STYLE_INPUT, "Deposit into safe", str, "Deposit", "Back");
 					return 1;
 				}
-				if(pvData[ii][cComponent] > 1000) return Error(playerid, "Tidak bisa memasukan barang lagi");
+				if(pvData[ii][cComponent] + amount > 2000) return Error(playerid, "Tidak bisa memasukan component lagi. Maksimal 2000 component.");
 				pvData[ii][cComponent] += amount;
 				pData[playerid][pComponent] -= amount;
 

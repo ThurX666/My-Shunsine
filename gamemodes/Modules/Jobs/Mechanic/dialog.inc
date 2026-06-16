@@ -346,7 +346,9 @@ Dialog:DialogUpgrade(playerid, response, listitem, inputtext[])
         {
             case 0:
             {
-                if(pvData[pData[playerid][pMechVeh]][cMesinUpgrade] == 1) return Error(playerid, "Mobil ini sudah di upgrade!");
+                new vehid = Vehicle_GetID(pData[playerid][pMechVeh]);
+                if(vehid == -1 || pvData[vehid][cVeh] != pData[playerid][pMechVeh]) return Error(playerid, "Upgrade hanya bisa untuk kendaraan pribadi.");
+                if(pvData[vehid][cMesinUpgrade] == 1) return Error(playerid, "Mobil ini sudah di upgrade!");
                 if(Mechanic[playerid] != -1) return Error(playerid, "You already checking vehicle!");
                 if(GetNearestVehicleToPlayer(playerid, 3.8, false) == pData[playerid][pMechVeh])
                 {
@@ -363,7 +365,9 @@ Dialog:DialogUpgrade(playerid, response, listitem, inputtext[])
             }
             case 1:
             {
-                if(pvData[pData[playerid][pMechVeh]][pvBodyUpgrade] == 1) return Error(playerid, "Mobil ini sudah di upgrade!");
+                new vehid = Vehicle_GetID(pData[playerid][pMechVeh]);
+                if(vehid == -1 || pvData[vehid][cVeh] != pData[playerid][pMechVeh]) return Error(playerid, "Upgrade hanya bisa untuk kendaraan pribadi.");
+                if(pvData[vehid][pvBodyUpgrade] == 1) return Error(playerid, "Mobil ini sudah di upgrade!");
                 if(Mechanic[playerid] != -1) return Error(playerid, "You already checking vehicle!");
                 if(GetNearestVehicleToPlayer(playerid, 3.8, false) == pData[playerid][pMechVeh])
                 {

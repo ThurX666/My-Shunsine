@@ -147,10 +147,13 @@ CMD:payticket(playerid, params[])
 						format(msg2, sizeof(msg2), "%s{00FFFF}%s\t"GREEN_E"$%s\n", msg2, GetVehicleModelName(pvData[i][cModel]), FormatMoney(price));
 					}
 				}
-				if(found) Dialog_Show(playerid, VehiclePayTicket, DIALOG_STYLE_TABLIST_HEADERS, "Pay Ticket", msg2, "Pay", "Close");
 			}
+			if(found) Dialog_Show(playerid, VehiclePayTicket, DIALOG_STYLE_TABLIST_HEADERS, "Pay Ticket", msg2, "Pay", "Close");
+			else Error(playerid, "Tidak ada ticket kendaraan yang perlu dibayar.");
+			return 1;
 		}
 	}
+	Error(playerid, "You must be at the ticket payment point.");
 	return 1;
 }
 
@@ -171,10 +174,13 @@ CMD:unlocktire(playerid, params[])
 						format(msg2, sizeof(msg2), "%s{00FFFF}%s\t"GREEN_E"$%s\n", msg2, GetVehicleModelName(pvData[i][cModel]), FormatMoney(price));
 					}
 				}
-				if(found) Dialog_Show(playerid, VehiclePayTicket, DIALOG_STYLE_TABLIST_HEADERS, "Unlock Tire", msg2, "Pay", "Close");
 			}
+			if(found) Dialog_Show(playerid, VehiclePayTicket, DIALOG_STYLE_TABLIST_HEADERS, "Unlock Tire", msg2, "Pay", "Close");
+			else Error(playerid, "Tidak ada tirelock kendaraan yang perlu dibayar.");
+			return 1;
 		}
 	}
+	Error(playerid, "You must be at the ticket payment point.");
 	return 1;
 }
 

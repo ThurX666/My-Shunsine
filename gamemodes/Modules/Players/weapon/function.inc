@@ -55,10 +55,7 @@ GivePlayerWeaponEx(playerid, weaponid, ammo = DEFAULT_AMMO, typeammo = 0)
 	if(slot == 1 || slot == 10)
 		ammo = 1;
 	switch(typeammo) {
-		case 0: {
-			PlayerGuns[playerid][slot][weapon_typesurplus] = typeammo;
-		}
-		case 1: {
+		case 0..2: {
 			PlayerGuns[playerid][slot][weapon_typesurplus] = typeammo;
 		}
 	}
@@ -68,6 +65,35 @@ GivePlayerWeaponEx(playerid, weaponid, ammo = DEFAULT_AMMO, typeammo = 0)
 
 	GivePlayerWeapon(playerid, weaponid, 999999);
 	return 1;
+}
+
+AutoDropPlayerGuns(playerid)
+{
+	if(!IsPlayerConnected(playerid) || IsPlayerInEvent(playerid))
+		return 0;
+
+	new dropped, weaponid, ammo, typeammo;
+
+	for(new slot = 0; slot < MAX_WEAPON_SLOT; slot++)
+	{
+		weaponid = PlayerGuns[playerid][slot][weapon_id];
+		ammo = PlayerGuns[playerid][slot][weapon_ammo];
+		typeammo = PlayerGuns[playerid][slot][weapon_typesurplus];
+
+		if(!(22 <= weaponid <= 38) || ammo <= 0)
+			continue;
+
+		if(!CreateDropWeapon(playerid, weaponid, ammo, typeammo, dropped))
+			continue;
+
+		ResetWeaponID(playerid, weaponid);
+		dropped++;
+	}
+
+	if(dropped)
+		SendCustomMessage(playerid, "WEAPON", "Senjata kamu terjatuh karena kamu down/injured.");
+
+	return dropped;
 }
 
 GetAmmoStatus(playerid, weaponid) {

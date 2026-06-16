@@ -268,7 +268,7 @@ CMD:loadcomponent(playerid, params[])
 
 CMD:buytowtruck(playerid, params[])
 {
-	if(!IsPlayerInRangeOfPoint(playerid, 5.0, 2330.1626,-2315.2642,13.5469)) return Error(playerid, "You have to be at the mechanic point");
+	if(!IsPlayerAtMechanicPoint(playerid) && !IsPlayerInRangeOfPoint(playerid, 5.0, 1809.17, -2064.89, 13.55)) return Error(playerid, "You have to be at the mechanic point");
 	if(pData[playerid][pJob] == 2 || pData[playerid][pJob2] == 2)
 	{
 		new cost = GetVehicleCost(525);
@@ -299,5 +299,6 @@ CMD:buytowtruck(playerid, params[])
 		mysql_format(g_SQL, cQuery, sizeof(cQuery), "INSERT INTO `vehicle` (`owner`, `model`, `color1`, `color2`, `price`, `x`, `y`, `z`, `a`) VALUES (%d, %d, %d, %d, %d, '%f', '%f', '%f', '%f')", pData[playerid][pID], model, color1, color2, cost, x, y, z, a);
 		mysql_tquery(g_SQL, cQuery, "OnVehBuyPV", "ddddddffff", playerid, pData[playerid][pID], model, color1, color2, cost, x, y, z, a);
 	}
+	else return Error(playerid, "You must be a mechanic to buy a tow truck.");
 	return 1;
 }

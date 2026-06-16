@@ -1,5 +1,5 @@
 // Server Define
-#define TEXT_GAMEMODE	"Version 1.0.11 Dupe"
+#define TEXT_GAMEMODE	"Version 1.0.12 Dupe"
 #define TEXT_WEBURL		"discord.gg/mysunshine"
 #define TEXT_LANGUAGE	"Bahasa Indonesia / English"
 

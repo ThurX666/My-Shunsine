@@ -33,9 +33,9 @@ hook OnGameModeInit()
 	format(strings, sizeof(strings), "{00FFFF}[Hospital]\n"YELLOW_E"/dropinjured");
 	CreateDynamic3DTextLabel(strings, COLOR_ARWIN, 1142.38, -1330.74, 13.62, 3.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 1); // hospital
 
-	CreateDynamicPickup(1240, 23, 1355.18, 1543.21, 2223.087, -1);
+	CreateDynamicPickup(1240, 23, 1187.6946, -1333.6653, 3013.4844, -1);
 	format(strings, sizeof(strings), "{00FFFF}[Pharmacy]\n"YELLOW_E"/takepills");
-	CreateDynamic3DTextLabel(strings, COLOR_ARWIN, 1355.18, 1543.21, 2223.08, 3.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 1); // hospital
+	CreateDynamic3DTextLabel(strings, COLOR_ARWIN, 1187.6946, -1333.6653, 3013.4844, 5.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 1); // hospital
 
 	// CreateDynamicPickup(1274, 23, 1429.3341,-985.9102,996.1050, -1);
 	// format(strings, sizeof(strings), "{00FFFF}[Bank Center]\n"YELLOW_E"/bank\n"YELLOW_E"/deposit\n"YELLOW_E"/withdraw\n/newrek\n "WHITE_E"- access rekening");

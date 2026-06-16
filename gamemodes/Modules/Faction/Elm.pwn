@@ -61,6 +61,7 @@ CMD:elm(playerid)
 	if(pData[playerid][pFaction] == 1)
 	{
 		new vehicleid = GetPlayerVehicleID(playerid);
+		if(!IsPlayerInAnyVehicle(playerid)) return Error(playerid, "You must be inside a vehicle.");
 
 		if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER && (GetPlayerVehicleSeat(playerid) != 1 && GetPlayerState(playerid) == PLAYER_STATE_PASSENGER))
 		{
@@ -91,6 +92,7 @@ CMD:elm(playerid)
 	else if(pData[playerid][pFaction] == 3)
 	{
 		new vehicleid = GetPlayerVehicleID(playerid);
+		if(!IsPlayerInAnyVehicle(playerid)) return Error(playerid, "You must be inside a vehicle.");
 
 		if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER && (GetPlayerVehicleSeat(playerid) != 1 && GetPlayerState(playerid) == PLAYER_STATE_PASSENGER))
 		{
@@ -119,6 +121,12 @@ CMD:elm(playerid)
 		}
 	}
 	return true;
+}
+
+CMD:togsiren(playerid, params[])
+{
+	if(pData[playerid][pFaction] != 1) return Error(playerid, "You not SAPD");
+	return callcmd::elm(playerid);
 }
 
 stock encode_lights(light1, light2, light3, light4)

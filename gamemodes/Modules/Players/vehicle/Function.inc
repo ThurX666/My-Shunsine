@@ -430,6 +430,7 @@ OnPlayerVehicleRespawn(i)
 	if(pvData[i][cImpound] > 0) return 0;
 	if(pvData[i][cVehicleGarage] > -1) return 0;
 	if(pvData[i][cClaim] == 1) return 0;
+	pvData[i][cDespawn] = 0;
 	pvData[i][cVeh] = CreateVehicle(pvData[i][cModel], pvData[i][cPosX], pvData[i][cPosY], pvData[i][cPosZ], pvData[i][cPosA], pvData[i][cColor1], pvData[i][cColor2], -1);
 	if(IsValidVehicle(pvData[i][cVeh]))
 	{

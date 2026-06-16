@@ -110,8 +110,8 @@ VehicleRespawn(vehicleid) {
 		new plate[62];
 		format(plate, sizeof(plate), "%s", VehicleData[vehicleid][Plate]);
 		SetVehicleNumberPlate(VehicleData[vehicleid][Vehicle], plate);
-		SetVehicleVirtualWorld(VehicleData[vehicleid][Vehicle], VehicleData[vehicleid][Interior]);
-		LinkVehicleToInterior(VehicleData[vehicleid][Vehicle], VehicleData[vehicleid][Virtual]);
+		SetVehicleVirtualWorld(VehicleData[vehicleid][Vehicle], VehicleData[vehicleid][Virtual]);
+		LinkVehicleToInterior(VehicleData[vehicleid][Vehicle], VehicleData[vehicleid][Interior]);
 		
 		if(VehicleData[vehicleid][Health] < 350.0) SetValidVehicleHealth(VehicleData[vehicleid][Vehicle], 350.0);
 		else SetValidVehicleHealth(VehicleData[vehicleid][Vehicle], VehicleData[vehicleid][Health]);
@@ -258,6 +258,45 @@ IsFactionVeh(carid)
 	    if(VehicleData[vehicleid][Vehicle] == carid && VehicleData[vehicleid][Faction] != -1) return 1;
 	}
 	return 0;
+}
+
+VehData_GoodFactionVeh(vehicleid, factionid)
+{
+    if(factionid < 1 || factionid > 4) return -1;
+    foreach(new id : VehicleData) {
+        if(VehicleData[id][Vehicle] == vehicleid && VehicleData[id][Faction] == factionid) return id;
+    }
+    return -1;
+}
+
+VehicleData_WeaponStorage(playerid, vehicleid)
+{
+    new id = VehicleData_GetID(vehicleid);
+    if(id == -1) return 0;
+
+    static string[320];
+    string[0] = 0;
+
+    for(new i = 0; i < 4; i++) {
+        if(!VehicleData[id][Weapon][i]) format(string, sizeof(string), "%sEmpty Slot\n", string);
+        else format(string, sizeof(string), "%s%s (Ammo: %d)\n", string, ReturnWeaponName(VehicleData[id][Weapon][i]), VehicleData[id][Ammo][i]);
+    }
+    pData[playerid][pUseVehicleid] = vehicleid;
+    Dialog_Show(playerid, VehicleDataWeapon, DIALOG_STYLE_LIST, "Faction Weapon Storage", string, "Select", "Cancel");
+    return 1;
+}
+
+VehicleData_OpenStorage(playerid, vehicleid)
+{
+    new id = VehData_GoodFactionVeh(vehicleid, pData[playerid][pFaction]);
+    if(id == -1) return 0;
+
+    new items;
+    for(new i = 0; i < 4; i++) if(VehicleData[id][Weapon][i]) items++;
+
+    pData[playerid][pUseVehicleid] = vehicleid;
+    Dialog_Show(playerid, VehicleDataStorage, DIALOG_STYLE_LIST, "Faction Trunk Storage", sprintf("Weapon Storage (%d/4)", items), "Select", "Cancel");
+    return 1;
 }
 
 IsBisnisVeh(carid)
