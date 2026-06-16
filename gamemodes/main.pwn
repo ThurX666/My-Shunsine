@@ -1111,6 +1111,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 			foreach(new did : Doors) {
 				if(IsPlayerInDynamicCP(playerid, dData[did][dCP][0]))
 				{
+					if(!Door_HasInterior(did)) return Error(playerid, "Interior entrance masih kosong, atau tidak memiliki interior.");
 					if(dData[did][dLocked]) return Error(playerid, "This entrance is locked at the moment.");
 					if(pData[playerid][pArrest] == 1) return Error(playerid, "You are under arrest!");
 					if(dData[did][dFaction] > 0) if(dData[did][dFaction] != pData[playerid][pFaction]) return Error(playerid, "This door only for faction.");
@@ -1713,7 +1714,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 				{
 					if(dData[did][dGarage] == 1)
 					{
-						if(dData[did][dIntposX] == 0.0 && dData[did][dIntposY] == 0.0 && dData[did][dIntposZ] == 0.0)
+						if(!Door_HasInterior(did))
 							return Error(playerid, "Interior entrance masih kosong, atau tidak memiliki interior.");
 
 						if(dData[did][dLocked])
@@ -2470,6 +2471,13 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 	    printf("[debug] OnPlayerTakeDamage(PID %d : TID : %d Amount : %.2f WID : %d BodyPart : %d)", playerid, issuerid, amount, weaponid, bodypart);
 	#endif
 
+	if(weaponid == WEAPON_CHAINSAW)
+	{
+		SetPlayerHealth(playerid, GetHealth(playerid));
+		SetPlayerArmour(playerid, GetArmour(playerid));
+		return 0;
+	}
+
     if(pData[playerid][pAdminDuty])
         return 0;
 
@@ -2522,7 +2530,6 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 	}
 	// if(pData[playerid][pAdminDuty] > 0) return SetHealth(playerid, health);
 	if(pData[playerid][pInjured] > 0) return SetHealth(playerid, health);
-	if(weaponid == 9) return SetHealth(playerid, health);
 	if (!IsPlayerInEvent(playerid)) 
     {
 		if (IsNotFirearmsWeapon(weaponid)) 
@@ -2714,7 +2721,12 @@ public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 	    printf("[debug] OnPlayerGiveDamage(PID : %d TID : %d Amount : %.2f WID : %d Body-Part : %d)", playerid, damagedid, amount, weaponid, bodypart);
 	#endif
 
-    if(weaponid == WEAPON_CHAINSAW) return 0;
+    if(weaponid == WEAPON_CHAINSAW)
+    {
+        SetPlayerHealth(damagedid, GetHealth(damagedid));
+        SetPlayerArmour(damagedid, GetArmour(damagedid));
+        return 0;
+    }
     return 1;
 }
 

@@ -955,7 +955,7 @@ stock SendQuizVoteMessage(color, const str[], {Float,_}:...)
 
         foreach (new i : Player)
         {
-            if(pData[i][pTogQuizVote]) {
+            if(pData[i][pTogQuizVote] == 0) {
                 SendClientMessage(i, color, string);
             }
         }
@@ -963,7 +963,7 @@ stock SendQuizVoteMessage(color, const str[], {Float,_}:...)
     }
     foreach (new i : Player)
     {
-        if(pData[i][pTogQuizVote]) {
+        if(pData[i][pTogQuizVote] == 0) {
             SendClientMessage(i, color, str);
         }
     }

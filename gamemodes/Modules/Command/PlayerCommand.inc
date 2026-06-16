@@ -894,7 +894,7 @@ CMD:toggle(playerid)
 	else toguang = ""GREEN_E"Enabled";
 	if(pData[playerid][pTogRadio] == 0) togradio = ""RED_E"Disabled";
 	else togradio = ""GREEN_E"Enabled";
-	if(pData[playerid][pTogQuizVote] == 0) togquizvote = ""RED_E"Disabled";
+	if(pData[playerid][pTogQuizVote] == 1) togquizvote = ""RED_E"Disabled";
 	else togquizvote = ""GREEN_E"Enabled";
 	if(pData[playerid][pTogStaffQuestion] == 0) togstaffquestion = ""RED_E"Disabled";
 	else togstaffquestion = ""GREEN_E"Enabled";
@@ -1871,7 +1871,7 @@ CMD:enter(playerid, params[])
 		{
 			if(IsPlayerInDynamicCP(playerid, dData[did][dCP][0]))
 			{
-				if(dData[did][dIntposX] == 0.0 && dData[did][dIntposY] == 0.0 && dData[did][dIntposZ] == 0.0) return Error(playerid, "Interior entrance masih kosong, atau tidak memiliki interior.");
+				if(!Door_HasInterior(did)) return Error(playerid, "Interior entrance masih kosong, atau tidak memiliki interior.");
 				if(dData[did][dLocked]) return Error(playerid, "This entrance is locked at the moment.");
 				if(pData[playerid][pArrest] == 1) return Error(playerid, "You are under arrest!");
 				if(dData[did][dFaction] > 0) if(dData[did][dFaction] != pData[playerid][pFaction]) return Error(playerid, "This door only for faction.");

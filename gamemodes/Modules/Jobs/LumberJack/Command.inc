@@ -86,7 +86,7 @@ CMD:gototree(playerid, params[])
 
 CMD:buychainsaw(playerid, params[])
 {
-	if(!IsPlayerInRangeOfPoint(playerid, 5.0, -1438.4968,-1544.1377,101.7578)) return Error(playerid, "You have to be at the lumber jack point");
+	if(!IsPlayerInRangeOfPoint(playerid, 5.0, -1432.7500,-1538.4900,102.2578)) return Error(playerid, "You have to be at the lumber jack point");
 	if(pData[playerid][pJob] == 3 || pData[playerid][pJob2] == 3)
 	{
 		GivePlayerWeaponEx(playerid, 9, 1);

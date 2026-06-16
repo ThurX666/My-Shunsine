@@ -9,6 +9,11 @@ Doors_Save(id)
 	return 1;
 }
 
+Door_HasInterior(id)
+{
+	return (dData[id][dIntposX] != 0.0 && dData[id][dIntposY] != 0.0 && dData[id][dIntposZ] != 0.0);
+}
+
 Doors_Updatelabel(id)
 {
 	new mstr[512];
@@ -20,6 +25,10 @@ Doors_Updatelabel(id)
         if(IsValidDynamicPickup(dData[id][dPickupint])) DestroyDynamicPickup(dData[id][dPickupint]);
 		if(IsValidDynamicCP(dData[id][dCP][0])) DestroyDynamicCP(dData[id][dCP][0]);
 		if(IsValidDynamicCP(dData[id][dCP][1])) DestroyDynamicCP(dData[id][dCP][1]);
+
+		dData[id][dLabelint] = Text3D: INVALID_3DTEXT_ID;
+		dData[id][dPickupint] = -1;
+		dData[id][dCP][1] = -1;
 		
 		if(dData[id][dGarage] == 1) format(mstr,sizeof(mstr),"{00FFFF}[ID: %d]\n{FFFF00}%s\n{FFFFFF}Press '{FF0000}ALT{FFFFFF}' to enter/exit the door", id, dData[id][dName]);
 		else format(mstr,sizeof(mstr),""AQUA_E"[EE:%d]\n"YELLOW_E"%s\n{FFFFFF}Press '{FF0000}ENTER{FFFFFF}' to enter/exit", id, dData[id][dName]);
@@ -28,7 +37,7 @@ Doors_Updatelabel(id)
 		dData[id][dCP][0] = CreateDynamicCP(dData[id][dExtposX], dData[id][dExtposY], dData[id][dExtposZ], 1, dData[id][dExtvw], dData[id][dExtint], -1, 5.0);
 		dData[id][dLabelext] = CreateDynamic3DTextLabel(mstr, COLOR_YELLOW, dData[id][dExtposX], dData[id][dExtposY], dData[id][dExtposZ]+0.35, 15.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 1, dData[id][dExtvw], dData[id][dExtint]);
         
-		if(dData[id][dIntposX] != 0.0 && dData[id][dIntposY] != 0.0 && dData[id][dIntposZ] != 0.0)
+		if(Door_HasInterior(id))
         {
 			if(dData[id][dGarage] == 1) format(mstr,sizeof(mstr),"{00FFFF}[id: %d]\n{FFFF00}%s\n{FFFFFF}Press '{FF0000}ALT{FFFFFF}' to enter/exit the door", id, dData[id][dName]);
 			else format(mstr,sizeof(mstr),""AQUA_E"[EE:%d]\n"YELLOW_E"%s\n{FFFFFF}Press '{FF0000}ENTER{FFFFFF}' to enter/exit", id, dData[id][dName]);

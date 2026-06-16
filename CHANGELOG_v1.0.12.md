@@ -65,11 +65,11 @@
 * **Vehicle Spawn Kadang Tidak Muncul** - Status despawn kendaraan sekarang di-reset saat vehicle respawn, sehingga kendaraan yang sebelumnya dipindah ke virtual world tersembunyi tidak nyangkut.
 
 **Catatan:**
-```- Kendaraan yang ingin kembali ke 2000 HP setelah repair harus memiliki upgrade engine.
+- Kendaraan yang ingin kembali ke 2000 HP setelah repair harus memiliki upgrade engine.
 - Saat mining berhenti karena energi habis, player tetap harus menggunakan `/stopmine` untuk mengambil bayaran.
 - Dropped weapon dari injured diambil lewat sistem pickup inventory yang sudah ada.
 - Command suit tidak memakai uang/reward otomatis, hanya menentukan pemenang secara fair setelah dua player memilih.
 - Trunk component maksimal 2000 tidak membutuhkan towtruck; towtruck tetap kendaraan kerja mechanic untuk towing/load component.
-- Gamemode sudah berhasil dicompile dengan `pawncc` tanpa error/warning setelah perubahan kode.```
+- Gamemode sudah berhasil dicompile dengan `pawncc` tanpa error/warning setelah perubahan kode.
 
 @everyone
