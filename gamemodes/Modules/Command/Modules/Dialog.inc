@@ -1060,10 +1060,10 @@ Dialog:DialogJobHelp(playerid, response, listitem, inputtext[]) {
 	{
 		switch(listitem)
 		{
-			case 0:
+		case 0:
 			{
 				new string[256];
-				format(string, sizeof(string), "\n/jobduty [taxi]\tUntuk memulai bekerja sebagi Taxi Driver\n/accept taxi [playerid]\tUntuk menerima orderan taxi dari pemain lain");
+				format(string, sizeof(string), "\n/jobduty [taxi]\tUntuk memulai bekerja sebagi Taxi Driver\n/accept taxi [playerid]\tUntuk menerima orderan taxi dari pemain lain\n/buytaxi\t\tUntuk membeli kendaraan taxi");
 				Dialog_Show(playerid, ShowOnly, DIALOG_STYLE_MSGBOX, "Jobs Taxi Help", string, "Close", "", "");
 			}
 			case 1:

@@ -254,6 +254,7 @@ enum E_PLAYERS
 	pFare,
 	pFareTimer,
 	pTotalFare,
+	pFarePassenger,
 	Float:pFareOldX,
 	Float:pFareOldY,
 	Float:pFareOldZ,

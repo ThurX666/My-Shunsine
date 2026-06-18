@@ -1106,7 +1106,7 @@ CMD:joinjob(playerid, params[])
 			}
 			else if(pData[playerid][pJob2] == 0)
 			{
-				if(pData[playerid][pCS] < 1) return Error(playerid, "Anda tidak bisa memiliki 2 job");
+				if(pData[playerid][pCS] < 1) return Error(playerid, "Kamu butuh CS untuk membuka slot job kedua!");
 				if(pData[playerid][pJob2] == 0 && GetPlayerState(playerid) == 1 && IsPlayerInRangeOfPoint(playerid, 3.0, 321.5652,1121.2504,1083.8828))
 				{
 					pData[playerid][pGetJob2] = 6;
@@ -1122,6 +1122,7 @@ CMD:joinjob(playerid, params[])
 					pData[playerid][pGetJob2] = 8;
 					SendClientMessageEx(playerid, COLOR_YELLOW, "JOINJOB: {FFFFFF}Jika anda yakin bekerja menjadi Smuggle, {00CCFF}'/accept job'{FFFFFF}.");
 				}
+				else return Error(playerid, "Anda hanya bisa join illegal jobs sebagai pekerjaan kedua!");
 			}
 		}
 		else return Error(playerid, "Anda sudah memiliki 2 pekerjaan!");

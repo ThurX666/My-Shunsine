@@ -741,36 +741,36 @@ public OnPlayerText(playerid, text[])
 		{
 			foreach(new tx : Player)
 			{
-				if(pData[tx][pJob] == 1 || pData[tx][pJob2] == 1 && pData[tx][pTaxiDuty] == 1)
+				if((pData[tx][pJob] == 1 || pData[tx][pJob2] == 1) && pData[tx][pTaxiDuty] == 1)
 				{
 					SendClientMessageEx(tx, COLOR_BLUE, "DISPATCH: "WHITE_E"Client ["YELLOW_E"(%d) {00FFFF}%s "WHITE_E"] Last Know position: ["YELLOW_E"%s"WHITE_E"]", playerid, ReturnName2(playerid), GetPlayerLocation(playerid));
 					SendClientMessageEx(tx, COLOR_ARWIN, "NOTE:  Use '/accepttaxi [playerid]' to respond to the call");
 				}
-				format(pData[playerid][pServiceText], 128, "%s", text);
-				SendClientMessageEx(playerid, COLOR_YELLOW, "Thank you. We will alert all taxi driver on duty.");
-				SetPlayerSpecialAction(playerid, SPECIAL_ACTION_STOPUSECELLPHONE);
-				pData[playerid][pCall] = INVALID_PLAYER_ID;
-				Mobile[playerid] = INVALID_PLAYER_ID;
-				pData[playerid][pTaxiCall] = 60;
 			}
+			format(pData[playerid][pServiceText], 128, "%s", text);
+			SendClientMessageEx(playerid, COLOR_YELLOW, "Thank you. We will alert all taxi driver on duty.");
+			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_STOPUSECELLPHONE);
+			pData[playerid][pCall] = INVALID_PLAYER_ID;
+			Mobile[playerid] = INVALID_PLAYER_ID;
+			pData[playerid][pTaxiCall] = 60;
 			return 0;
 		}
 		if(Mobile[playerid] == 12333)
 		{
 			foreach(new tx : Player)
 			{
-				if(pData[tx][pJob] == 2 || pData[tx][pJob2] == 2 && pData[tx][pMechDuty] == 1)
+				if((pData[tx][pJob] == 2 || pData[tx][pJob2] == 2) && pData[tx][pMechDuty] == 1)
 				{
 					SendClientMessageEx(tx, COLOR_BLUE, "DISPATCH: "WHITE_E"Client ["YELLOW_E"(%d) {00FFFF}%s "WHITE_E"] Last Know position: ["YELLOW_E"%s"WHITE_E"]", playerid, ReturnName2(playerid), GetPlayerLocation(playerid));
 					SendClientMessageEx(tx, COLOR_ARWIN, "NOTE:  Use '/acceptmecha [playerid]' to respond to the call");
 				}
-				format(pData[playerid][pServiceText], 128, "%s", text);
-				SendClientMessageEx(playerid, COLOR_YELLOW, "Thank you. We will alert all mechanic on duty.");	
-				pData[playerid][pMechaCall] = 60;
-				SetPlayerSpecialAction(playerid, SPECIAL_ACTION_STOPUSECELLPHONE);
-				pData[playerid][pCall] = INVALID_PLAYER_ID;
-				Mobile[playerid] = INVALID_PLAYER_ID;
-			}	
+			}
+			format(pData[playerid][pServiceText], 128, "%s", text);
+			SendClientMessageEx(playerid, COLOR_YELLOW, "Thank you. We will alert all mechanic on duty.");	
+			pData[playerid][pMechaCall] = 60;
+			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_STOPUSECELLPHONE);
+			pData[playerid][pCall] = INVALID_PLAYER_ID;
+			Mobile[playerid] = INVALID_PLAYER_ID;
 			return 0;
 		}
 		if(Mobile[playerid] == 911)

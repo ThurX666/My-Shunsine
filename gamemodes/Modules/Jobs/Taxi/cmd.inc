@@ -20,6 +20,9 @@ CMD:accepttaxi(playerid, params[])
 	static otherid, Float:x, Float:y, Float:z;
     if(sscanf(params, "u", otherid))
         return Usage(playerid, "/accepttaxi [playerid/PartOfName]");
+	if(!pData[playerid][pTaxiDuty])
+		return Error(playerid, "Anda harus On duty taxi terlebih dahulu.");
+	
 	if(pData[playerid][pJob] == 1 || pData[playerid][pJob2] == 1)
 	{
 		if(pData[otherid][pTaxiCall] > 0)
@@ -56,13 +59,15 @@ CMD:fare(playerid, params[])
 		return Error(playerid, "Anda bukan driver.");
 	
 	
-	if(pData[playerid][pFare] == 0)
+		if(pData[playerid][pFare] == 0)
 	{
 		if(CheckPassengers(vehicleid) != 1) return Error(playerid,"Tidak ada penumpang!");
 		GetPlayerPos(playerid, Float:pData[playerid][pFareOldX], Float:pData[playerid][pFareOldY], Float:pData[playerid][pFareOldZ]);
-		pData[playerid][pFareTimer] = SetTimerEx("FareUpdate", 1100, true, "ii", playerid, GetVehiclePassenger(vehicleid));
+		new passanger = GetVehiclePassenger(vehicleid);
+		pData[playerid][pFareTimer] = SetTimerEx("FareUpdate", 1100, true, "ii", playerid, passanger);
 		pData[playerid][pFare] = 1;
 		pData[playerid][pTotalFare] = 5;
+		pData[playerid][pFarePassenger] = passanger;
 		new formatted[128];
 		format(formatted,128,"%s", FormatMoney(pData[playerid][pTotalFare]));
 		TextDrawShowForPlayer(playerid, TDEditor_TD[0]);
@@ -70,10 +75,13 @@ CMD:fare(playerid, params[])
 		TextDrawSetString(DPvehfare[playerid], formatted);
 		Info(playerid, "Anda telah mengaktifkan taxi fare, silahkan menuju ke tempat tujuan!");
 		//passanger
-		TextDrawShowForPlayer(GetVehiclePassenger(vehicleid), TDEditor_TD[0]);
-		TextDrawShowForPlayer(GetVehiclePassenger(vehicleid), DPvehfare[GetVehiclePassenger(vehicleid)]);
-		TextDrawSetString(DPvehfare[GetVehiclePassenger(vehicleid)], formatted);
-		Info(GetVehiclePassenger(vehicleid), "Taxi fare telah aktif!");
+		if(passanger != INVALID_PLAYER_ID)
+		{
+			TextDrawShowForPlayer(passanger, TDEditor_TD[0]);
+			TextDrawShowForPlayer(passanger, DPvehfare[passanger]);
+			TextDrawSetString(DPvehfare[passanger], formatted);
+			Info(passanger, "Taxi fare telah aktif!");
+		}
 	}
 	else
 	{
@@ -82,11 +90,16 @@ CMD:fare(playerid, params[])
 		KillTimer(pData[playerid][pFareTimer]);
 		Info(playerid, "Anda telah menonaktifkan taxi fare pada total: {00FF00}%s", FormatMoney(pData[playerid][pTotalFare]));
 		//passanger
-		Info(GetVehiclePassenger(vehicleid), "Taxi fare telah di non aktifkan pada total: {00FF00}%s", FormatMoney(pData[playerid][pTotalFare]));
-		TextDrawHideForPlayer(GetVehiclePassenger(vehicleid), TDEditor_TD[0]);
-		TextDrawHideForPlayer(GetVehiclePassenger(vehicleid), DPvehfare[GetVehiclePassenger(vehicleid)]);
+		new passanger = pData[playerid][pFarePassenger];
+		if(IsPlayerConnected(passanger))
+		{
+			Info(passanger, "Taxi fare telah di non aktifkan pada total: {00FF00}%s", FormatMoney(pData[playerid][pTotalFare]));
+			TextDrawHideForPlayer(passanger, TDEditor_TD[0]);
+			TextDrawHideForPlayer(passanger, DPvehfare[passanger]);
+		}
 		pData[playerid][pFare] = 0;
 		pData[playerid][pTotalFare] = 0;
+		pData[playerid][pFarePassenger] = INVALID_PLAYER_ID;
 	}
 	return 1;
 }
