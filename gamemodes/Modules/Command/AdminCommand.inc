@@ -2508,6 +2508,9 @@ CMD:takemoney(playerid, params[])
 	if(!IsPlayerConnected(otherid))
         return Error(playerid, "Player tidak on!");
 
+	if(!IsValidTarget(playerid, otherid))
+	    return Error(playerid, "Kamu tidak bisa menggunakan command ini pada diri sendiri.");
+
  	if(money > pData[otherid][pMoney])
 		return Error(playerid, "Player doesn't have enough money to deduct from!");
 
@@ -2530,6 +2533,9 @@ CMD:takegold(playerid, params[])
 
 	if(!IsPlayerConnected(otherid))
         return Error(playerid, "Player tidak on!");
+
+	if(!IsValidTarget(playerid, otherid))
+	    return Error(playerid, "Kamu tidak bisa menggunakan command ini pada diri sendiri.");
 
  	if(gold > pData[otherid][pGold])
 		return Error(playerid, "Player doesn't have enough gold to deduct from!");
@@ -2682,6 +2688,9 @@ CMD:setmoney(playerid, params[])
     if(!IsPlayerConnected(otherid))
         return Error(playerid, "Player tidak on!");
 
+	if(!IsValidTarget(playerid, otherid))
+	    return Error(playerid, "Kamu tidak bisa menggunakan command ini pada diri sendiri.");
+
 	ResetPlayerMoneyEx(otherid);
 	GivePlayerMoneyEx(otherid, strval(totalcash));
 
@@ -2707,6 +2716,9 @@ CMD:setbankmoney(playerid, params[])
 	format(totalcash, sizeof(totalcash), "%d00", strval(cash));
     if(!IsPlayerConnected(otherid))
         return Error(playerid, "Player tidak on!");
+
+	if(!IsValidTarget(playerid, otherid))
+	    return Error(playerid, "Kamu tidak bisa menggunakan command ini pada diri sendiri.");
 
 	pData[otherid][pBankMoney] = strval(totalcash);
 
@@ -2896,6 +2908,9 @@ CMD:setgold(playerid, params[])
     if(!IsPlayerConnected(otherid))
         return Error(playerid, "Player tidak on!");
 
+    if(!IsValidTarget(playerid, otherid))
+        return Error(playerid, "Kamu tidak bisa menggunakan command ini pada diri sendiri.");
+
     pData[otherid][pGold] = gold;
 
     Servers(playerid, "Kamu telah menset coin %s(%d) dengan jumlah %d!", pData[otherid][pName], otherid, gold);
@@ -2920,6 +2935,9 @@ CMD:givegold(playerid, params[])
 
     if(!IsPlayerConnected(otherid))
         return Error(playerid, "Player tidak on!");
+
+    if(!IsValidTarget(playerid, otherid))
+        return Error(playerid, "Kamu tidak bisa menggunakan command ini pada diri sendiri.");
 
     pData[otherid][pGold] += gold;
 

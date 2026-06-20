@@ -129,6 +129,9 @@ main(){}
 #include "./Modules/Jobs/Miner.pwn"
 //-----[ Modular Command]-----
 #include "./Modules/Command/Command.pwn"
+
+//-----[ Modular Validation]-----
+#include "./Modules/Validation/IsValidTarget.inc"
 //-----[ Modular Faction]-----
 #include "./Modules/Faction//Taser.pwn"
 #include "./Modules/Faction/Spike.pwn"

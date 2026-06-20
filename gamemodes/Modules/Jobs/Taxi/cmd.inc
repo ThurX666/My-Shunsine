@@ -59,7 +59,7 @@ CMD:fare(playerid, params[])
 		return Error(playerid, "Anda bukan driver.");
 	
 	
-		if(pData[playerid][pFare] == 0)
+	if(pData[playerid][pFare] == 0)
 	{
 		if(CheckPassengers(vehicleid) != 1) return Error(playerid,"Tidak ada penumpang!");
 		GetPlayerPos(playerid, Float:pData[playerid][pFareOldX], Float:pData[playerid][pFareOldY], Float:pData[playerid][pFareOldZ]);

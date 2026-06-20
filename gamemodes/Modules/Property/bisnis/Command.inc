@@ -399,6 +399,9 @@ CMD:givebisnis(playerid, params[])
 	if(!IsPlayerConnected(otherid) || !NearPlayer(playerid, otherid, 4.0))
         return Error(playerid, "The specified player is disconnected or not near you.");
 	
+	if(!IsValidTarget(playerid, otherid))
+	    return Error(playerid, "Kamu tidak bisa memberikan bisnis kepada diri sendiri.");
+
 	if(!Player_OwnsBisnis(playerid, bid)) return Error(playerid, "You don't own this bisnis.");
 	if(bData[bid][bSegel] == 1) return Error(playerid, "Biz anda masih tersegel.");
 	if(PropertiCommercial_CountMax(otherid) >= PropertiesCommercial_Max(otherid)) return Error(playerid, "property slots are full");
