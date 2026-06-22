@@ -2861,6 +2861,52 @@ CMD:setadminlevel(playerid, params[])
 	return 1;
 }
 
+CMD:osetadmin(playerid, params[])
+{
+	if(pData[playerid][pAdmin] < 6)
+		return PermissionError(playerid);
+
+	new target[24], alevel, tmp[64], query[192];
+	if(sscanf(params, "s[24]d", target, alevel))
+	{
+	    Usage(playerid, "/osetadmin <ID/Name> <level 0 - 8>");
+	    return true;
+	}
+	if(alevel > 8)
+		return Error(playerid, "Level can't be higher than 8!");
+	if(alevel < 0)
+		return Error(playerid, "Level can't be lower than 0!");
+
+	if(IsNumeric(target))
+	{
+		new regid = strval(target);
+		foreach(new i : Player)
+		{
+			if(pData[i][pID] == regid)
+			{
+				return Error(playerid, "%s(ID:%d) sedang online!", ReturnName(i), i);
+			}
+		}
+		mysql_format(g_SQL, query, sizeof(query), "SELECT reg_id, username FROM players WHERE reg_id='%d' LIMIT 1", regid);
+	}
+	else
+	{
+		foreach(new i : Player)
+		{
+			if(!strcmp(ReturnName(i), target, true))
+			{
+				return Error(playerid, "%s(ID:%d) sedang online!", ReturnName(i), i);
+			}
+		}
+		mysql_format(g_SQL, query, sizeof(query), "SELECT reg_id, username FROM players WHERE username='%e' LIMIT 1", target);
+	}
+
+	mysql_tquery(g_SQL, query, "OfflineSetAdmin", "isi", playerid, target, alevel);
+	format(tmp, sizeof(tmp), "%d", alevel);
+	StaffCommandLog("OSETADMIN", playerid, INVALID_PLAYER_ID, tmp);
+	return 1;
+}
+
 CMD:setdivision(playerid, params[])
 {
     if(pData[playerid][pAdmin] < 6)
@@ -3209,6 +3255,31 @@ CMD:ogetucp(playerid, params[])
 	return 1;
 }
 
+CMD:ocheckucp(playerid, params[])
+{
+	if(pData[playerid][pAdmin] < 1)
+		return PermissionError(playerid);
+
+	new target[24], query[256];
+	if(sscanf(params, "s[24]", target))
+	{
+		Usage(playerid, "/ocheckucp <ucp name>");
+		return 1;
+	}
+
+	foreach(new i : Player)
+	{
+		if(!strcmp(charData[i][cName], target, true))
+		{
+			return Error(playerid, "%s(ID:%d) sedang online!", ReturnName(i), i);
+		}
+	}
+
+	mysql_format(g_SQL, query, sizeof(query), "SELECT * FROM `ucp` WHERE `username` = '%e' LIMIT 1", target);
+	mysql_tquery(g_SQL, query, "OfflineCheckUCPList", "is", playerid, target);
+	return 1;
+}
+
 CMD:getchar(playerid, params[])
 {
    	if(pData[playerid][pAdmin] < 1)
@@ -3291,6 +3362,52 @@ CMD:obanucp(playerid, params[])
 	new query[512];
 	mysql_format(g_SQL, query, sizeof(query), "SELECT reg_id FROM ucp WHERE username='%e'", tmp);
 	mysql_tquery(g_SQL, query, "oBanUCP", "iss", playerid, tmp, reasonoban);
+	return 1;
+}
+
+CMD:osetfaction(playerid, params[])
+{
+	new target[24], fid, rank, tmp[64], query[256];
+	if(pData[playerid][pDivision] != 1) return Error(playerid, "You must be a faction division.");
+
+	if(sscanf(params, "s[24]dd", target, fid, rank))
+		return Usage(playerid, "/osetfaction [name/regid] [1.SAPD, 2.SAGS, 3.SAMD, 4.SANEW] [rank 1-6]");
+
+	if(fid < 0 || fid > 4)
+		return Error(playerid, "You have specified an invalid faction ID 0 - 4.");
+
+	if(fid == 0)
+		rank = 0;
+	else if(rank < 1 || rank > 6)
+		return Error(playerid, "You have specified an invalid rank 1 - 6.");
+
+	if(IsNumeric(target))
+	{
+		new regid = strval(target);
+		foreach(new i : Player)
+		{
+			if(pData[i][pID] == regid)
+			{
+				return Error(playerid, "%s(ID:%d) sedang online!", ReturnName(i), i);
+			}
+		}
+		mysql_format(g_SQL, query, sizeof(query), "SELECT reg_id, username, family FROM players WHERE reg_id='%d' LIMIT 1", regid);
+	}
+	else
+	{
+		foreach(new i : Player)
+		{
+			if(!strcmp(ReturnName(i), target, true))
+			{
+				return Error(playerid, "%s(ID:%d) sedang online!", ReturnName(i), i);
+			}
+		}
+		mysql_format(g_SQL, query, sizeof(query), "SELECT reg_id, username, family FROM players WHERE username='%e' LIMIT 1", target);
+	}
+
+	mysql_tquery(g_SQL, query, "OfflineSetFaction", "isii", playerid, target, fid, rank);
+	format(tmp, sizeof(tmp), "%d(%d rank)", fid, rank);
+	StaffCommandLog("OSETFACTION", playerid, INVALID_PLAYER_ID, tmp);
 	return 1;
 }
 

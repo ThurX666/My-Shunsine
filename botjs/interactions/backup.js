@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { EmbedBuilder } = require('discord.js');
 
-async function backupDatabase(pool) {
+async function backupDatabase(pool, client, channelId) {
   const backupFile = path.join(__dirname, `../../backup-${Date.now()}.sql`);
   const command = `mysqldump -u ${process.env.DB_USER} -p${process.env.DB_PASSWORD} ${process.env.DB_NAME} > ${backupFile}`;
   
@@ -19,10 +19,7 @@ async function backupDatabase(pool) {
     }
 
     console.log(`Database backup created successfully: ${backupFile}`);
-
-    const channelId = '1293191629460738118';
-    const client = require('../index').client;
-    const channel = client.channels.cache.get(channelId);
+    const channel = client?.channels?.cache?.get(channelId);
 
     if (channel) {
       const embed = new EmbedBuilder()

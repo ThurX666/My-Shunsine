@@ -214,6 +214,8 @@ native Streamer_ToggleStaticItem(type, STREAMER_ALL_TAGS id, toggle);
 native Streamer_IsToggleStaticItem(type, STREAMER_ALL_TAGS id);
 native Streamer_GetItemInternalID(playerid, type, STREAMER_ALL_TAGS streamerid);
 native Streamer_GetItemStreamerID(playerid, type, internalid);
+native Streamer_GetItemPos(type, STREAMER_ALL_TAGS id, &Float:x, &Float:y, &Float:z);
+native Streamer_GetItemOffset(type, STREAMER_ALL_TAGS id, &Float:x, &Float:y, &Float:z);
 native Streamer_IsItemVisible(playerid, type, STREAMER_ALL_TAGS id);
 native Streamer_DestroyAllVisibleItems(playerid, type, serverwide = 1);
 native Streamer_CountVisibleItems(playerid, type, serverwide = 1);

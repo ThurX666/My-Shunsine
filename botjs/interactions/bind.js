@@ -18,10 +18,12 @@ async function handleBindAccount(interaction, pool) {
       }
       
       await pool.execute('UPDATE ucp SET DiscordID = ? WHERE username = ?', [user.id, ucpName]);
-      interaction.reply({ content: ':white_check_mark: UCP account successfully bound to your Discord account!', flags: MessageFlags.Ephemeral });
+      await interaction.reply({ content: ':white_check_mark: UCP account successfully bound to your Discord account!', flags: MessageFlags.Ephemeral });
     } catch (error) {
       console.error(error);
-      interaction.reply({ content: ':x: There was an error binding your UCP account.', flags: MessageFlags.Ephemeral });
+      if (!interaction.replied && !interaction.deferred) {
+        await interaction.reply({ content: ':x: There was an error binding your UCP account.', flags: MessageFlags.Ephemeral });
+      }
     }
 }
 

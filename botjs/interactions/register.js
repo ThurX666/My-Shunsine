@@ -1,10 +1,17 @@
 const crypto= require("crypto");
 const { EmbedBuilder, MessageFlags } = require('discord.js');
 
-async function handleCreateAccount(interaction, pool) {
-    const username = interaction.fields.getTextInputValue('username_input');
+async function handleCreateAccount(interaction, pool, config) {
+    const username = interaction.fields.getTextInputValue('username_input').trim();
     const password = interaction.fields.getTextInputValue('password_input');
     const confirmPassword = interaction.fields.getTextInputValue('confirm_password_input');
+
+    if (!/^[A-Za-z]{3,24}$/.test(username)) {
+        return interaction.reply({
+            content: ':x: Username must contain only letters and be 3-24 characters long.',
+            flags: MessageFlags.Ephemeral
+        });
+    }
 
     if (/_/.test(username)) {
         return interaction.reply({ content: ':x: username name cannot contain underscores (_)!', flags: MessageFlags.Ephemeral });
@@ -21,26 +28,21 @@ async function handleCreateAccount(interaction, pool) {
     try {
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
-        const [existingUser] = await pool.query('SELECT * FROM ucp WHERE username = ?', [username]);
+        const [existingUser] = await pool.query('SELECT username FROM ucp WHERE username = ?', [username]);
         if (existingUser.length > 0) {
             return interaction.editReply({ content: ':x: username name is already in use!' });
         }
 
-        // Debug: Log the DiscordID being queried
         const discordId = String(interaction.user.id);
-        console.log(`Checking for existing account with DiscordID: ${discordId}`);
-        
-        const [existingAccount] = await pool.query('SELECT * FROM ucp WHERE DiscordID = ?', [discordId]);
-        console.log(`Query result: Found ${existingAccount.length} account(s)`);
+        const [existingAccount] = await pool.query('SELECT username FROM ucp WHERE DiscordID = ?', [discordId]);
         if (existingAccount.length > 0) {
-            console.log(`Existing account data: ${JSON.stringify(existingAccount[0])}`);
             const username = existingAccount[0].username || 'Unknown';
             return interaction.editReply({ content: `:x: You have already created an account with the username: ${username}` });
         }
 
         const salt = Array.from({length: 16}, () => String.fromCharCode(Math.floor(Math.random() * 94) + 33)).join('');
         const hashedPassword = crypto.createHash('sha256').update(password + salt).digest('hex').toUpperCase();
-        const verifycode = Math.floor(Math.random() * 1000000);
+        const verifycode = Math.floor(100000 + Math.random() * 900000);
 
         await pool.query('INSERT INTO ucp (username, password, salt, pin, DiscordID) VALUES (?, ?, ?, ?, ?)', [username, hashedPassword, salt, verifycode, interaction.user.id]);
 
@@ -48,24 +50,37 @@ async function handleCreateAccount(interaction, pool) {
 			.setTitle('Your registration is successful!')
 			.setDescription(`Your username name is: ${username}\nYour verification code is: ${verifycode}`)
 			.setColor('#111211')
-			.setImage('https://cdn.discordapp.com/attachments/1500909054153854986/1500914155048144906/Urban-removebg-preview.png?ex=69fad37c&is=69f981fc&hm=76a6bf6fcdc462efa5d33e1d31eef081de4f3fe5dff3ef14d6426d860328ccf8')
+			.setImage(config.images.register)
 			.setFooter({ text: 'Copyright (c) 2025 My Sunshine Roleplay (All rights reversed)'})
 			.setTimestamp();
 			
         const member = interaction.member;
+        if (member && config.discord.memberRoleId) {
+            await member.roles.add(config.discord.memberRoleId).catch(err => console.error("Gagal menambah role:", err));
+        }
+
         if (member) {
-            await member.roles.add('1487812118207135859').catch(err => console.error("Gagal menambah role:", err));
             await member.setNickname(username).catch(err => console.error("Gagal mengganti nickname:", err));
         }
 
-        await interaction.user.send({
-	         content: `Hello <@${interaction.user.id}>`, embeds: [embed] 
-		});
+        try {
+            await interaction.user.send({
+	             content: `Hello <@${interaction.user.id}>`, embeds: [embed]
+			});
+        } catch (dmError) {
+            console.error('Failed to send registration DM:', dmError);
+            await interaction.editReply({ content: ':warning: Account created, but I could not send the verification code via DM. Please enable direct messages and use the Reverify button.' });
+            return;
+        }
 
         await interaction.editReply({ content: ':white_check_mark: Account created successfully! Please check your DM for the verification code.' });
     } catch (error) {
         console.error(error);
-        await interaction.editReply({ content: ':x: An error occurred while creating the account. Please try again later.' });
+        if (interaction.deferred || interaction.replied) {
+            await interaction.editReply({ content: ':x: An error occurred while creating the account. Please try again later.' });
+        } else {
+            await interaction.reply({ content: ':x: An error occurred while creating the account. Please try again later.', flags: MessageFlags.Ephemeral });
+        }
     }
 }
 

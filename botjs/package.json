@@ -1,22 +1,23 @@
 {
   "name": "avrp-discordjs",
   "version": "1.5.3",
-  "description": "",
+  "description": "Discord bot for My Sunshine Roleplay UCP and admin utilities",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "postinstall": "npm audit fix --force || exit 0"
+    "start:debug": "set ENABLE_BOT_LOGIN=false&& node index.js"
   },
   "keywords": [],
   "author": "StevenTs",
   "license": "ISC",
+  "engines": {
+    "node": ">=20 <25"
+  },
   "dependencies": {
     "@types/node": "^18.0.6",
-    "bcrypt": "^5.1.1",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
     "mysql2": "^2.3.3",
-    "node-cron": "^3.0.0",
     "samp-query": "^0.1.5"
   }
 }

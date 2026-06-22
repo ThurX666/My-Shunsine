@@ -631,6 +631,250 @@ Dialog:HouseWithdrawPot(playerid, response, listitem, inputtext[])
     return 1;
 }
 
+stock House_GetSchematicNameBySlot(slot, dest[], size = 32)
+{
+    switch(slot)
+    {
+        case 0: format(dest, size, "Country Rifle");
+        case 1: format(dest, size, "Shotgun");
+        case 2: format(dest, size, "Sawn Of Shotgun");
+        case 3: format(dest, size, "Desert Eagle");
+        case 4: format(dest, size, "MP-5");
+        case 5: format(dest, size, "AK-47");
+        default: format(dest, size, "Unknown");
+    }
+    return 1;
+}
+
+stock House_ShowSchematicDialog(playerid, houseid)
+{
+    new list[512], line[96], total, schemName[32];
+
+    format(list, sizeof(list), "Schematic\tStorage\tInventory\n");
+    for(new i = 0; i < HOUSE_SCHEMATIC_SLOTS; i++)
+    {
+        House_GetSchematicNameBySlot(i, schemName, sizeof(schemName));
+        total += hData[houseid][hSchematic][i];
+        format(line, sizeof(line), "%s\t%d\t%d\n", schemName, hData[houseid][hSchematic][i], pData[playerid][pSchematic][i]);
+        strcat(list, line);
+    }
+
+    Dialog_Show(playerid, HouseSchematic, DIALOG_STYLE_TABLIST_HEADERS, sprintf("Schematic Safe (%d/%d)", total, HOUSE_SCHEMATIC_CAPACITY), list, "Select", "Back");
+    return 1;
+}
+
+Dialog:HouseComponent(playerid, response, listitem, inputtext[])
+{
+    new houseid = pData[playerid][pInHouse];
+    if(response)
+    {
+        switch(listitem)
+        {
+            case 0:
+            {
+                Dialog_Show(playerid, HouseWithdrawComponent, DIALOG_STYLE_INPUT, "Withdraw Component", sprintf("Storage component: %d/%d\nComponent di inventory: %d/250\n\nMasukkan jumlah component yang ingin diambil:", hData[houseid][hComponent], HOUSE_COMPONENT_CAPACITY, pData[playerid][pComponent]), "Withdraw", "Back");
+            }
+            case 1:
+            {
+                Dialog_Show(playerid, HouseDepositComponent, DIALOG_STYLE_INPUT, "Deposit Component", sprintf("Storage component: %d/%d\nComponent di inventory: %d/250\n\nMasukkan jumlah component yang ingin disimpan:", hData[houseid][hComponent], HOUSE_COMPONENT_CAPACITY, pData[playerid][pComponent]), "Deposit", "Back");
+            }
+        }
+    }
+    else House_OpenStorage(playerid, houseid);
+    return 1;
+}
+
+Dialog:HouseWithdrawComponent(playerid, response, listitem, inputtext[])
+{
+    new houseid = pData[playerid][pInHouse];
+    if(response)
+    {
+        if(isnull(inputtext)) return Dialog_Show(playerid, HouseWithdrawComponent, DIALOG_STYLE_INPUT, "Withdraw Component", sprintf("Storage component: %d/%d\nComponent di inventory: %d/250\n\nMasukkan jumlah component yang ingin diambil:", hData[houseid][hComponent], HOUSE_COMPONENT_CAPACITY, pData[playerid][pComponent]), "Withdraw", "Back");
+
+        new amount = strval(inputtext), carry = 250 - pData[playerid][pComponent];
+        if(amount < 1 || amount > hData[houseid][hComponent]) return Error(playerid, "Jumlah component tidak valid.");
+        if(carry < 1) return Error(playerid, "Anda sudah membawa 250 Component!");
+        if(amount > carry) return Error(playerid, "Anda hanya bisa mengambil %d component lagi.", carry);
+
+        hData[houseid][hComponent] -= amount;
+        pData[playerid][pComponent] += amount;
+        House_Save(houseid);
+        House_OpenStorage(playerid, houseid);
+        SendNearbyMessage(playerid, 30.0, COLOR_PURPLE, "** %s has withdrawn %d component from their house safe.", ReturnName(playerid), amount);
+    }
+    else Dialog_Show(playerid, HouseComponent, DIALOG_STYLE_LIST, "Component Safe", "Withdraw from safe\nDeposit into safe", "Select", "Back");
+    return 1;
+}
+
+Dialog:HouseDepositComponent(playerid, response, listitem, inputtext[])
+{
+    new houseid = pData[playerid][pInHouse];
+    if(response)
+    {
+        if(isnull(inputtext)) return Dialog_Show(playerid, HouseDepositComponent, DIALOG_STYLE_INPUT, "Deposit Component", sprintf("Storage component: %d/%d\nComponent di inventory: %d/250\n\nMasukkan jumlah component yang ingin disimpan:", hData[houseid][hComponent], HOUSE_COMPONENT_CAPACITY, pData[playerid][pComponent]), "Deposit", "Back");
+
+        new amount = strval(inputtext), space = HOUSE_COMPONENT_CAPACITY - hData[houseid][hComponent];
+        if(amount < 1 || amount > pData[playerid][pComponent]) return Error(playerid, "Jumlah component tidak valid.");
+        if(space < 1) return Error(playerid, "Storage component rumah sudah penuh.");
+        if(amount > space) return Error(playerid, "Storage component rumah hanya sisa %d.", space);
+
+        hData[houseid][hComponent] += amount;
+        pData[playerid][pComponent] -= amount;
+        House_Save(houseid);
+        House_OpenStorage(playerid, houseid);
+        SendNearbyMessage(playerid, 30.0, COLOR_PURPLE, "** %s has deposited %d component into their house safe.", ReturnName(playerid), amount);
+    }
+    else Dialog_Show(playerid, HouseComponent, DIALOG_STYLE_LIST, "Component Safe", "Withdraw from safe\nDeposit into safe", "Select", "Back");
+    return 1;
+}
+
+Dialog:HouseMaterial(playerid, response, listitem, inputtext[])
+{
+    new houseid = pData[playerid][pInHouse];
+    if(response)
+    {
+        switch(listitem)
+        {
+            case 0:
+            {
+                Dialog_Show(playerid, HouseWithdrawMaterial, DIALOG_STYLE_INPUT, "Withdraw Material", sprintf("Storage material: %d/%d\nMaterial di inventory: %d\n\nMasukkan jumlah material yang ingin diambil:", hData[houseid][hMaterial], HOUSE_MATERIAL_CAPACITY, pData[playerid][pMaterial]), "Withdraw", "Back");
+            }
+            case 1:
+            {
+                Dialog_Show(playerid, HouseDepositMaterial, DIALOG_STYLE_INPUT, "Deposit Material", sprintf("Storage material: %d/%d\nMaterial di inventory: %d\n\nMasukkan jumlah material yang ingin disimpan:", hData[houseid][hMaterial], HOUSE_MATERIAL_CAPACITY, pData[playerid][pMaterial]), "Deposit", "Back");
+            }
+        }
+    }
+    else House_OpenStorage(playerid, houseid);
+    return 1;
+}
+
+Dialog:HouseWithdrawMaterial(playerid, response, listitem, inputtext[])
+{
+    new houseid = pData[playerid][pInHouse];
+    if(response)
+    {
+        if(isnull(inputtext)) return Dialog_Show(playerid, HouseWithdrawMaterial, DIALOG_STYLE_INPUT, "Withdraw Material", sprintf("Storage material: %d/%d\nMaterial di inventory: %d\n\nMasukkan jumlah material yang ingin diambil:", hData[houseid][hMaterial], HOUSE_MATERIAL_CAPACITY, pData[playerid][pMaterial]), "Withdraw", "Back");
+
+        new amount = strval(inputtext);
+        if(amount < 1 || amount > hData[houseid][hMaterial]) return Error(playerid, "Jumlah material tidak valid.");
+
+        hData[houseid][hMaterial] -= amount;
+        pData[playerid][pMaterial] += amount;
+        House_Save(houseid);
+        House_OpenStorage(playerid, houseid);
+        SendNearbyMessage(playerid, 30.0, COLOR_PURPLE, "** %s has withdrawn %d material from their house safe.", ReturnName(playerid), amount);
+    }
+    else Dialog_Show(playerid, HouseMaterial, DIALOG_STYLE_LIST, "Material Safe", "Withdraw from safe\nDeposit into safe", "Select", "Back");
+    return 1;
+}
+
+Dialog:HouseDepositMaterial(playerid, response, listitem, inputtext[])
+{
+    new houseid = pData[playerid][pInHouse];
+    if(response)
+    {
+        if(isnull(inputtext)) return Dialog_Show(playerid, HouseDepositMaterial, DIALOG_STYLE_INPUT, "Deposit Material", sprintf("Storage material: %d/%d\nMaterial di inventory: %d\n\nMasukkan jumlah material yang ingin disimpan:", hData[houseid][hMaterial], HOUSE_MATERIAL_CAPACITY, pData[playerid][pMaterial]), "Deposit", "Back");
+
+        new amount = strval(inputtext), space = HOUSE_MATERIAL_CAPACITY - hData[houseid][hMaterial];
+        if(amount < 1 || amount > pData[playerid][pMaterial]) return Error(playerid, "Jumlah material tidak valid.");
+        if(space < 1) return Error(playerid, "Storage material rumah sudah penuh.");
+        if(amount > space) return Error(playerid, "Storage material rumah hanya sisa %d.", space);
+
+        hData[houseid][hMaterial] += amount;
+        pData[playerid][pMaterial] -= amount;
+        House_Save(houseid);
+        House_OpenStorage(playerid, houseid);
+        SendNearbyMessage(playerid, 30.0, COLOR_PURPLE, "** %s has deposited %d material into their house safe.", ReturnName(playerid), amount);
+    }
+    else Dialog_Show(playerid, HouseMaterial, DIALOG_STYLE_LIST, "Material Safe", "Withdraw from safe\nDeposit into safe", "Select", "Back");
+    return 1;
+}
+
+Dialog:HouseSchematic(playerid, response, listitem, inputtext[])
+{
+    new houseid = pData[playerid][pInHouse], total;
+
+    if(response)
+    {
+        for(new i = 0; i < HOUSE_SCHEMATIC_SLOTS; i++) total += hData[houseid][hSchematic][i];
+        if(listitem < 0 || listitem >= HOUSE_SCHEMATIC_SLOTS) return 1;
+        SetPVarInt(playerid, "HouseSchematicSlot", listitem);
+        Dialog_Show(playerid, HouseSchematicAction, DIALOG_STYLE_LIST, sprintf("Schematic Safe (%d/%d)", total, HOUSE_SCHEMATIC_CAPACITY), "Withdraw from safe\nDeposit into safe", "Select", "Back");
+    }
+    else House_OpenStorage(playerid, houseid);
+    return 1;
+}
+
+Dialog:HouseSchematicAction(playerid, response, listitem, inputtext[])
+{
+    new houseid = pData[playerid][pInHouse], slot = GetPVarInt(playerid, "HouseSchematicSlot"), schemName[32];
+    if(slot < 0 || slot >= HOUSE_SCHEMATIC_SLOTS) return 1;
+    House_GetSchematicNameBySlot(slot, schemName, sizeof(schemName));
+
+    if(response)
+    {
+        switch(listitem)
+        {
+            case 0:
+            {
+                Dialog_Show(playerid, HouseWithdrawSchematic, DIALOG_STYLE_INPUT, "Withdraw Schematic", sprintf("%s\nStorage: %d\nInventory: %d\n\nMasukkan jumlah schematic yang ingin diambil:", schemName, hData[houseid][hSchematic][slot], pData[playerid][pSchematic][slot]), "Withdraw", "Back");
+            }
+            case 1:
+            {
+                Dialog_Show(playerid, HouseDepositSchematic, DIALOG_STYLE_INPUT, "Deposit Schematic", sprintf("%s\nStorage: %d\nInventory: %d\n\nMasukkan jumlah schematic yang ingin disimpan:", schemName, hData[houseid][hSchematic][slot], pData[playerid][pSchematic][slot]), "Deposit", "Back");
+            }
+        }
+    }
+    else House_ShowSchematicDialog(playerid, houseid);
+    return 1;
+}
+
+Dialog:HouseWithdrawSchematic(playerid, response, listitem, inputtext[])
+{
+    new houseid = pData[playerid][pInHouse], slot = GetPVarInt(playerid, "HouseSchematicSlot"), schemName[32];
+    if(slot < 0 || slot >= HOUSE_SCHEMATIC_SLOTS) return 1;
+    House_GetSchematicNameBySlot(slot, schemName, sizeof(schemName));
+
+    if(response)
+    {
+        if(isnull(inputtext)) return Dialog_Show(playerid, HouseWithdrawSchematic, DIALOG_STYLE_INPUT, "Withdraw Schematic", sprintf("%s\nStorage: %d\nInventory: %d\n\nMasukkan jumlah schematic yang ingin diambil:", schemName, hData[houseid][hSchematic][slot], pData[playerid][pSchematic][slot]), "Withdraw", "Back");
+
+        new amount = strval(inputtext);
+        if(amount < 1 || amount > hData[houseid][hSchematic][slot]) return Error(playerid, "Jumlah schematic tidak valid.");
+
+        hData[houseid][hSchematic][slot] -= amount;
+        pData[playerid][pSchematic][slot] += amount;
+        House_Save(houseid);
+        SendNearbyMessage(playerid, 30.0, COLOR_PURPLE, "** %s has withdrawn %d %s schematic from their house safe.", ReturnName(playerid), amount, schemName);
+    }
+    return House_ShowSchematicDialog(playerid, houseid);
+}
+
+Dialog:HouseDepositSchematic(playerid, response, listitem, inputtext[])
+{
+    new houseid = pData[playerid][pInHouse], slot = GetPVarInt(playerid, "HouseSchematicSlot"), total, schemName[32];
+    if(slot < 0 || slot >= HOUSE_SCHEMATIC_SLOTS) return 1;
+    House_GetSchematicNameBySlot(slot, schemName, sizeof(schemName));
+    for(new i = 0; i < HOUSE_SCHEMATIC_SLOTS; i++) total += hData[houseid][hSchematic][i];
+
+    if(response)
+    {
+        if(isnull(inputtext)) return Dialog_Show(playerid, HouseDepositSchematic, DIALOG_STYLE_INPUT, "Deposit Schematic", sprintf("%s\nStorage: %d\nInventory: %d\n\nMasukkan jumlah schematic yang ingin disimpan:", schemName, hData[houseid][hSchematic][slot], pData[playerid][pSchematic][slot]), "Deposit", "Back");
+
+        new amount = strval(inputtext), space = HOUSE_SCHEMATIC_CAPACITY - total;
+        if(amount < 1 || amount > pData[playerid][pSchematic][slot]) return Error(playerid, "Jumlah schematic tidak valid.");
+        if(space < 1) return Error(playerid, "Storage schematic rumah sudah penuh.");
+        if(amount > space) return Error(playerid, "Storage schematic rumah hanya sisa %d.", space);
+
+        hData[houseid][hSchematic][slot] += amount;
+        pData[playerid][pSchematic][slot] -= amount;
+        House_Save(houseid);
+        SendNearbyMessage(playerid, 30.0, COLOR_PURPLE, "** %s has deposited %d %s schematic into their house safe.", ReturnName(playerid), amount, schemName);
+    }
+    return House_ShowSchematicDialog(playerid, houseid);
+}
+
 Dialog:HouseDepositPot(playerid, response, listitem, inputtext[]) 
 {
     new houseid = pData[playerid][pInHouse];

@@ -486,7 +486,7 @@ CreateTextDraw()
     TextDrawFont(MYSUNSHINE[1], 1);
     TextDrawSetProportional(MYSUNSHINE[1], 1);
 
-    MYSUNSHINE[2] = TextDrawCreate(460.000, 206.000, "VERSION 1.0.15 GUARD");
+    MYSUNSHINE[2] = TextDrawCreate(460.000, 206.000, "VERSION 1.0.16 STRONGHOLD");
     TextDrawLetterSize(MYSUNSHINE[2], 0.179, 0.999);
     TextDrawTextSize(MYSUNSHINE[2], 0.000, 637.000);
     TextDrawAlignment(MYSUNSHINE[2], 3);

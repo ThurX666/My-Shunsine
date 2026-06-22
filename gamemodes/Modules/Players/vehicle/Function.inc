@@ -1353,15 +1353,38 @@ SetVehicleRadio(vehicleid, url[])
         CoreVehicles[vehicleid][vehRadio] = 1;
         strpack(CoreVehicles[vehicleid][vehURL], url, 128 char);
 
+        new
+            Float:fVehX,
+            Float:fVehY,
+            Float:fVehZ,
+            Float:fDist;
+
+        GetVehiclePos(vehicleid, fVehX, fVehY, fVehZ);
+
         foreach (new i : Player)
         {
+            if(!IsPlayerConnected(i)) continue;
+
+            // Player di dalam kendaraan — set flag
             if(IsPlayerInVehicle(i, vehicleid))
             {
                 pData[i][pRadioVehicleOn] = 1;
-
+                pData[i][pRadioVehicleVeh] = vehicleid;
+                pData[i][pRadioVehicleListening] = 0;
                 StopAudioStreamForPlayer(i);
-				PlayAudioStreamForPlayer(i, url);
-				return 1;
+                PlayAudioStreamForPlayer(i, url);
+            }
+            else
+            {
+                // Player di luar kendaraan — cek jarak (radius 30 meter)
+                fDist = GetPlayerDistanceFromPoint(i, fVehX, fVehY, fVehZ);
+                if(fDist <= 30.0 && GetPlayerInterior(i) == 0 && GetPlayerVirtualWorld(i) == 0)
+                {
+                    pData[i][pRadioVehicleListening] = 1;
+                    pData[i][pRadioVehicleVeh] = vehicleid;
+                    StopAudioStreamForPlayer(i);
+                    PlayAudioStreamForPlayer(i, url);
+                }
             }
         }
     }
@@ -1376,11 +1399,19 @@ StopVehicleRadio(vehicleid)
 
         foreach (new i : Player)
         {
-            if(IsPlayerInVehicle(i, vehicleid))
+            if(!IsPlayerConnected(i)) continue;
+
+            if(IsPlayerInVehicle(i, vehicleid) && pData[i][pRadioVehicleOn])
             {
                 StopAudioStreamForPlayer(i);
                 pData[i][pRadioVehicleOn] = 0;
-				return 1;
+            }
+
+            if(pData[i][pRadioVehicleListening] && pData[i][pRadioVehicleVeh] == vehicleid)
+            {
+                StopAudioStreamForPlayer(i);
+                pData[i][pRadioVehicleListening] = 0;
+                pData[i][pRadioVehicleVeh] = 0;
             }
         }
     }

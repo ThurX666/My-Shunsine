@@ -25,11 +25,16 @@ CMD:createhouse(playerid, params[])
 	else if(type == 1) hData[hid][hPrice] = 1100000;
 	else if(type == 2) hData[hid][hPrice] = 2000000;
 	
-	for (new i = 0; i < 10; i ++)
+	for (new i = 0; i < HOUSE_WEAPON_SLOTS; i ++)
 	{
         hData[hid][hWeapon][i] = 0;
         hData[hid][hAmmo][i] = 0;
 		hData[hid][hTypeAmmo][i] = 0;
+    }
+
+    for (new i = 0; i < HOUSE_SCHEMATIC_SLOTS; i ++)
+    {
+        hData[hid][hSchematic][i] = 0;
     }
     House_Refresh(hid);
 	Iter_Add(Houses, hid);

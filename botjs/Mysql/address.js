@@ -1,15 +1,17 @@
-//connecting IP Address
+const { getConfig } = require('../config');
+
+function getServerInfo() {
+    const config = getConfig();
+
+    return {
+        host: config.samp.host,
+        port: config.samp.port,
+    };
+}
+
 module.exports = {
-    serverInfo: {
-        host: '139.99.22.124',
-        port: 5555,
-    }
+    getServerInfo,
+    get serverInfo() {
+        return getServerInfo();
+    },
 };
-
-
-//module.exports = {
-//    serverInfo: {
-//        host: '103.166.228.44',
-//        port: 3019,
-//    }
-//};

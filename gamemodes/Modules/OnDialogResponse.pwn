@@ -632,13 +632,25 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 			}
 			else if(listitem == 1) 
 			{
-				ShowPlayerDialog(playerid, HOUSE_MONEY, DIALOG_STYLE_LIST, "Money Safe", "Withdraw from safe\nDeposit into safe", "Select", "Back");
+				Dialog_Show(playerid, HouseComponent, DIALOG_STYLE_LIST, "Component Safe", "Withdraw from safe\nDeposit into safe", "Select", "Back");
 			}
 			else if(listitem == 2) 
 			{
-				Dialog_Show(playerid, HouseCrack, DIALOG_STYLE_LIST, "Crack", "Withdraw from safe\nDeposit into safe", "Select", "Back");
+				Dialog_Show(playerid, HouseMaterial, DIALOG_STYLE_LIST, "Material Safe", "Withdraw from safe\nDeposit into safe", "Select", "Back");
 			}
 			else if(listitem == 3) 
+			{
+				House_ShowSchematicDialog(playerid, hid);
+			}
+			else if(listitem == 4) 
+			{
+				ShowPlayerDialog(playerid, HOUSE_MONEY, DIALOG_STYLE_LIST, "Money Safe", "Withdraw from safe\nDeposit into safe", "Select", "Back");
+			}
+			else if(listitem == 5) 
+			{
+				Dialog_Show(playerid, HouseCrack, DIALOG_STYLE_LIST, "Crack", "Withdraw from safe\nDeposit into safe", "Select", "Back");
+			}
+			else if(listitem == 6) 
 			{
 				Dialog_Show(playerid, HousePot, DIALOG_STYLE_LIST, "Pot", "Withdraw from safe\nDeposit into safe", "Select", "Back");
 			}
@@ -666,6 +678,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 
 				hData[houseid][hWeapon][listitem] = 0;
 				hData[houseid][hAmmo][listitem] = 0;
+                hData[houseid][hTypeAmmo][listitem] = 0;
 
 				House_Save(houseid);
 				House_WeaponStorage(playerid, houseid);
@@ -680,9 +693,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 					return Error(playerid, "You are not holding any weapon!");
 				
 				if(PlayerGuns[playerid][g_aWeaponSlots[weaponid]][weapon_typesurplus] == 2) return Error(playerid, "Senjata bertype JHP tidak bisa disimpan dirumah!");
-				ResetWeaponID(playerid, weaponid);
 				SendNearbyMessage(playerid, 30.0, COLOR_PURPLE, "** %s has stored a \"%s\" into their weapon storage.", ReturnName(playerid), ReturnWeaponName(weaponid));
-
 				hData[houseid][hWeapon][listitem] = weaponid;
 				hData[houseid][hAmmo][listitem] = ammo;
 				switch(PlayerGuns[playerid][g_aWeaponSlots[weaponid]][weapon_typesurplus]) {
@@ -693,6 +704,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 						hData[houseid][hTypeAmmo][listitem] = 1;
 					}
 				}
+                ResetWeaponID(playerid, weaponid);
 				House_Save(houseid);
 				House_WeaponStorage(playerid, houseid);
 			}
@@ -2470,16 +2482,9 @@ Dialog:VehicleDataWeapon(playerid, response, listitem, inputtext[]) {
 			if(!weaponid) return Error(playerid, "You are not holding any weapon!");
 			if(PlayerGuns[playerid][g_aWeaponSlots[weaponid]][weapon_typesurplus] == 2) return Error(playerid, "Senjata bertype JHP tidak bisa disimpan dimobil!");
 
-			SendNearbyMessage(playerid, 30.0, COLOR_PURPLE, "** %s has stored a \"%s\" into their faction vehicle trunk.", ReturnName(playerid), ReturnWeaponName(weaponid));
-			VehicleData[id][Weapon][listitem] = weaponid;
-			VehicleData[id][Ammo][listitem] = ammo;
-			switch(PlayerGuns[playerid][g_aWeaponSlots[weaponid]][weapon_typesurplus]) {
-				case 0: VehicleData[id][TypeAmmo][listitem] = 0;
-				case 1: VehicleData[id][TypeAmmo][listitem] = 1;
-			}
-			ResetWeaponID(playerid, weaponid);
-			SaveVehicleData(id);
-			VehicleData_WeaponStorage(playerid, vehicleid);
+			SetPVarInt(playerid, "VehicleWeaponSlot", listitem);
+			SetPVarInt(playerid, "VehicleWeaponStorageType", 1);
+			Dialog_Show(playerid, VehicleWeaponAmmoInput, DIALOG_STYLE_INPUT, "Faction Weapon Storage", sprintf("Weapon: %s\nAmmo tersedia: %d\n\nMasukkan jumlah ammo yang ingin disimpan:", ReturnWeaponName(weaponid), ammo), "Store", "Back");
 		}
 	}
 	else SwitchVehicleBoot(vehicleid, false);
@@ -2510,19 +2515,79 @@ Dialog:PVehicleWeapon(playerid, response, listitem, inputtext[]) {
 
 				if(!weaponid) return Error(playerid, "You are not holding any weapon!");
 				if(PlayerGuns[playerid][g_aWeaponSlots[weaponid]][weapon_typesurplus] == 2) return Error(playerid, "Senjata bertype JHP tidak bisa disimpan dimobil!");
-				
-				SendNearbyMessage(playerid, 30.0, COLOR_PURPLE, "** %s has stored a \"%s\" into their weapon storage.", ReturnName(playerid), ReturnWeaponName(weaponid));
-				pvData[ii][cWeapon][listitem] = weaponid;
-				pvData[ii][cAmmo][listitem] = ammo;
-				switch(PlayerGuns[playerid][g_aWeaponSlots[weaponid]][weapon_typesurplus]) {
-					case 0: pvData[ii][cAmmoType][listitem] = 0;
-					case 1: pvData[ii][cAmmoType][listitem] = 1;
-				}
-				ResetWeaponID(playerid, weaponid);
-				Vehicle_WeaponStorage(playerid, vehicleid);
+
+				SetPVarInt(playerid, "VehicleWeaponSlot", listitem);
+				SetPVarInt(playerid, "VehicleWeaponStorageType", 2);
+				Dialog_Show(playerid, VehicleWeaponAmmoInput, DIALOG_STYLE_INPUT, "Weapon Storage", sprintf("Weapon: %s\nAmmo tersedia: %d\n\nMasukkan jumlah ammo yang ingin disimpan:", ReturnWeaponName(weaponid), ammo), "Store", "Back");
 			}
 		}  
 	}
 	else SwitchVehicleBoot(vehicleid, false);
     return 1;
+}
+
+Dialog:VehicleWeaponAmmoInput(playerid, response, listitem, inputtext[]) {
+	new vehicleid = pData[playerid][pUseVehicleid];
+
+	if(!response)
+	{
+		if(GetPVarInt(playerid, "VehicleWeaponStorageType") == 1) VehicleData_WeaponStorage(playerid, vehicleid);
+		else Vehicle_WeaponStorage(playerid, vehicleid);
+		return 1;
+	}
+
+	if(isnull(inputtext) || !IsNumeric(inputtext))
+		return Error(playerid, "Masukkan jumlah ammo yang valid.");
+
+	new weaponid = GetWeapon(playerid),
+		ammo = ReturnWeaponAmmo(playerid, weaponid),
+		slot = GetPVarInt(playerid, "VehicleWeaponSlot"),
+		storageType = GetPVarInt(playerid, "VehicleWeaponStorageType"),
+		storeAmmo = strval(inputtext),
+		weaponSlot = g_aWeaponSlots[weaponid],
+		typeAmmo = PlayerGuns[playerid][weaponSlot][weapon_typesurplus];
+
+	if(!weaponid) return Error(playerid, "You are not holding any weapon!");
+	if(typeAmmo == 2) return Error(playerid, "Senjata bertype JHP tidak bisa disimpan dimobil!");
+	if(storeAmmo < 1 || storeAmmo > ammo) return Error(playerid, "Jumlah ammo harus diantara 1 sampai %d.", ammo);
+
+	if(storageType == 1)
+	{
+		new id = VehData_GoodFactionVeh(vehicleid, pData[playerid][pFaction]);
+		if(id == -1) return Error(playerid, "Kendaraan faction tidak ditemukan.");
+		if(slot < 0 || slot >= 4) return 1;
+		if(VehicleData[id][Weapon][slot] != 0) return VehicleData_WeaponStorage(playerid, vehicleid);
+
+		SendNearbyMessage(playerid, 30.0, COLOR_PURPLE, "** %s has stored a \"%s\" into their faction vehicle trunk.", ReturnName(playerid), ReturnWeaponName(weaponid));
+		VehicleData[id][Weapon][slot] = weaponid;
+		VehicleData[id][Ammo][slot] = storeAmmo;
+		switch(typeAmmo) {
+			case 0: VehicleData[id][TypeAmmo][slot] = 0;
+			case 1: VehicleData[id][TypeAmmo][slot] = 1;
+		}
+		if(storeAmmo >= ammo) ResetWeaponID(playerid, weaponid);
+		else PlayerGuns[playerid][weaponSlot][weapon_ammo] -= storeAmmo;
+		SaveVehicleData(id);
+		return VehicleData_WeaponStorage(playerid, vehicleid);
+	}
+	else if(storageType == 2)
+	{
+		foreach(new ii : PVehicles) if(pvData[ii][cVeh] == vehicleid)
+		{
+			if(slot < 0 || slot >= 5) return 1;
+			if(pvData[ii][cWeapon][slot] != 0) return Vehicle_WeaponStorage(playerid, vehicleid);
+
+			SendNearbyMessage(playerid, 30.0, COLOR_PURPLE, "** %s has stored a \"%s\" into their weapon storage.", ReturnName(playerid), ReturnWeaponName(weaponid));
+			pvData[ii][cWeapon][slot] = weaponid;
+			pvData[ii][cAmmo][slot] = storeAmmo;
+			switch(typeAmmo) {
+				case 0: pvData[ii][cAmmoType][slot] = 0;
+				case 1: pvData[ii][cAmmoType][slot] = 1;
+			}
+			if(storeAmmo >= ammo) ResetWeaponID(playerid, weaponid);
+			else PlayerGuns[playerid][weaponSlot][weapon_ammo] -= storeAmmo;
+			return Vehicle_WeaponStorage(playerid, vehicleid);
+		}
+	}
+	return 1;
 }

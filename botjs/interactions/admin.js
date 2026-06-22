@@ -1,4 +1,5 @@
 const { MessageFlags } = require('discord.js');
+const { canAccessPanel, getConfig } = require('../config');
 
 async function HandleAdminLevel(interaction, pool) {
 	
@@ -6,8 +7,7 @@ async function HandleAdminLevel(interaction, pool) {
     const level = interaction.options.getInteger('level');
     
     try {
-	   const ownerRole = interaction.guild.roles.cache.find(role => role.name === 'scripter');
-	   if (!interaction.member.roles.cache.has(ownerRole.id)) {
+	   if (!canAccessPanel(interaction, getConfig())) {
 	       await interaction.reply({ content: 'You do not have permission to use this command.', flags: MessageFlags.Ephemeral });
 	       return;
 	   }

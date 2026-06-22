@@ -250,6 +250,8 @@ HouseReset(houseid)
     hData[houseid][hMoney] = 0;
     hData[houseid][hCrack] = 0;
     hData[houseid][hPot] = 0;
+    hData[houseid][hComponent] = 0;
+    hData[houseid][hMaterial] = 0;
 	hData[houseid][hCgun] = 0;
 	hData[houseid][hWeapon] = 0;
 	hData[houseid][hAmmo] = 0;
@@ -269,12 +271,17 @@ HouseReset(houseid)
     hData[houseid][hLabel] = Text3D: INVALID_3DTEXT_ID;
 	House_Type(houseid);
 
-	for (new i = 0; i < 10; i ++)
+	for (new i = 0; i < HOUSE_WEAPON_SLOTS; i ++)
     {
         hData[houseid][hWeapon][i] = 0;
 
 		hData[houseid][hAmmo][i] = 0;
         hData[houseid][hTypeAmmo][i] = 0;
+    }
+
+    for (new i = 0; i < HOUSE_SCHEMATIC_SLOTS; i ++)
+    {
+        hData[houseid][hSchematic][i] = 0;
     }
 }
 
@@ -284,35 +291,30 @@ House_WeaponStorage(playerid, houseid)
         return 0;
 
     static
-        string[320];
+        string[1024];
 
     string[0] = 0;
 
-    for (new i = 0; i < 5; i ++)
+    for (new i = 0; i < HOUSE_WEAPON_SLOTS; i ++)
     {
         if(!hData[houseid][hWeapon][i])
             format(string, sizeof(string), "%sEmpty Slot\n", string);
 
         else
-            format(string, sizeof(string), "%s%s (%s)\n", string, ReturnWeaponName(hData[houseid][hWeapon][i]), GetAmmoTypeHouse(houseid));
+            format(string, sizeof(string), "%s%s (%s)\n", string, ReturnWeaponName(hData[houseid][hWeapon][i]), GetAmmoTypeHouse(houseid, i));
     }
     ShowPlayerDialog(playerid, HOUSE_WEAPONS, DIALOG_STYLE_LIST, "Weapon Storage", string, "Select", "Cancel");
     return 1;
 }
 
-GetAmmoTypeHouse(houseid) {
+GetAmmoTypeHouse(houseid, slot) {
     new type[52];
-    for (new i = 0; i < 5; i ++)
-    {
-        if(hData[houseid][hWeapon][i]) {
-            if(hData[houseid][hTypeAmmo][i]) {
-                format(type, sizeof(type), "Ammo: %d Surplus", hData[houseid][hAmmo][i]);
-            }
-            else {
-                format(type, sizeof(type), "Ammo: %d", hData[houseid][hAmmo][i]);
-            }
-        }
-    }
+
+    if(slot < 0 || slot >= HOUSE_WEAPON_SLOTS)
+        return type;
+
+    if(hData[houseid][hTypeAmmo][slot]) format(type, sizeof(type), "Ammo: %d Surplus", hData[houseid][hAmmo][slot]);
+    else format(type, sizeof(type), "Ammo: %d", hData[houseid][hAmmo][slot]);
     return type;
 }
 
@@ -322,18 +324,22 @@ House_OpenStorage(playerid, houseid)
         return 0;
 
     new
-        items[1],
+        items[2],
         string[10 * 32];
 
-    for (new i = 0; i < 5; i ++) if(hData[houseid][hWeapon][i])
+    for (new i = 0; i < HOUSE_WEAPON_SLOTS; i ++) if(hData[houseid][hWeapon][i])
 	{
         items[0]++;
     }
+    for (new i = 0; i < HOUSE_SCHEMATIC_SLOTS; i ++)
+    {
+        items[1] += hData[houseid][hSchematic][i];
+    }
     if(!Player_OwnsHouse(playerid, houseid))
-        format(string, sizeof(string), "Weapon Storage (%d/5)", items[0]);
+        format(string, sizeof(string), "Weapon Storage (%d/%d)", items[0], HOUSE_WEAPON_SLOTS);
 
     else
-        format(string, sizeof(string), "Weapon Storage (%d/5)\nMoney Safe (%s)\nCrack (%d)\nPot (%d)", items[0], FormatMoney(hData[houseid][hMoney]), hData[houseid][hCrack], hData[houseid][hPot]);
+        format(string, sizeof(string), "Weapon Storage (%d/%d)\nComponent (%d/%d)\nMaterial (%d/%d)\nSchematic (%d/%d)\nMoney Safe (%s)\nCrack (%d)\nPot (%d)", items[0], HOUSE_WEAPON_SLOTS, hData[houseid][hComponent], HOUSE_COMPONENT_CAPACITY, hData[houseid][hMaterial], HOUSE_MATERIAL_CAPACITY, items[1], HOUSE_SCHEMATIC_CAPACITY, FormatMoney(hData[houseid][hMoney]), hData[houseid][hCrack], hData[houseid][hPot]);
 
     ShowPlayerDialog(playerid, HOUSE_STORAGE, DIALOG_STYLE_LIST, "House Storage", string, "Select", "Cancel");
     return 1;
@@ -384,14 +390,22 @@ House_Save(houseid)
     hData[houseid][hPot]
 	);
 
-	for (new i = 0; i < 10; i ++)
+    format(cQuery, sizeof(cQuery), "%s, component='%d', material='%d', schematic='%d|%d|%d|%d|%d|%d'", cQuery,
+        hData[houseid][hComponent],
+        hData[houseid][hMaterial],
+        hData[houseid][hSchematic][0], hData[houseid][hSchematic][1], hData[houseid][hSchematic][2],
+        hData[houseid][hSchematic][3], hData[houseid][hSchematic][4], hData[houseid][hSchematic][5]
+    );
+
+	for (new i = 0; i < HOUSE_WEAPON_SLOTS; i ++)
 	{
         format(cQuery, sizeof(cQuery), "%s, houseWeapon%d='%d', houseAmmo%d='%d'", cQuery, i + 1, hData[houseid][hWeapon][i], i + 1, hData[houseid][hAmmo][i]);
     }
-    format(cQuery, sizeof(cQuery), "%s, houseAmmoType='%d|%d|%d|%d|%d|%d|%d|%d|%d|%d'", cQuery, 
+    format(cQuery, sizeof(cQuery), "%s, houseAmmoType='%d|%d|%d|%d|%d|%d|%d|%d|%d|%d|%d|%d|%d|%d|%d'", cQuery, 
 	hData[houseid][hTypeAmmo][0], hData[houseid][hTypeAmmo][1], hData[houseid][hTypeAmmo][2], hData[houseid][hTypeAmmo][3],
     hData[houseid][hTypeAmmo][4], hData[houseid][hTypeAmmo][5], hData[houseid][hTypeAmmo][6], hData[houseid][hTypeAmmo][7],
-    hData[houseid][hTypeAmmo][8], hData[houseid][hTypeAmmo][9]);
+    hData[houseid][hTypeAmmo][8], hData[houseid][hTypeAmmo][9], hData[houseid][hTypeAmmo][10], hData[houseid][hTypeAmmo][11],
+    hData[houseid][hTypeAmmo][12], hData[houseid][hTypeAmmo][13], hData[houseid][hTypeAmmo][14]);
 
 	format(cQuery, sizeof(cQuery), "%s, houseint='%d', extvw='%d', extint='%d', extposx='%f', extposy='%f', extposz='%f', extposa='%f', intposx='%f', intposy='%f', intposz='%f', intposa='%f', visit='%d', garage='%d', garageposx='%f', garageposy='%f', garageposz='%f', houseBuilder = '%d', houseBuilderTime = '%d' WHERE ID='%d'",
         cQuery,
@@ -791,6 +805,8 @@ function LoadHouses()
 			cache_get_value_name_int(i, "money", hData[hid][hMoney]);
             cache_get_value_name_int(i, "crack", hData[hid][hCrack]);
             cache_get_value_name_int(i, "pot", hData[hid][hPot]);
+            cache_get_value_name_int(i, "component", hData[hid][hComponent]);
+            cache_get_value_name_int(i, "material", hData[hid][hMaterial]);
 			cache_get_value_name_int(i, "locked", hData[hid][hLocked]);
 			cache_get_value_name_int(i, "visit", hData[hid][hLastVisited]);
 			cache_get_value_name_int(i, "garage", hData[hid][hGarage]);
@@ -808,7 +824,7 @@ function LoadHouses()
 			format(str, sizeof(str), "SELECT * FROM `furniture` WHERE `ID` = '%d'", hData[hid][hID]);
             mysql_tquery(g_SQL, str, "OnLoadFurniture", "d", hid);
 
-			for (new j = 0; j < 10; j ++)
+			for (new j = 0; j < HOUSE_WEAPON_SLOTS; j ++)
 			{
 				format(str, 24, "houseWeapon%d", j + 1);
 				cache_get_value_name_int(i, str, hData[hid][hWeapon][j]);
@@ -816,11 +832,14 @@ function LoadHouses()
 				format(str, 24, "houseAmmo%d", j + 1);
 				cache_get_value_name_int(i, str, hData[hid][hAmmo][j]);
 			}
-            new ammo[52];
+            new schematic[32], ammo[80];
+            cache_get_value_name(i, "schematic", schematic);
+            sscanf(schematic, "p<|>dddddd", hData[hid][hSchematic][0], hData[hid][hSchematic][1], hData[hid][hSchematic][2], hData[hid][hSchematic][3], hData[hid][hSchematic][4], hData[hid][hSchematic][5]);
             cache_get_value_name(i, "houseAmmoType", ammo);
-            sscanf(ammo, "p<|>dddddddddd", hData[hid][hTypeAmmo][0], hData[hid][hTypeAmmo][1],
+            sscanf(ammo, "p<|>ddddddddddddddd", hData[hid][hTypeAmmo][0], hData[hid][hTypeAmmo][1],
             hData[hid][hTypeAmmo][2], hData[hid][hTypeAmmo][3], hData[hid][hTypeAmmo][4], hData[hid][hTypeAmmo][5],
-            hData[hid][hTypeAmmo][6], hData[hid][hTypeAmmo][7], hData[hid][hTypeAmmo][8], hData[hid][hTypeAmmo][9]);
+            hData[hid][hTypeAmmo][6], hData[hid][hTypeAmmo][7], hData[hid][hTypeAmmo][8], hData[hid][hTypeAmmo][9],
+            hData[hid][hTypeAmmo][10], hData[hid][hTypeAmmo][11], hData[hid][hTypeAmmo][12], hData[hid][hTypeAmmo][13], hData[hid][hTypeAmmo][14]);
             
             hData[hid][housePacket] = 0;
 			House_Refresh(hid);

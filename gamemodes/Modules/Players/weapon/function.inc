@@ -36,7 +36,9 @@ RemoveWeaponInSlot(playerid, slotid)
 
 PlayerHasWeaponInSlot(playerid, weaponid) 
 {
-    if(PlayerGuns[playerid][g_aWeaponSlots[weaponid]][weapon_slot] == g_aWeaponSlots[weaponid]) {
+    new slot = g_aWeaponSlots[weaponid];
+
+    if(PlayerGuns[playerid][slot][weapon_id] == weaponid && PlayerGuns[playerid][slot][weapon_slot] == slot) {
         return 1;
     }
     return 0;
@@ -123,7 +125,10 @@ ResetWeaponID(playerid, weaponid)
 {
 	new slot = g_aWeaponSlots[weaponid];
 
-    PlayerGuns[playerid][slot][weapon_id] = PlayerGuns[playerid][slot][weapon_ammo] = PlayerGuns[playerid][slot][weapon_typesurplus] = 0;
+    PlayerGuns[playerid][slot][weapon_id] = 0;
+    PlayerGuns[playerid][slot][weapon_ammo] = 0;
+    PlayerGuns[playerid][slot][weapon_typesurplus] = 0;
+    PlayerGuns[playerid][slot][weapon_slot] = 0;
 
 	RemoveWeaponInSlot(playerid, slot);
 	return 1;

@@ -5,6 +5,11 @@ async function handleChangePassword(interaction, pool) {
     const password = interaction.fields.getTextInputValue('password_input');
     const confirmPassword = interaction.fields.getTextInputValue('confirm_password_input');
 
+    if (password.length < 8) {
+        await interaction.reply({ content: ':x: Password must be at least 8 characters long.', flags: MessageFlags.Ephemeral });
+        return;
+    }
+
     if (password !== confirmPassword) {
         await interaction.reply({ content: ':x: Passwords do not match. Please try again.', flags: MessageFlags.Ephemeral });
         return;

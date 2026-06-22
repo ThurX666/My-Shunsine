@@ -1,5 +1,10 @@
 #define MAX_FURNITURE             			(200)
 #define MAX_HOUSE_STRUCTURES            (200)
+#define HOUSE_WEAPON_SLOTS              (15)
+#define HOUSE_COMPONENT_CAPACITY        (5000)
+#define HOUSE_MATERIAL_CAPACITY         (5000)
+#define HOUSE_SCHEMATIC_SLOTS           (6)
+#define HOUSE_SCHEMATIC_CAPACITY        (100)
 enum houseinfo
 {
 	hID,
@@ -12,9 +17,12 @@ enum houseinfo
 	hCgun,
 	hCrack,
 	hPot,
-	hWeapon[10],
-	hAmmo[10],
-	hTypeAmmo[10],
+	hComponent,
+	hMaterial,
+	hSchematic[HOUSE_SCHEMATIC_SLOTS],
+	hWeapon[HOUSE_WEAPON_SLOTS],
+	hAmmo[HOUSE_WEAPON_SLOTS],
+	hTypeAmmo[HOUSE_WEAPON_SLOTS],
 	hInt,
 	hExtVw,
 	hExtInt,

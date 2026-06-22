@@ -76,11 +76,11 @@ async function showChangePasswordModal(interaction, pool) {
 }
 
 // Show Faction Modal
-function factionModal(interaction) {
+function factionModal(interaction, config) {
     const embed = new EmbedBuilder()
         .setTitle("Families & Gang Discord")
         .setDescription("\n_\nini adalah official discord faction My Sunshine Roleplay, Silahkan join ke discord server faction untuk mengetahui informasi terbaru tentang faction.\n_\n")
-        .setImage("https://cdn.discordapp.com/attachments/1500909054153854986/1500914155828281575/standard_1.gif?ex=69fad37c&is=69f981fc&hm=87762101203843b61b3c581110cf62a126107fb9d4efff05d03f3e9b383f9270&")
+        .setImage(config.images.faction)
         .setFooter({ text: "My Sunshine Assistent" })
         .setTimestamp();
 
@@ -98,7 +98,7 @@ function factionModal(interaction) {
                 .setLabel('Medic Departement')
                 .setDescription('Pilih menu ini untuk melihat SAMD')
                 .setEmoji('1247325653406060705')
-                .setValue('Medic-menu'),
+                .setValue('fire-menu'),
 
             new StringSelectMenuOptionBuilder()
                 .setLabel('News Agency')

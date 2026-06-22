@@ -1230,3 +1230,129 @@ function EndLoadCharName(playerid)
 	return 1;
 }
 
+function OfflineSetFaction(adminid, targetName[], factionid, rank)
+{
+	if(cache_num_rows() < 1)
+	{
+		return Error(adminid, "Account "GREY2_E"'%s' "WHITE_E"does not exist.", targetName);
+	}
+
+	new regid, currentFamily, username[MAX_PLAYER_NAME], query[256];
+	cache_get_value_name_int(0, "reg_id", regid);
+	cache_get_value_name_int(0, "family", currentFamily);
+	cache_get_value_name(0, "username", username);
+
+	if(currentFamily != -1)
+	{
+		return Error(adminid, "Player tersebut sudah bergabung family");
+	}
+
+	mysql_format(g_SQL, query, sizeof(query), "UPDATE players SET faction=%d, factionrank=%d WHERE reg_id=%d", factionid, rank, regid);
+	mysql_tquery(g_SQL, query);
+
+	if(factionid == 0)
+	{
+		Servers(adminid, "You have removed %s's from faction.", username);
+	}
+	else
+	{
+		Servers(adminid, "You have set offline player %s's faction ID %d with rank %d.", username, factionid, rank);
+	}
+	return 1;
+}
+
+function OfflineSetAdmin(adminid, targetName[], adminLevel)
+{
+	if(cache_num_rows() < 1)
+	{
+		return Error(adminid, "Account "GREY2_E"'%s' "WHITE_E"does not exist.", targetName);
+	}
+
+	new regid, username[MAX_PLAYER_NAME], query[128];
+	cache_get_value_name_int(0, "reg_id", regid);
+	cache_get_value_name(0, "username", username);
+
+	mysql_format(g_SQL, query, sizeof(query), "UPDATE players SET admin=%d WHERE reg_id=%d", adminLevel, regid);
+	mysql_tquery(g_SQL, query);
+	Servers(adminid, "You has set offline admin level %s to level %d", username, adminLevel);
+	return 1;
+}
+
+function OfflineCheckUCP(adminid, keyword[])
+{
+	if(cache_num_rows() < 1)
+	{
+		return Error(adminid, "Character/ID "GREY2_E"'%s' "WHITE_E"does not exist.", keyword);
+	}
+
+	new regid, username[MAX_PLAYER_NAME], ucpname[MAX_PLAYER_NAME];
+	cache_get_value_name_int(0, "reg_id", regid);
+	cache_get_value_name(0, "username", username);
+	cache_get_value_name(0, "ucpname", ucpname);
+
+	if(isnull(ucpname))
+	{
+		format(ucpname, sizeof(ucpname), "Unknown");
+	}
+
+	SendClientMessageEx(adminid, COLOR_ARWIN, "UCP: "YELLOW_E"Character: {00FFFF}%s(pid: %d) "YELLOW_E"UCP: {00FFFF}%s", username, regid, ucpname);
+	return 1;
+}
+
+function OfflineCheckUCPList(playerid, ucpname[])
+{
+	new name1, name2, name3;
+	format(NameUCP[playerid], MAX_PLAYER_NAME, "%s", ucpname);
+	format(CharNameUCP1[playerid], MAX_PLAYER_NAME, "-");
+	format(CharNameUCP2[playerid], MAX_PLAYER_NAME, "-");
+	format(CharNameUCP3[playerid], MAX_PLAYER_NAME, "-");
+
+	if(cache_num_rows() < 1)
+	{
+		return Error(playerid, "UCP "GREY2_E"'%s' "WHITE_E"does not exist.", ucpname);
+	}
+
+	cache_get_value_name_int(0, "CharName", name1);
+	cache_get_value_name_int(0, "CharName2", name2);
+	cache_get_value_name_int(0, "CharName3", name3);
+
+	new query[128], Cache:charCache;
+	if(name1 > 0)
+	{
+		format(query, sizeof(query), "SELECT username FROM `players` WHERE `reg_id` = '%d'", name1);
+		charCache = mysql_query(g_SQL, query);
+		if(cache_num_rows() > 0) cache_get_value_name(0, "username", CharNameUCP1[playerid], MAX_PLAYER_NAME);
+		cache_delete(charCache);
+	}
+	if(name2 > 0)
+	{
+		format(query, sizeof(query), "SELECT username FROM `players` WHERE `reg_id` = '%d'", name2);
+		charCache = mysql_query(g_SQL, query);
+		if(cache_num_rows() > 0) cache_get_value_name(0, "username", CharNameUCP2[playerid], MAX_PLAYER_NAME);
+		cache_delete(charCache);
+	}
+	if(name3 > 0)
+	{
+		format(query, sizeof(query), "SELECT username FROM `players` WHERE `reg_id` = '%d'", name3);
+		charCache = mysql_query(g_SQL, query);
+		if(cache_num_rows() > 0) cache_get_value_name(0, "username", CharNameUCP3[playerid], MAX_PLAYER_NAME);
+		cache_delete(charCache);
+	}
+	return EndOfflineCheckUCPList(playerid);
+}
+
+function EndOfflineCheckUCPList(playerid)
+{
+	foreach(new i : Player)
+	{
+		if(!strcmp(ReturnName(i), CharNameUCP1[playerid], true) || !strcmp(ReturnName(i), CharNameUCP2[playerid], true) || !strcmp(ReturnName(i), CharNameUCP3[playerid], true))
+		{
+			return Error(playerid, "%s(ID:%d) sedang online!", ReturnName(i), i);
+		}
+	}
+
+	SendClientMessageEx(playerid, COLOR_ARWIN, ""YELLOW_E"UCP: {00FFFF}%s "YELLOW_E"Character 1: {00FFFF}%s "YELLOW_E"Character 2: {00FFFF}%s "YELLOW_E"Character 3: {00FFFF}%s", NameUCP[playerid], CharNameUCP1[playerid], CharNameUCP2[playerid], CharNameUCP3[playerid]);
+	SendClientMessageEx(playerid, COLOR_ARWIN, ""YELLOW_E"Gunakan {00FFFF}/ostats [Nama_Character] "YELLOW_E"untuk cek stats karakter offline.");
+	return 1;
+}
+

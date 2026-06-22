@@ -381,6 +381,8 @@ enum E_PLAYERS
 	pFurnStore,
 	pRadioVehicle,
 	pRadioVehicleOn,
+	pRadioVehicleListening,
+	pRadioVehicleVeh,
 	Float:pFitnessRating[6],
 	pGYMMember,
 	pGYMMemberTime,
