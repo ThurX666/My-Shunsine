@@ -674,6 +674,22 @@ public OnPlayerDeath(playerid, killerid, reason)
 	return 1;
 }
 
+TryAutoRoleplay(playerid, text[])
+{
+	new action[144];
+	if(!strcmp(text, "rpcrash", true) || !strcmp(text, "crash", true) || !strcmp(text, "tabrakan", true))
+		format(action, sizeof(action), "terlihat mengalami kecelakaan dan mencoba mengendalikan situasi.");
+	else if(!strcmp(text, "rprun", true) || !strcmp(text, "kabur", true))
+		format(action, sizeof(action), "terlihat berlari menjauh dari lokasi dengan tergesa-gesa.");
+	else if(!strcmp(text, "rpcj", true) || !strcmp(text, "fight", true) || !strcmp(text, "berantem", true))
+		format(action, sizeof(action), "bersiap melakukan perlawanan dengan gerakan tangan yang agresif.");
+	else return 0;
+
+	if(pData[playerid][pMaskOn] == 1) SendNearbyMessage(playerid, 20.0, 0xC2A2DAFF, "* Mask_%d %s", pData[playerid][pMaskID], action);
+	else SendNearbyMessage(playerid, 20.0, 0xC2A2DAFF, "* %s %s", ReturnName2(playerid), action);
+	return 1;
+}
+
 public OnPlayerText(playerid, text[])
 {
 	if(isnull(text)) return 0;
@@ -844,6 +860,7 @@ public OnPlayerText(playerid, text[])
         }
 		return 0;
 	}
+	if(TryAutoRoleplay(playerid, text)) return 0;
 	new String[500];
 	if(pData[playerid][pAdminDuty] >= 1 && !IsPlayerInEvent(playerid) && !IsPlayerInNewbieSchool(playerid))
 	{
