@@ -5,6 +5,7 @@
 * **Menu Animasi `/e`** - Player sekarang bisa membuka list animasi lewat `/e` atau `/emote`, lalu pilih animasi langsung dari dialog.
 * **Stop Animasi Lebih Jelas** - Saat memakai animasi looping, textdraw instruksi stop animasi tetap muncul agar player tahu animasi bisa dihentikan dengan tombol `SPACE`.
 * **Autorp Chat** - Player sekarang bisa mengetik trigger seperti `crash`, `tabrakan`, `rprun`, `kabur`, `rpcj`, `fight`, atau `berantem` tanpa slash untuk menampilkan teks RP otomatis di sekitar player.
+* **Gaji Server `/gajiserver`** - Player sekarang bisa melihat daftar gaji job dan sidejob langsung dari dalam game.
 
 ## Fixed
 
@@ -17,7 +18,6 @@
 
 ## Coming Next
 
-* `/gajiserver` untuk melihat gaji job dan sidejob.
 * Tambahan 2 slot toys non-VIP.
 * List member family di `/finfo`.
 * Kick family offline lewat `/osetfamily <id> 0`.

@@ -11,7 +11,7 @@
 ## Features
 - [x] Add /e animation dialog with ApplyAnimation entries.
 - [x] Add autorp handling in OnPlayerText without slash commands.
-- [ ] Add /gajiserver from actual job/sidejob salaries.
+- [x] Add /gajiserver from actual job/sidejob salaries.
 - [ ] Add +2 non-VIP toys slots.
 - [ ] Add family member list to /finfo.
 - [ ] Add offline family kick through /osetfamily <id> 0.
@@ -35,3 +35,5 @@
 - /e implementation: added dialog list that reuses existing animation commands through callcmd:: (`/sit`, `/lay`, `/wave`, `/handsup`, `/lean`, `/crossarms`, `/fall`, `/dance`). Existing looping animation flow still shows the SPACE stop textdraw and stops through KEY_SPRINT/space.
 
 - Autorp implementation: added exact chat triggers in OnPlayerText for crash/tabrakan, rprun/kabur, and rpcj/fight/berantem. The triggers produce nearby RP action text without slash commands and run after phone/emergency/newbie-school chat flows.
+
+- /gajiserver implementation: added a player dialog using salary/payout values traced from AddPlayerSalary, GivePlayerMoneyEx, hauling textdraw prices, and dynamic farmer price ranges.

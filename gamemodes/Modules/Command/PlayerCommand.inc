@@ -524,6 +524,23 @@ CMD:gps(playerid, params[])
 	return 1;
 }
 
+CMD:gajiserver(playerid, params[])
+{
+	new string[1600];
+	format(string, sizeof(string), "Job/Sidejob\tGaji\n");
+	format(string, sizeof(string), "%sFaction Duty\t$%s / 60 menit\n", string, FormatMoney(50000));
+	format(string, sizeof(string), "%sTaxi Service\t$%s / 15 menit duty\n", string, FormatMoney(1500));
+	format(string, sizeof(string), "%sMechanic Service\t$%s / 15 menit duty\n", string, FormatMoney(1500));
+	format(string, sizeof(string), "%sCourier\t$%s per paket, max $%s / 10 paket\n", string, FormatMoney(2500), FormatMoney(25000));
+	format(string, sizeof(string), "%sBus Driver\t$%s per lap\n", string, FormatMoney(15000));
+	format(string, sizeof(string), "%sTrucker Hauling\t$%s - $%s per cargo\n", string, FormatMoney(20000), FormatMoney(39900));
+	format(string, sizeof(string), "%sTrucker Crates\t$%s per crate\n", string, FormatMoney(1250));
+	format(string, sizeof(string), "%sFarmer\t$%s - $%s per unit panen\n", string, FormatMoney(100), FormatMoney(200));
+	format(string, sizeof(string), "%sLumber/Fish/Trashmaster\tSesuai jumlah item yang dijual/diantar\n", string);
+	Dialog_Show(playerid, ShowOnly, DIALOG_STYLE_TABLIST_HEADERS, "Gaji Server", string, "Close", "");
+	return 1;
+}
+
 CMD:sleep(playerid, params[])
 {
 	if(pData[playerid][pInjured] == 1)
