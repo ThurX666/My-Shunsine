@@ -53,7 +53,7 @@ CMD:buyschematic(playerid)
         format(str, sizeof(str), "Schematic\tCost\nCountry Rifle\t$125.00\nShotgun\t$125.00\nSawn Of Shotgun\t$200.00");
     }
     
-    Dialog_Show(playerid, BuySchematic, DIALOG_STYLE_LIST, "Buying Schematic", str, "Buy", "Cancel");
+    Dialog_Show(playerid, BuySchematic, DIALOG_STYLE_TABLIST_HEADERS, "Buying Schematic", str, "Buy", "Cancel");
     return 1;
 }
 

@@ -2866,7 +2866,7 @@ CMD:osetadmin(playerid, params[])
 	if(pData[playerid][pAdmin] < 6)
 		return PermissionError(playerid);
 
-	new target[24], alevel, tmp[64], query[192];
+	new target[24], alevel, query[192];
 	if(sscanf(params, "s[24]d", target, alevel))
 	{
 	    Usage(playerid, "/osetadmin <ID/Name> <level 0 - 8>");
@@ -2902,8 +2902,6 @@ CMD:osetadmin(playerid, params[])
 	}
 
 	mysql_tquery(g_SQL, query, "OfflineSetAdmin", "isi", playerid, target, alevel);
-	format(tmp, sizeof(tmp), "%d", alevel);
-	StaffCommandLog("OSETADMIN", playerid, INVALID_PLAYER_ID, tmp);
 	return 1;
 }
 
@@ -3371,15 +3369,15 @@ CMD:osetfaction(playerid, params[])
 	if(pData[playerid][pDivision] != 1) return Error(playerid, "You must be a faction division.");
 
 	if(sscanf(params, "s[24]dd", target, fid, rank))
-		return Usage(playerid, "/osetfaction [name/regid] [1.SAPD, 2.SAGS, 3.SAMD, 4.SANEW] [rank 1-6]");
+		return Usage(playerid, "/osetfaction [name/regid] [1.SAPD, 2.SAGS, 3.SAMD, 4.SANEW] [rank 0-6]");
 
 	if(fid < 0 || fid > 4)
 		return Error(playerid, "You have specified an invalid faction ID 0 - 4.");
 
-	if(fid == 0)
-		rank = 0;
+	if(rank == 0)
+		fid = 0;
 	else if(rank < 1 || rank > 6)
-		return Error(playerid, "You have specified an invalid rank 1 - 6.");
+		return Error(playerid, "You have specified an invalid rank 0 - 6.");
 
 	if(IsNumeric(target))
 	{

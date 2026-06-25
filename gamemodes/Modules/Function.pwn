@@ -941,8 +941,9 @@ function RefullCar(playerid, vehicleid)
 			InfoTD_MSG(playerid, 8000, "Refulling done!");
 			//SendNearbyMessage(playerid, 30.0, COLOR_PURPLE, "** %s has successfully refulling the vehicle.", ReturnName(playerid));
 			KillTimer(pData[playerid][pActivity]);
+			pData[playerid][pActivity] = 0;
 			pData[playerid][pActivityTime] = 0;
-			for (new i; i < 3; i++) PlayerTextDrawHide(playerid, ProggresBar[playerid][i]);
+			HideProgressBar(playerid);
 		}
 		else if(pData[playerid][pActivityTime] < 100 && IsValidVehicle(vehicleid))
 		{
@@ -953,16 +954,18 @@ function RefullCar(playerid, vehicleid)
 		{
 			Error(playerid, "Refulling fail! Anda tidak berada didekat kendaraan tersebut!");
 			KillTimer(pData[playerid][pActivity]);
+			pData[playerid][pActivity] = 0;
 			pData[playerid][pActivityTime] = 0;
-			for (new i; i < 3; i++) PlayerTextDrawHide(playerid, ProggresBar[playerid][i]);
+			HideProgressBar(playerid);
 		}
 	}
 	else
 	{
 		Error(playerid, "Refulling fail! Anda tidak berada didekat kendaraan tersebut!");
 		KillTimer(pData[playerid][pActivity]);
+		pData[playerid][pActivity] = 0;
 		pData[playerid][pActivityTime] = 0;
-		for (new i; i < 3; i++) PlayerTextDrawHide(playerid, ProggresBar[playerid][i]);
+		HideProgressBar(playerid);
 		return 1;
 	}
 	return 1;
@@ -1242,7 +1245,7 @@ function OfflineSetFaction(adminid, targetName[], factionid, rank)
 	cache_get_value_name_int(0, "family", currentFamily);
 	cache_get_value_name(0, "username", username);
 
-	if(currentFamily != -1)
+	if(factionid != 0 && currentFamily != -1)
 	{
 		return Error(adminid, "Player tersebut sudah bergabung family");
 	}
@@ -1252,7 +1255,7 @@ function OfflineSetFaction(adminid, targetName[], factionid, rank)
 
 	if(factionid == 0)
 	{
-		Servers(adminid, "You have removed %s's from faction.", username);
+		Servers(adminid, "You have kicked offline player %s from faction.", username);
 	}
 	else
 	{
@@ -1268,13 +1271,26 @@ function OfflineSetAdmin(adminid, targetName[], adminLevel)
 		return Error(adminid, "Account "GREY2_E"'%s' "WHITE_E"does not exist.", targetName);
 	}
 
-	new regid, username[MAX_PLAYER_NAME], query[128];
+	new regid, username[MAX_PLAYER_NAME], query[128], tmp[64];
 	cache_get_value_name_int(0, "reg_id", regid);
 	cache_get_value_name(0, "username", username);
 
+	if(adminLevel < 0 || adminLevel > 8)
+		return Error(adminid, "Level can't be lower than 0 or higher than 8!");
+
 	mysql_format(g_SQL, query, sizeof(query), "UPDATE players SET admin=%d WHERE reg_id=%d", adminLevel, regid);
 	mysql_tquery(g_SQL, query);
-	Servers(adminid, "You has set offline admin level %s to level %d", username, adminLevel);
+	if(adminLevel == 0)
+	{
+		Servers(adminid, "You have removed offline player %s(%d) from admin.", username, regid);
+	}
+	else
+	{
+		Servers(adminid, "You has set admin level %s(%d) to level %d (offline)", username, regid, adminLevel);
+	}
+
+	format(tmp, sizeof(tmp), "%d", adminLevel);
+	StaffCommandLog("OSETADMIN", adminid, INVALID_PLAYER_ID, tmp);
 	return 1;
 }
 

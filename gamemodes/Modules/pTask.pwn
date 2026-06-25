@@ -1,3 +1,5 @@
+new bool:gWeaponAttachedObject[MAX_PLAYERS][10];
+
 
 task ServerRestart[1000]()
 {
@@ -894,16 +896,28 @@ ptask PlayerData_WeaponAttach[1000](playerid)
 				if (weaponid && ammo && !WeaponSettings[playerid][index][Hidden] && IsWeaponWearable(weaponid) && EditingWeapon[playerid] != weaponid)
 				{
 					objectslot = GetWeaponObjectSlot(weaponid);
-					if (GetPlayerWeapon(playerid) != weaponid) SetPlayerAttachedObject(playerid, objectslot, GetWeaponModel(weaponid), WeaponSettings[playerid][index][Bone], WeaponSettings[playerid][index][Position][0], WeaponSettings[playerid][index][Position][1], WeaponSettings[playerid][index][Position][2], WeaponSettings[playerid][index][Position][3], WeaponSettings[playerid][index][Position][4], WeaponSettings[playerid][index][Position][5], 1.0, 1.0, 1.0);
-					else if(IsPlayerAttachedObjectSlotUsed(playerid, objectslot)) RemovePlayerAttachedObject(playerid, objectslot);
+					if (GetPlayerWeapon(playerid) != weaponid)
+					{
+						SetPlayerAttachedObject(playerid, objectslot, GetWeaponModel(weaponid), WeaponSettings[playerid][index][Bone], WeaponSettings[playerid][index][Position][0], WeaponSettings[playerid][index][Position][1], WeaponSettings[playerid][index][Position][2], WeaponSettings[playerid][index][Position][3], WeaponSettings[playerid][index][Position][4], WeaponSettings[playerid][index][Position][5], 1.0, 1.0, 1.0);
+						gWeaponAttachedObject[playerid][objectslot] = true;
+					}
+					else if(gWeaponAttachedObject[playerid][objectslot] && IsPlayerAttachedObjectSlotUsed(playerid, objectslot))
+					{
+						RemovePlayerAttachedObject(playerid, objectslot);
+						gWeaponAttachedObject[playerid][objectslot] = false;
+					}
 				}
 			}
 		}
-		for (new i = 5; i <= 8; i++) if (IsPlayerAttachedObjectSlotUsed(playerid, i))
+		for (new i = 5; i <= 8; i++) if (gWeaponAttachedObject[playerid][i] && IsPlayerAttachedObjectSlotUsed(playerid, i))
         {
             count = 0;
             for (new j = 2; j <= 38; j ++) if (PlayerHasWeapon(playerid, j) && GetWeaponObjectSlot(j) == i) count++;
-            if (!count) RemovePlayerAttachedObject(playerid, i);
+            if (!count)
+			{
+				RemovePlayerAttachedObject(playerid, i);
+				gWeaponAttachedObject[playerid][i] = false;
+			}
         }
 		WeaponTick[playerid] = NetStats_GetConnectedTime(playerid);
 	}

@@ -1,5 +1,5 @@
 // Server Define
-#define TEXT_GAMEMODE	"Version 1.0.16 Stronghold"
+#define TEXT_GAMEMODE	"Version 1.0.17 Stronghold"
 #define TEXT_WEBURL		"discord.gg/mysunshine"
 #define TEXT_LANGUAGE	"Bahasa Indonesia / English"
 

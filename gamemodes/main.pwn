@@ -3002,6 +3002,18 @@ public OnPlayerEditAttachedObject(playerid, response, index, modelid, boneid, Fl
 
 public OnPlayerEditDynamicObject(playerid, STREAMER_TAG_OBJECT: objectid, response, Float:x, Float:y, Float:z, Float:rx, Float:ry, Float:rz)
 {
+	if(response == EDIT_RESPONSE_CANCEL)
+	{
+		if(pData[playerid][pEditHouseStructure] != -1 && pData[playerid][pEditStructure] != -1)
+		{
+			new houseid = pData[playerid][pEditHouseStructure], id = pData[playerid][pEditStructure];
+			HouseStructure_Refresh(id, houseid);
+			pData[playerid][pEditHouseStructure] = -1;
+			pData[playerid][pEditStructure] = -1;
+			pData[playerid][pEditingMode] = -1;
+			return 1;
+		}
+	}
 	if(response == EDIT_RESPONSE_FINAL)
 	{
 		if(GetPVarType(playerid,"EditingObject") > 0)
@@ -3065,6 +3077,7 @@ public OnPlayerEditDynamicObject(playerid, STREAMER_TAG_OBJECT: objectid, respon
 
 			pData[playerid][pEditHouseStructure] = -1;
 			pData[playerid][pEditStructure] = -1;
+			pData[playerid][pEditingMode] = -1;
 			return 1;
 		}
 		if (GetPVarInt(playerid, "editTollGateID") != -1) {
@@ -4296,6 +4309,7 @@ GetStructureNameByModel(model) {
         strcat(name, g_aHouseStructure[i][e_StructureName]);
         break;
     }
+    if(isnull(name)) format(name, sizeof(name), "Model ID %d", model);
     return name;
 }
 

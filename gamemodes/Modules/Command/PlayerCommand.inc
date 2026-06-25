@@ -3124,35 +3124,35 @@ CMD:radio(playerid, params[])
 {
 	if(pData[playerid][pVip] < 2)
 		return PermissionError(playerid);
-	if(IsPlayerConnected(playerid)) 
+
+	if(isnull(params))
+		return Usage(playerid, "/radio [off/set]");
+
+	if(strcmp(params, "off", true) == 0)
 	{
-        if(isnull(params)) 
+		if(GetPVarType(playerid, "BBArea"))
 		{
-            Usage(playerid, "/radio [off/set]");
-            return 1;
-        }
-		if(strcmp(params,"off",true) == 0) 
-		{
-			if(GetPVarType(playerid, "BBArea"))
+			SendClientMessageEx(playerid, COLOR_ARWIN, "RADIO: "WHITE_E"You've turned off the radio");
+			foreach(new i : Player)
 			{
-				SendClientMessageEx(playerid, COLOR_ARWIN, "RADIO: "WHITE_E"You've turned off the radio");
-				foreach(new i : Player)
+				if(IsPlayerInDynamicArea(i, GetPVarInt(playerid, "BBArea")))
 				{
-					if(IsPlayerInDynamicArea(i, GetPVarInt(playerid, "BBArea")))
-					{
-						StopStream(i);
-					}
+					StopStream(i);
 				}
-				DeletePVar(playerid, "BBStation");
-				PickUpBoombox(playerid);
 			}
-        }
-		if(strcmp(params,"set",true) == 0) 
-		{
-			ShowPlayerDialog(playerid, DIALOG_URL_BOOMBOX, DIALOG_STYLE_INPUT, "Radio URL", "Enter music url to play music", "Play", "Cancel");
-        }
-	}	
-	return 1;
+			DeletePVar(playerid, "BBStation");
+			PickUpBoombox(playerid);
+		}
+		return 1;
+	}
+
+	if(strcmp(params, "set", true) == 0)
+	{
+		ShowPlayerDialog(playerid, DIALOG_URL_BOOMBOX, DIALOG_STYLE_INPUT, "Radio URL", "Enter music url to play music", "Play", "Cancel");
+		return 1;
+	}
+
+	return Usage(playerid, "/radio [off/set]");
 }
 
 CMD:jobduty(playerid, params[])

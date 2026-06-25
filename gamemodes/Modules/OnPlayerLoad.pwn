@@ -617,9 +617,11 @@ function AssignPlayerData(playerid)
 	pData[playerid][LoginTimer] = 0;
 	pData[playerid][IsLoggedIn] = true;
 
+	SetPlayerInterior(playerid, pData[playerid][pInt]);
+	SetPlayerVirtualWorld(playerid, pData[playerid][pWorld]);
 	SetSpawnInfo(playerid, NO_TEAM, pData[playerid][pSkin], pData[playerid][pPosX], pData[playerid][pPosY], pData[playerid][pPosZ], pData[playerid][pPosA], 0, 0, 0, 0, 0, 0);
 	SpawnPlayer(playerid);
-	Streamer_UpdateEx(playerid, pData[playerid][pPosX], pData[playerid][pPosY], pData[playerid][pPosZ]);
+	Streamer_UpdateEx(playerid, pData[playerid][pPosX], pData[playerid][pPosY], pData[playerid][pPosZ], pData[playerid][pWorld], pData[playerid][pInt]);
 	
 	pData[playerid][pNotifSpawn] = 1;
 	if(pData[playerid][pID] < 1)
