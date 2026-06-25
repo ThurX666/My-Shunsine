@@ -1,9 +1,9 @@
-# Changelog Version 1.0.18 Emote
+# Changelog v1.0.18 Emote
 
 ## Added
 
 * **Menu Animasi `/e`** - Player sekarang bisa membuka list animasi lewat `/e` atau `/emote`, lalu pilih animasi langsung dari dialog.
-* **Autorp Chat** - Player sekarang bisa mengetik trigger seperti `crash`, `tabrakan`, `rprun`, `kabur`, `rpcj`, `fight`, atau `berantem` tanpa slash untuk menampilkan teks RP otomatis di sekitar player.
+* **Autorp Chat** - Player sekarang bisa mengetik trigger seperti `rpcrash`, `rprun`, `rpcj`, `rpfight`, atau `rpgun` tanpa slash untuk menampilkan teks RP otomatis di sekitar player.
 * **Gaji Server `/gajiserver`** - Player sekarang bisa melihat daftar gaji job dan sidejob langsung dari dalam game.
 * **Info Family `/finfo`** - Menu `Family Member` di dalam `/finfo` sekarang menampilkan list yang rapi, berisi daftar seluruh member family (online maupun offline) lengkap dengan pangkatnya.
 * **Kick Family Offline** - Admin sekarang bisa kick member family yang sedang offline lewat command `/osetfamily <nama/regid> 0`.
@@ -14,6 +14,7 @@
 * **Tampilan List Family** - Layout command `/finfo` pada fitur Family Member dirombak menjadi daftar bertabel dengan header kolom nama, status koneksi, dan rank yang lebih jelas dibaca.
 * **Stop Animasi Lebih Jelas** - Penghentian animasi looping sekarang lebih tegas mengacu pada tombol `SPACE` yang secara konstan tertera sebagai textdraw saat player sedang dalam animasi statik.
 * **Weapon Attached Object Cleanup** - Cleanup senjata kini hanya melepas object yang memang dipasang oleh sistem weapon (Slot 5-8), sehingga tidak lagi konflik dan menghapus preview aksesoris temporer (`FSTOYS`).
+* **Mapping Exterior City Hall** - Area luar Balai Kota telah dirombak dengan bentuk mapping baru yang lebih memanjakan mata! Silakan dikunjungi untuk RP yang lebih asyik.
 
 ## Fixed
 
@@ -23,5 +24,8 @@
 * **Sidejob Bus Route C/D** - Rute C dan D sekarang berjalan dari checkpoint yang benar.
 * **Toggle Neon Tombol N** - Neon/lampu kendaraan tidak lagi toggle berkali-kali saat tombol `N` ditahan.
 * **Offline Stats `/ostats`** - Tampilan faction, family, admin, dan helper di `/ostats` sekarang sesuai data player.
+
+**Catatan dari Developer:**
+> _"Update kali ini kami berfokus menyeimbangkan kestabilan sistem (seperti cleanup senjata dan anti-spam boombox) sekaligus memberikan sentuhan fitur baru agar suasana RP semakin hidup. Silakan jajal menu animasi baru `/e` dan mapping anyar di City Hall, selamat bermain!"_
 
 @everyone

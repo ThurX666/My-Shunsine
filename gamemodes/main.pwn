@@ -677,12 +677,14 @@ public OnPlayerDeath(playerid, killerid, reason)
 TryAutoRoleplay(playerid, text[])
 {
 	new action[144];
-	if(!strcmp(text, "rpcrash", true) || !strcmp(text, "crash", true) || !strcmp(text, "tabrakan", true))
+	if(!strcmp(text, "rpcrash", true))
 		format(action, sizeof(action), "terlihat mengalami kecelakaan dan mencoba mengendalikan situasi.");
-	else if(!strcmp(text, "rprun", true) || !strcmp(text, "kabur", true))
+	else if(!strcmp(text, "rprun", true))
 		format(action, sizeof(action), "terlihat berlari menjauh dari lokasi dengan tergesa-gesa.");
-	else if(!strcmp(text, "rpcj", true) || !strcmp(text, "fight", true) || !strcmp(text, "berantem", true))
+	else if(!strcmp(text, "rpcj", true) || !strcmp(text, "rpfight", true))
 		format(action, sizeof(action), "bersiap melakukan perlawanan dengan gerakan tangan yang agresif.");
+	else if(!strcmp(text, "rpgun", true))
+		format(action, sizeof(action), "meraih senjatanya dengan sigap dan bersiap menembak.");
 	else return 0;
 
 	if(pData[playerid][pMaskOn] == 1) SendNearbyMessage(playerid, 20.0, 0xC2A2DAFF, "* Mask_%d %s", pData[playerid][pMaskID], action);
