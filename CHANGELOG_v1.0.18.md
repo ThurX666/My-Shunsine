@@ -16,6 +16,8 @@
 
 ## Changed
 
+* **Animation Dialog `/e`** - Tambah command `/e` dan alias `/emote` yang membuka dialog list animasi. Pilihan dialog memakai command animasi existing lewat `callcmd::`, sehingga behavior stop anim tetap mengikuti sistem lama dengan textdraw `PRESS SPACE TO STOP ANIMATION`.
+
 * **Weapon Attached Object Cleanup** - Cleanup weapon sekarang hanya melepas attached object yang sebelumnya dipasang oleh sistem weapon, sehingga temporary/preview toys `FSTOYS` di slot yang sama tidak ikut terhapus.
 
 * **Toys AXP Investigation Flow** - Alur investigasi Toys AXP sekarang dibakukan lewat OpenSpec `fix-toys-axp-flow`, dengan pemisahan jelas antara temporary `FSTOYS` dan toys persistent database `aksesoris`.
@@ -28,7 +30,7 @@
 
 ## Pending v1.0.18 Request
 
-* **New Features** - `/e` dialog animasi, autorp di `OnPlayerText` tanpa slash, `/gajiserver`, +2 slot toys non-VIP, `/finfo` list member family, dan `/osetfamily <id> 0`.
+* **New Features** - autorp di `OnPlayerText` tanpa slash, `/gajiserver`, +2 slot toys non-VIP, `/finfo` list member family, dan `/osetfamily <id> 0`.
 
 
 **Catatan:**

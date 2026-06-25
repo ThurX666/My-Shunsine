@@ -33,6 +33,45 @@ StopLoopingAnim(playerid)
  	PlayerTextDrawHide(playerid, AnimTD[playerid]);
 }
 
+ShowEmoteDialog(playerid)
+{
+	Dialog_Show(playerid, DIALOG_EMOTE, DIALOG_STYLE_LIST, "Animation List", "Duduk 1\nDuduk 2\nDuduk 3\nDuduk 4\nDuduk 5\nTidur 1\nTidur 2\nTidur 3\nWave 1\nWave 2\nHands Up\nLean 1\nLean 2\nCross Arms 1\nCross Arms 2\nFall 1\nFall 2\nDance 1\nDance 2", "Select", "Close");
+	return 1;
+}
+
+ApplyEmoteDialog(playerid, listitem)
+{
+	switch(listitem)
+	{
+		case 0: callcmd::sit(playerid, "1");
+		case 1: callcmd::sit(playerid, "2");
+		case 2: callcmd::sit(playerid, "3");
+		case 3: callcmd::sit(playerid, "4");
+		case 4: callcmd::sit(playerid, "5");
+		case 5: callcmd::lay(playerid, "1");
+		case 6: callcmd::lay(playerid, "2");
+		case 7: callcmd::lay(playerid, "3");
+		case 8: callcmd::wave(playerid, "1");
+		case 9: callcmd::wave(playerid, "2");
+		case 10: callcmd::handsup(playerid, "");
+		case 11: callcmd::lean(playerid, "1");
+		case 12: callcmd::lean(playerid, "2");
+		case 13: callcmd::crossarms(playerid, "1");
+		case 14: callcmd::crossarms(playerid, "2");
+		case 15: callcmd::fall(playerid, "1");
+		case 16: callcmd::fall(playerid, "2");
+		case 17: callcmd::dance(playerid, "1");
+		case 18: callcmd::dance(playerid, "2");
+	}
+	return 1;
+}
+
+CMD:e(playerid, params[])
+	return ShowEmoteDialog(playerid);
+
+CMD:emote(playerid, params[])
+	return callcmd::e(playerid, params);
+
 PreloadAnimLib(playerid, animlib[])
 {
 	ApplyAnimation(playerid,animlib,"null",0.0,0,0,0,0,0,1);

@@ -5,8 +5,8 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
     while(strfind(inputtext, "%s",true) !=-1) strdel(inputtext,strfind(inputtext, "%s",true),strfind(inputtext, "%s",true)+2);
 	while(strfind(inputtext, "%s",true) !=-1) strdel(inputtext,strfind(inputtext, "%s",true),strfind(inputtext, "%s",true)+2);
 
-    if(dialogid == DIALOG_LOGIN)
-    {
+	if(dialogid == DIALOG_LOGIN)
+	{
         if(!response) return Kick(playerid);
 
 		new hashed_pass[65];
@@ -109,8 +109,13 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		mysql_tquery(g_SQL, query, "CreateChar", "is", playerid, inputtext);
 		return 1;
 	}
+	if(dialogid == DIALOG_EMOTE)
+	{
+		if(!response) return 1;
+		return ApplyEmoteDialog(playerid, listitem);
+	}
 	if(dialogid == DIALOG_REGISTER1)
-    {
+	{
 		if (!response) return Kick(playerid);
 		if (strlen(inputtext) <= 5) return ShowPlayerDialog(playerid, DIALOG_REGISTER, DIALOG_STYLE_INPUT, "Registration", "Kata sandi Anda harus lebih dari 5 karakter!\nSilakan masukkan kata sandi Anda di bidang di bawah ini:", "Register", "Abort");
 		

@@ -769,7 +769,8 @@ enum
 	DIALOG_TAGSSIZEOB,
 	DIALOG_TAGSCOLOR,
 
-	DIALOG_ADDFURNOBJECT
+	DIALOG_ADDFURNOBJECT,
+	DIALOG_EMOTE
 }
    
 // ------------------------------------------
