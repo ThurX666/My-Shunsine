@@ -5,7 +5,7 @@
 - [x] Investigate and fix Bombox play log spam.
 - [x] Investigate and fix schematic menu/log weapon mismatch.
 - [x] Investigate and fix sidejobs route C/D.
-- [ ] Investigate and fix otot N neon camera zoom.
+- [x] Investigate and fix otot N neon camera zoom.
 - [ ] Investigate and fix /ostats wrong display.
 
 ## Features
@@ -27,3 +27,5 @@
 - Bombox root cause: OnPlayerEnterDynamicArea had a duplicate boombox loop that replayed audio and sent SendCustomMessage to the boombox owner every time any player entered the radio area. Removed the duplicate block; the first enter-area handler still plays audio for the entering player.
 
 - Sidejobs Route C/D root cause: Bus route C started/continued from BusRuteCD[step] -> [step+1] while step was initialized to 1, skipping the first route point. ContinueBusD reset BusCDSteps[playerid][0] instead of BusCDSteps[playerid][1], so route D did not restart from its route start.
+
+- Neon N key root cause: OnPlayerKeyStateChange used a held-key check for KEY_NO, so /toglight could run repeatedly while N was held. Changed it to IsKeyJustDown(KEY_NO, newkeys, oldkeys) so light/neon toggles once per press.

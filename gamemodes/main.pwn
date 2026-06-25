@@ -1338,7 +1338,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 		{
 			if(IsPlayerInAnyVehicle(playerid)) Vehicle_Lock(GetPlayerVehicleID(playerid), playerid);
 		}
-		if((newkeys & KEY_NO ))
+		if(IsKeyJustDown(KEY_NO, newkeys, oldkeys))
 		{
 			if(IsPlayerInAnyVehicle(playerid)) return callcmd::toglight(playerid, "");
 		}

@@ -2,6 +2,8 @@
 
 ## Fixed Bugs
 
+* **Neon Toggle N Key** - Fix toggle lampu/neon dari tombol `N` yang bisa terpanggil berulang saat tombol ditahan, menyebabkan kamera terasa zoom/glitch.
+
 * **Bus Sidejob Route C/D** - Fix route C yang melewati checkpoint awal dan route D yang salah reset step saat lanjut lap.
 
 * **Bombox Radio Log Spam** - Fix log/pesan radio yang muncul berulang saat player masuk area boombox dengan menghapus replay handler duplikat di `OnPlayerEnterDynamicArea`.
@@ -26,7 +28,7 @@
 
 * **New Features** - `/e` dialog animasi, autorp di `OnPlayerText` tanpa slash, `/gajiserver`, +2 slot toys non-VIP, `/finfo` list member family, dan `/osetfamily <id> 0`.
 
-* **Bug Fixes Pending Investigation** - Otot N neon camera zoom dan `/ostats` display bug.
+* **Bug Fixes Pending Investigation** - `/ostats` display bug.
 
 **Catatan:**
 ```
