@@ -1,7 +1,7 @@
 # Tasks
 
 ## Bug Fixes
-- [ ] Finish Toys/AXP validation from fix-toys-axp-flow.
+- [x] Finish Toys/AXP validation from fix-toys-axp-flow.
 - [x] Investigate and fix Bombox play log spam.
 - [x] Investigate and fix schematic menu/log weapon mismatch.
 - [x] Investigate and fix sidejobs route C/D.
