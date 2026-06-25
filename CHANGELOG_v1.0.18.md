@@ -1,14 +1,19 @@
-# Changelog v1.0.18
+# Changelog v1.0.18 Stability Update
 
 ## Added
 
 * **Menu Animasi `/e`** - Player sekarang bisa membuka list animasi lewat `/e` atau `/emote`, lalu pilih animasi langsung dari dialog.
-* **Stop Animasi Lebih Jelas** - Saat memakai animasi looping, textdraw instruksi stop animasi tetap muncul agar player tahu animasi bisa dihentikan dengan tombol `SPACE`.
 * **Autorp Chat** - Player sekarang bisa mengetik trigger seperti `crash`, `tabrakan`, `rprun`, `kabur`, `rpcj`, `fight`, atau `berantem` tanpa slash untuk menampilkan teks RP otomatis di sekitar player.
 * **Gaji Server `/gajiserver`** - Player sekarang bisa melihat daftar gaji job dan sidejob langsung dari dalam game.
-* **Slot Tambahan Aksesoris** - Player sekarang memiliki maksimal 7 slot aksesoris/toys (tambahan 2 slot untuk semua player).
 * **Info Family `/finfo`** - Menu `Family Member` di dalam `/finfo` sekarang menampilkan list yang rapi, berisi daftar seluruh member family (online maupun offline) lengkap dengan pangkatnya.
 * **Kick Family Offline** - Admin sekarang bisa kick member family yang sedang offline lewat command `/osetfamily <nama/regid> 0`.
+
+## Changed
+
+* **Slot Tambahan Aksesoris** - Batas slot aksesoris di sistem dinaikkan (maksimal 7 slot toys) agar semua player mendapatkan lebih banyak kapasitas tanpa memerlukan VIP.
+* **Tampilan List Family** - Layout command `/finfo` pada fitur Family Member dirombak menjadi daftar bertabel dengan header kolom nama, status koneksi, dan rank yang lebih jelas dibaca.
+* **Stop Animasi Lebih Jelas** - Penghentian animasi looping sekarang lebih tegas mengacu pada tombol `SPACE` yang secara konstan tertera sebagai textdraw saat player sedang dalam animasi statik.
+* **Weapon Attached Object Cleanup** - Cleanup senjata kini hanya melepas object yang memang dipasang oleh sistem weapon (Slot 5-8), sehingga tidak lagi konflik dan menghapus preview aksesoris temporer (`FSTOYS`).
 
 ## Fixed
 
