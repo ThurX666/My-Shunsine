@@ -713,6 +713,7 @@ function LoadStats(playerid, PlayersName[])
 		cache_get_value_index_int(0, 4, levelup);
 		cache_get_value_index_int(0, 5, vip);
 		cache_get_value_index_int(0, 6, viptime);
+		cache_get_value_index_int(0, 7, coin);
 		cache_get_value_index(0, 8, regdate);
 		cache_get_value_index(0, 9, lastlogin);
 		cache_get_value_index_int(0, 10, money);

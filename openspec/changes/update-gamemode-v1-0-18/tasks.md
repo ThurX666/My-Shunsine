@@ -6,7 +6,7 @@
 - [x] Investigate and fix schematic menu/log weapon mismatch.
 - [x] Investigate and fix sidejobs route C/D.
 - [x] Investigate and fix otot N neon camera zoom.
-- [ ] Investigate and fix /ostats wrong display.
+- [x] Investigate and fix /ostats wrong display.
 
 ## Features
 - [ ] Add /e animation dialog with ApplyAnimation entries.
@@ -29,3 +29,5 @@
 - Sidejobs Route C/D root cause: Bus route C started/continued from BusRuteCD[step] -> [step+1] while step was initialized to 1, skipping the first route point. ContinueBusD reset BusCDSteps[playerid][0] instead of BusCDSteps[playerid][1], so route D did not restart from its route start.
 
 - Neon N key root cause: OnPlayerKeyStateChange used a held-key check for KEY_NO, so /toglight could run repeatedly while N was held. Changed it to IsKeyJustDown(KEY_NO, newkeys, oldkeys) so light/neon toggles once per press.
+
+- /ostats root cause: query selected admin as column 0, but LoadStats read column 0 as email. This shifted every offline stat field, causing faction/family/admin/helper labels to display wrong values. Added email to the select list and loaded gold from index 7.

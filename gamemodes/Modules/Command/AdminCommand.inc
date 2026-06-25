@@ -1192,7 +1192,7 @@ CMD:ostats(playerid, params[])
     new cVar[500];
     new cQuery[600];
 
-	strcat(cVar, "admin,helper,level,levelup,vip,vip_time,gold,reg_date,last_login,money,bmoney,brek,hours,minutes,seconds,");
+	strcat(cVar, "email,admin,helper,level,levelup,vip,vip_time,gold,reg_date,last_login,money,bmoney,brek,hours,minutes,seconds,");
 	strcat(cVar, "gender,age,faction,family,warn,job,job2,interior,world");
 
 	mysql_format(g_SQL, cQuery, sizeof(cQuery), "SELECT %s FROM players WHERE username='%e' LIMIT 1", cVar, name);
