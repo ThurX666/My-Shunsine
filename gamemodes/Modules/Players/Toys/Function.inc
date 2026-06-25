@@ -37,7 +37,7 @@ function LoadPlayerToys(extraid)
 
 Dyoc_Attach(playerid)
 {
-    for (new index = 0; index != 5; index ++) 
+    for (new index = 0; index != MAX_ACC; index ++) 
     {
         if(AccData[playerid][index][accShow] == 1) 
         {

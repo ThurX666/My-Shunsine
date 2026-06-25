@@ -32,14 +32,14 @@ CMD:dyoc(playerid)
 
     strcat(info,"Index\tName\tBone\n");
     for (new id = 0; id != MAX_ACC; id++) if(AccData[playerid][id][accExists]) {
-        if (!AccData[playerid][id][accBone]) { // proteksi buat player android
-            AccData[playerid][id][accBone] = 1;
-        }
-        format(info, sizeof(info),  "%s%d\t%s\t%s\n", info, id, AccData[playerid][id][accName], accBones[AccData[playerid][id][accBone]-1]);
-        if (count < 5) {
-            ListedAcc[playerid][count] = id;
-            count++;
-        }
+		if (!AccData[playerid][id][accBone]) { // proteksi buat player android
+			AccData[playerid][id][accBone] = 1;
+		}
+		format(info, sizeof(info),  "%s%d\t%s\t%s\n", info, id, AccData[playerid][id][accName], accBones[AccData[playerid][id][accBone]-1]);
+		if (count < MAX_ACC) {
+			ListedAcc[playerid][count] = id;
+			count++;
+		}
     }
     if(!count) Error(playerid, "You don't have some accesories.");
     else Dialog_Show(playerid, Aksesoris, DIALOG_STYLE_TABLIST_HEADERS, "Player Accesories", info, "Select","Exit");

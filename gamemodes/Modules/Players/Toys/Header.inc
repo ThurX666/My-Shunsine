@@ -1,4 +1,4 @@
-#define MAX_ACC                         (5)
+#define MAX_ACC                         (7)
 
 
 enum acce {
