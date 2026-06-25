@@ -2,6 +2,8 @@
 
 ## Fixed Bugs
 
+* **Bus Sidejob Route C/D** - Fix route C yang melewati checkpoint awal dan route D yang salah reset step saat lanjut lap.
+
 * **Bombox Radio Log Spam** - Fix log/pesan radio yang muncul berulang saat player masuk area boombox dengan menghapus replay handler duplikat di `OnPlayerEnterDynamicArea`.
 
 * **Schematic Buy Menu Mapping** - Fix pembelian schematic yang bergeser karena header dialog ikut dihitung sebagai item; beli Desert Eagle/MP5/AK47 sekarang masuk ke schematic yang sesuai.
@@ -24,7 +26,7 @@
 
 * **New Features** - `/e` dialog animasi, autorp di `OnPlayerText` tanpa slash, `/gajiserver`, +2 slot toys non-VIP, `/finfo` list member family, dan `/osetfamily <id> 0`.
 
-* **Bug Fixes Pending Investigation** - Sidejobs route C/D, otot N neon camera zoom, dan `/ostats` display bug.
+* **Bug Fixes Pending Investigation** - Otot N neon camera zoom dan `/ostats` display bug.
 
 **Catatan:**
 ```

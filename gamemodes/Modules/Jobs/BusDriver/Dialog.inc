@@ -70,7 +70,7 @@ Dialog:DialogBusCD(playerid, response, listitem, inputtext[]) {
 						BusLaps[playerid] = 1;
                         ChangeVehicleColor(GetPlayerVehicleID(playerid), 128, 128);
 						if(BusRuteCD[BusCDSteps[playerid][0]][bus_rute] == 1) {
-							SetPlayerRaceCheckpoint(playerid, 0, BusRuteCD[BusCDSteps[playerid][0]][bus_posx], BusRuteCD[BusCDSteps[playerid][0]][bus_posy], BusRuteCD[BusCDSteps[playerid][0]][bus_posz], BusRuteCD[BusCDSteps[playerid][0]+1][bus_posx], BusRuteCD[BusCDSteps[playerid][0]+1][bus_posy], BusRuteCD[BusCDSteps[playerid][0]+1][bus_posz], 5);
+							SetPlayerRaceCheckpoint(playerid, 0, BusRuteCD[BusCDSteps[playerid][0]-1][bus_posx], BusRuteCD[BusCDSteps[playerid][0]-1][bus_posy], BusRuteCD[BusCDSteps[playerid][0]-1][bus_posz], BusRuteCD[BusCDSteps[playerid][0]][bus_posx], BusRuteCD[BusCDSteps[playerid][0]][bus_posy], BusRuteCD[BusCDSteps[playerid][0]][bus_posz], 5);
 						}
 						SendClientMessage(playerid, COLOR_ARWIN, "SIDEJOB: {FFFFFF}You've started working as a Bus Driver, please follow the checkpoint");
 					}
@@ -166,7 +166,7 @@ Dialog:ContinueBusC(playerid, response, listitem, inputtext[]) {
 		GivePlayerMoneyEx(playerid, 24500);
 		BusCDSteps[playerid][0] = 1;
 		if(BusRuteCD[BusCDSteps[playerid][0]][bus_rute] == 1) {
-			SetPlayerRaceCheckpoint(playerid, 0, BusRuteCD[BusCDSteps[playerid][0]][bus_posx], BusRuteCD[BusCDSteps[playerid][0]][bus_posy], BusRuteCD[BusCDSteps[playerid][0]][bus_posz], BusRuteCD[BusCDSteps[playerid][0]+1][bus_posx], BusRuteCD[BusCDSteps[playerid][0]+1][bus_posy], BusRuteCD[BusCDSteps[playerid][0]+1][bus_posz], 5);
+			SetPlayerRaceCheckpoint(playerid, 0, BusRuteCD[BusCDSteps[playerid][0]-1][bus_posx], BusRuteCD[BusCDSteps[playerid][0]-1][bus_posy], BusRuteCD[BusCDSteps[playerid][0]-1][bus_posz], BusRuteCD[BusCDSteps[playerid][0]][bus_posx], BusRuteCD[BusCDSteps[playerid][0]][bus_posy], BusRuteCD[BusCDSteps[playerid][0]][bus_posz], 5);
 		}
 	}
 	else {
@@ -191,7 +191,7 @@ Dialog:ContinueBusD(playerid, response, listitem, inputtext[]) {
 		BusLaps[playerid]++;
 		SendCustomMessage(playerid, "SIDEJOB", "{FFFFFF}You've earned {00FF00}$285.00 {FFFFFF}for finising a bus route lap!");
 		GivePlayerMoneyEx(playerid, 28500);
-		BusCDSteps[playerid][0] = 1;
+		BusCDSteps[playerid][1] = 61;
 		if(BusRuteCD[BusCDSteps[playerid][1]][bus_rute] == 2) {
 			SetPlayerRaceCheckpoint(playerid, 0, BusRuteCD[BusCDSteps[playerid][1]][bus_posx], BusRuteCD[BusCDSteps[playerid][1]][bus_posy], BusRuteCD[BusCDSteps[playerid][1]][bus_posz], BusRuteCD[BusCDSteps[playerid][1]+1][bus_posx], BusRuteCD[BusCDSteps[playerid][1]+1][bus_posy], BusRuteCD[BusCDSteps[playerid][1]+1][bus_posz], 5);
 		}
