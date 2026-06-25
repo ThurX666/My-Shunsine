@@ -1,43 +1,25 @@
-# Changelog v1.0.18 Toys AXP & Update Plan
+# Changelog v1.0.18
 
-## Fixed Bugs
+## Added
 
-* **Offline Stats Display** - Fix `/ostats` yang menampilkan faction/family/staff salah karena urutan kolom query bergeser dari parser `LoadStats`.
+* **Menu Animasi `/e`** - Player sekarang bisa membuka list animasi lewat `/e` atau `/emote`, lalu pilih animasi langsung dari dialog.
+* **Stop Animasi Lebih Jelas** - Saat memakai animasi looping, textdraw instruksi stop animasi tetap muncul agar player tahu animasi bisa dihentikan dengan tombol `SPACE`.
 
-* **Neon Toggle N Key** - Fix toggle lampu/neon dari tombol `N` yang bisa terpanggil berulang saat tombol ditahan, menyebabkan kamera terasa zoom/glitch.
+## Fixed
 
-* **Bus Sidejob Route C/D** - Fix route C yang melewati checkpoint awal dan route D yang salah reset step saat lanjut lap.
+* **Toys AXP** - Preview toys dari `/axp` dan `/toysaxp` tidak lagi otomatis hilang karena sistem attached weapon.
+* **Pembelian Schematic** - Nama schematic yang dibeli sekarang sesuai dengan pilihan menu, termasuk Desert Eagle, MP5, dan AK47.
+* **Boombox Radio** - Log/pesan play boombox tidak lagi spam saat banyak player masuk area radio.
+* **Sidejob Bus Route C/D** - Rute C dan D sekarang berjalan dari checkpoint yang benar.
+* **Toggle Neon Tombol N** - Neon/lampu kendaraan tidak lagi toggle berkali-kali saat tombol `N` ditahan.
+* **Offline Stats `/ostats`** - Tampilan faction, family, admin, dan helper di `/ostats` sekarang sesuai data player.
 
-* **Bombox Radio Log Spam** - Fix log/pesan radio yang muncul berulang saat player masuk area boombox dengan menghapus replay handler duplikat di `OnPlayerEnterDynamicArea`.
+## Coming Next
 
-* **Schematic Buy Menu Mapping** - Fix pembelian schematic yang bergeser karena header dialog ikut dihitung sebagai item; beli Desert Eagle/MP5/AK47 sekarang masuk ke schematic yang sesuai.
-
-* **Toys AXP Temporary Object Cleanup** - Fix awal bug toys `/axp` dan `/toysaxp` yang bisa muncul lalu hilang karena cleanup weapon di `pTask.pwn` menghapus attached object slot `5..8` tanpa memastikan object tersebut benar-benar object weapon.
-
-## Changed
-
-* **Animation Dialog `/e`** - Tambah command `/e` dan alias `/emote` yang membuka dialog list animasi. Pilihan dialog memakai command animasi existing lewat `callcmd::`, sehingga behavior stop anim tetap mengikuti sistem lama dengan textdraw `PRESS SPACE TO STOP ANIMATION`.
-
-* **Weapon Attached Object Cleanup** - Cleanup weapon sekarang hanya melepas attached object yang sebelumnya dipasang oleh sistem weapon, sehingga temporary/preview toys `FSTOYS` di slot yang sama tidak ikut terhapus.
-
-* **Toys AXP Investigation Flow** - Alur investigasi Toys AXP sekarang dibakukan lewat OpenSpec `fix-toys-axp-flow`, dengan pemisahan jelas antara temporary `FSTOYS` dan toys persistent database `aksesoris`.
-
-## OpenSpec
-
-* **fix-toys-axp-flow** - Change khusus untuk validasi ulang flow `cmd:axp`, `cmd:toysaxp`, temporary toys, persistent aksesoris, dan konflik slot weapon cleanup.
-
-* **update-gamemode-v1-0-18** - Change rencana v1.0.18 untuk memastikan fitur dan bug fix sesuai request asli sebelum implementasi berikutnya.
-
-## Pending v1.0.18 Request
-
-* **New Features** - autorp di `OnPlayerText` tanpa slash, `/gajiserver`, +2 slot toys non-VIP, `/finfo` list member family, dan `/osetfamily <id> 0`.
-
-
-**Catatan:**
-```
-- Update ini belum final untuk seluruh v1.0.18; changelog akan ditambah setiap perubahan selesai dibuat.
-- Cleanup `RemoveFSToys(playerid)` di spawn/disconnect tetap dipertahankan karena FSTOYS adalah temporary/preview toys.
-- Tidak ada perubahan ke persistent toys database `aksesoris` pada fix ini.
-```
+* Autorp tanpa slash di chat.
+* `/gajiserver` untuk melihat gaji job dan sidejob.
+* Tambahan 2 slot toys non-VIP.
+* List member family di `/finfo`.
+* Kick family offline lewat `/osetfamily <id> 0`.
 
 @everyone
