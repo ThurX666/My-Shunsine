@@ -1,4 +1,4 @@
-# Changelog v1.0.18 Stability Update
+# Changelog Version 1.0.18 Emote
 
 ## Added
 
