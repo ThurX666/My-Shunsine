@@ -8,6 +8,7 @@
 * **Gaji Server `/gajiserver`** - Player sekarang bisa melihat daftar gaji job dan sidejob langsung dari dalam game.
 * **Slot Tambahan Aksesoris** - Player sekarang memiliki maksimal 7 slot aksesoris/toys (tambahan 2 slot untuk semua player).
 * **Info Family `/finfo`** - Menu `Family Member` di dalam `/finfo` sekarang menampilkan list yang rapi, berisi daftar seluruh member family (online maupun offline) lengkap dengan pangkatnya.
+* **Kick Family Offline** - Admin sekarang bisa kick member family yang sedang offline lewat command `/osetfamily <nama/regid> 0`.
 
 ## Fixed
 
@@ -17,9 +18,5 @@
 * **Sidejob Bus Route C/D** - Rute C dan D sekarang berjalan dari checkpoint yang benar.
 * **Toggle Neon Tombol N** - Neon/lampu kendaraan tidak lagi toggle berkali-kali saat tombol `N` ditahan.
 * **Offline Stats `/ostats`** - Tampilan faction, family, admin, dan helper di `/ostats` sekarang sesuai data player.
-
-## Coming Next
-
-* Kick family offline lewat `/osetfamily <id> 0`.
 
 @everyone

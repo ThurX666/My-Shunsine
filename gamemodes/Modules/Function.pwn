@@ -1265,6 +1265,27 @@ function OfflineSetFaction(adminid, targetName[], factionid, rank)
 	return 1;
 }
 
+function OfflineSetFamily(adminid, targetName[], fid)
+{
+	if(cache_num_rows() < 1)
+	{
+		return Error(adminid, "Account "GREY2_E"'%s' "WHITE_E"does not exist.", targetName);
+	}
+
+	new regid, username[MAX_PLAYER_NAME], query[256];
+	cache_get_value_name_int(0, "reg_id", regid);
+	cache_get_value_name(0, "username", username);
+
+	mysql_format(g_SQL, query, sizeof(query), "UPDATE players SET family=%d, familyrank=0 WHERE reg_id=%d", -1, regid);
+	mysql_tquery(g_SQL, query);
+
+	if(fid == 0)
+	{
+		Servers(adminid, "You have kicked offline player %s from family.", username);
+	}
+	return 1;
+}
+
 function OfflineSetAdmin(adminid, targetName[], adminLevel)
 {
 	if(cache_num_rows() < 1)
@@ -1372,4 +1393,3 @@ function EndOfflineCheckUCPList(playerid)
 	SendClientMessageEx(playerid, COLOR_ARWIN, ""YELLOW_E"Gunakan {00FFFF}/ostats [Nama_Character] "YELLOW_E"untuk cek stats karakter offline.");
 	return 1;
 }
-

@@ -3409,6 +3409,47 @@ CMD:osetfaction(playerid, params[])
 	return 1;
 }
 
+CMD:osetfamily(playerid, params[])
+{
+	new target[24], fid, tmp[64], query[256];
+	if(pData[playerid][pAdmin] < 4) return PermissionError(playerid);
+
+	if(sscanf(params, "s[24]d", target, fid))
+		return Usage(playerid, "/osetfamily [name/regid] [family id 0 to kick]");
+
+	if(fid != 0)
+		return Error(playerid, "Untuk saat ini /osetfamily hanya mendukung ID 0 (kick family offline).");
+
+	if(IsNumeric(target))
+	{
+		new regid = strval(target);
+		foreach(new i : Player)
+		{
+			if(pData[i][pID] == regid)
+			{
+				return Error(playerid, "%s(ID:%d) sedang online!", ReturnName(i), i);
+			}
+		}
+		mysql_format(g_SQL, query, sizeof(query), "SELECT reg_id, username, family FROM players WHERE reg_id='%d' LIMIT 1", regid);
+	}
+	else
+	{
+		foreach(new i : Player)
+		{
+			if(!strcmp(ReturnName(i), target, true))
+			{
+				return Error(playerid, "%s(ID:%d) sedang online!", ReturnName(i), i);
+			}
+		}
+		mysql_format(g_SQL, query, sizeof(query), "SELECT reg_id, username, family FROM players WHERE username='%e' LIMIT 1", target);
+	}
+
+	mysql_tquery(g_SQL, query, "OfflineSetFamily", "isi", playerid, target, fid);
+	format(tmp, sizeof(tmp), "%d", fid);
+	StaffCommandLog("OSETFAMILY", playerid, INVALID_PLAYER_ID, tmp);
+	return 1;
+}
+
 CMD:randompricefish(playerid, params[])
 {
 	FishPrice = Random(450, 800);

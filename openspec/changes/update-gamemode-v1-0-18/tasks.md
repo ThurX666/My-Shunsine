@@ -14,11 +14,11 @@
 - [x] Add /gajiserver from actual job/sidejob salaries.
 - [x] Add +2 non-VIP toys slots.
 - [x] Add family member list to /finfo.
-- [ ] Add offline family kick through /osetfamily <id> 0.
+- [x] Add offline family kick through /osetfamily <id> 0.
 
 ## Release
-- [ ] Compile gamemodes/main.pwn.
-- [ ] Update CHANGELOG_v1.0.18.md with implemented changes only.
+- [x] Compile gamemodes/main.pwn.
+- [x] Update CHANGELOG_v1.0.18.md with implemented changes only.
 
 ## Investigation Notes
 
@@ -41,3 +41,5 @@
 - +2 toys slots implementation: bumped MAX_ACC macro from 5 to 7. All iterations spanning toy creation, listing, attaching, and database loading scale correctly to 7.
 
 - /finfo list implementation: changed ShowFamilyMember to use DIALOG_STYLE_TABLIST_HEADERS. Fixed the bug where the format string overwrote previous list iterations with rank names. It now properly appends columns (Name, Status, Rank) and displays both offline and online players.
+
+- /osetfamily implementation: added CMD:osetfamily in AdminCommand.inc and OfflineSetFamily in Function.pwn. Allows level 4+ admins to set an offline player's family column to -1 by passing `0` as the parameter.
