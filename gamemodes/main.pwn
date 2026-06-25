@@ -2167,19 +2167,6 @@ public OnPlayerEnterDynamicArea(playerid, areaid)
         }
     }
 
-	foreach(new i : Player)
-	{
-		if(areaid == GetPVarInt(i, "BBArea"))
-		{
-			if(GetPVarType(i, "pAudioStream")) StopAudioStreamForPlayer(i);
-			else SetPVarInt(i, "pAudioStream", 1);
-
-			new station[64];
-			GetPVarString(i, "BBStation", station, sizeof(station));
-			PlayAudioStreamForPlayer(i, station, GetPVarFloat(i, "BBX"), GetPVarFloat(i, "BBY"), GetPVarFloat(i, "BBZ"), 30.0, 1);
-			SendCustomMessage(i,"RADIO","You've been set the radio to: "YELLOW_E"%s", station);
-		}
-	}
     return 1;
 }
 
