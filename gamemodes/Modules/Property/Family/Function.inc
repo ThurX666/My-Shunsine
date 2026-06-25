@@ -315,28 +315,29 @@ function ShowFamilyMember(playerid)
 	new rows = cache_num_rows(), pid, username[50], frank, query[1048];
  	if(rows)
   	{
+		format(query, sizeof(query), "Name\tStatus\tRank\n");
 		for(new i = 0; i != rows; i++)
 		{
 			cache_get_value_index(i, 0, username);
 			pid = GetID(username);
 			
-			format(query, sizeof(query), "%s"WHITE_E"%d. %s ", query, (i+1), username);
+			format(query, sizeof(query), "%s"WHITE_E"%d. %s\t", query, (i+1), username);
 			
 			if(IsPlayerConnected(pid))
-				strcat(query, ""GREEN_E"(ONLINE) ");
+				strcat(query, ""GREEN_E"Online\t");
 			else
-				strcat(query, ""RED_E"(OFFLINE) ");
+				strcat(query, ""RED_E"Offline\t");
 			
 			cache_get_value_index_int(i, 1, frank);
-			if(frank == 1) format(query, sizeof(query), "%s", fData[pData[playerid][pFamily]][fNameRank1]);
-			else if(frank == 2) format(query, sizeof(query), "%s", fData[pData[playerid][pFamily]][fNameRank2]);
-			else if(frank == 3) format(query, sizeof(query), "%s", fData[pData[playerid][pFamily]][fNameRank3]);
-			else if(frank == 4) format(query, sizeof(query), "%s", fData[pData[playerid][pFamily]][fNameRank4]);
-			else if(frank == 5) format(query, sizeof(query), "%s", fData[pData[playerid][pFamily]][fNameRank5]);
-			else if(frank == 6) format(query, sizeof(query), "%s", fData[pData[playerid][pFamily]][fNameRank6]);
+			if(frank == 1) format(query, sizeof(query), "%s%s", query, fData[pData[playerid][pFamily]][fNameRank1]);
+			else if(frank == 2) format(query, sizeof(query), "%s%s", query, fData[pData[playerid][pFamily]][fNameRank2]);
+			else if(frank == 3) format(query, sizeof(query), "%s%s", query, fData[pData[playerid][pFamily]][fNameRank3]);
+			else if(frank == 4) format(query, sizeof(query), "%s%s", query, fData[pData[playerid][pFamily]][fNameRank4]);
+			else if(frank == 5) format(query, sizeof(query), "%s%s", query, fData[pData[playerid][pFamily]][fNameRank5]);
+			else if(frank == 6) format(query, sizeof(query), "%s%s", query, fData[pData[playerid][pFamily]][fNameRank6]);
 			else strcat(query, ""FAMILY_E"None(0)");
 			strcat(query, "\n{FFFFFF}");
 		}
-		ShowPlayerDialog(playerid, DIALOG_UNUSED, DIALOG_STYLE_MSGBOX, "Family Member", query, "Okay", "");
+		ShowPlayerDialog(playerid, DIALOG_UNUSED, DIALOG_STYLE_TABLIST_HEADERS, "Family Member", query, "Okay", "");
 	}
 }
