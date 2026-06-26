@@ -365,12 +365,13 @@ CMD:setrank(playerid, params[])
 	new rank, otherid;
 	if(pData[playerid][pFactionLead] == 0)return Error(playerid, "You must faction leader!");
 	if(pData[playerid][pFactionRank] < 5) return Error(playerid, "You must faction leader!");
-	if(sscanf(params, "ud", otherid, rank)) return Usage(playerid, "/setrank [playerid/PartOfName] [rank 1-6]");
+	if(sscanf(params, "ud", otherid, rank)) return Usage(playerid, "/setrank [playerid/PartOfName] [rank 1-16]");
 	if(otherid == INVALID_PLAYER_ID) return Error(playerid, "Invalid ID.");
 	if(otherid == playerid) return Error(playerid, "Invalid ID.");
 	if(pData[otherid][pFaction] != pData[playerid][pFaction]) return Error(playerid, "This player is not in your devision!");
-	if(rank < 1 || rank > 6) return Error(playerid, "rank must 1 - 6 only");
+	if(rank < 1 || rank > 16) return Error(playerid, "rank must 1 - 16 only");
 	pData[otherid][pFactionRank] = rank;
+	SetDefaultFactionRankName(otherid);
 	Servers(playerid, "You has set %s faction rank to level %d", ReturnName2(otherid), rank);
 	Servers(otherid, "%s has set your faction rank to level %d", ReturnName2(playerid), rank);
 	return 1;

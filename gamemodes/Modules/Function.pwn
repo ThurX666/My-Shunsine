@@ -1393,3 +1393,13 @@ function EndOfflineCheckUCPList(playerid)
 	SendClientMessageEx(playerid, COLOR_ARWIN, ""YELLOW_E"Gunakan {00FFFF}/ostats [Nama_Character] "YELLOW_E"untuk cek stats karakter offline.");
 	return 1;
 }
+
+// Set default faction rank name based on rank number (SAPD only)
+stock SetDefaultFactionRankName(playerid)
+{
+	if(pData[playerid][pFaction] == SAPD && pData[playerid][pFactionRank] >= 1 && pData[playerid][pFactionRank] <= 16)
+	{
+		format(pData[playerid][pFactionRankName], 24, "%s", g_sapdRankNames[pData[playerid][pFactionRank] - 1]);
+	}
+	return 1;
+}

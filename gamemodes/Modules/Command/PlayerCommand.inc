@@ -1208,6 +1208,7 @@ CMD:accept(playerid, params[])
 					{
 						pData[playerid][pFaction] = pData[playerid][pFacInvite];
 						pData[playerid][pFactionRank] = 1;
+						SetDefaultFactionRankName(playerid);
 						SendClientMessageEx(playerid, COLOR_ARWIN, "ACCEPT: "WHITE_E"Anda telah menerima invite faction dari %s", ReturnName2(pData[playerid][pFacOffer]));
 						SendClientMessageEx(pData[playerid][pFacOffer], COLOR_ARWIN, "ACCEPT: "WHITE_E"%s telah menerima invite faction yang anda tawari", ReturnName2(playerid));
 						pData[playerid][pFacInvite] = 0;

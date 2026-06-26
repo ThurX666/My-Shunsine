@@ -2418,7 +2418,7 @@ CMD:setfaction(playerid, params[])
     if(pData[playerid][pDivision] != 1) return Error(playerid, "You must be a faction division.");
 
     if(sscanf(params, "udd", otherid, fid, rank))
-        return Usage(playerid, "/setfaction [playerid/PartOfName] [1.SAPD, 2.SAGS, 3.SAMD, 4.SANEW] [rank 1-6]");
+        return Usage(playerid, "/setfaction [playerid/PartOfName] [1.SAPD, 2.SAGS, 3.SAMD, 4.SANEW] [rank 1-16]");
 
     if(!IsPlayerConnected(otherid))
         return Error(playerid, "Player tidak on!");
@@ -2429,8 +2429,8 @@ CMD:setfaction(playerid, params[])
     if(fid < 0 || fid > 4)
         return Error(playerid, "You have specified an invalid faction ID 0 - 4.");
 
-	if(rank < 1 || rank > 6)
-        return Error(playerid, "You have specified an invalid rank 1 - 6.");
+	if(rank < 1 || rank > 16)
+        return Error(playerid, "You have specified an invalid rank 1 - 16.");
 
 	if(fid == 0)
 	{
@@ -2444,6 +2444,7 @@ CMD:setfaction(playerid, params[])
 	{
 		pData[otherid][pFaction] = fid;
 		pData[otherid][pFactionRank] = rank;
+		SetDefaultFactionRankName(otherid);
 		Servers(playerid, "You have set %s's faction ID %d with rank %d.", ReturnName(otherid), fid, rank);
 		Servers(otherid, "%s has set your faction ID to %d with rank %d.", ReturnName(playerid), fid, rank);
 	}
@@ -2483,7 +2484,7 @@ CMD:setleader(playerid, params[])
 	{
 		pData[otherid][pFaction] = fid;
 		pData[otherid][pFactionLead] = fid;
-		pData[otherid][pFactionRank] = 6;
+		pData[otherid][pFactionRank] = 16;
 		Servers(playerid, "You have set %s's faction ID %d with leader.", ReturnName(otherid), fid);
 		Servers(otherid, "%s has set your faction ID to %d with leader.", ReturnName(playerid), fid);
 	}
@@ -3369,15 +3370,15 @@ CMD:osetfaction(playerid, params[])
 	if(pData[playerid][pDivision] != 1) return Error(playerid, "You must be a faction division.");
 
 	if(sscanf(params, "s[24]dd", target, fid, rank))
-		return Usage(playerid, "/osetfaction [name/regid] [1.SAPD, 2.SAGS, 3.SAMD, 4.SANEW] [rank 0-6]");
+		return Usage(playerid, "/osetfaction [name/regid] [1.SAPD, 2.SAGS, 3.SAMD, 4.SANEW] [rank 0-16]");
 
 	if(fid < 0 || fid > 4)
 		return Error(playerid, "You have specified an invalid faction ID 0 - 4.");
 
 	if(rank == 0)
 		fid = 0;
-	else if(rank < 1 || rank > 6)
-		return Error(playerid, "You have specified an invalid rank 0 - 6.");
+	else if(rank < 1 || rank > 16)
+		return Error(playerid, "You have specified an invalid rank 1 - 16.");
 
 	if(IsNumeric(target))
 	{

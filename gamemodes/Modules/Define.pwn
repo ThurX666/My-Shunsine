@@ -47,6 +47,26 @@ RGBAToARGB(rgba)
 #define SAMD	3
 #define SANEW	4
 
+// SAPD Rank Names (1-16)
+new const g_sapdRankNames[16][] = {
+    "Recruit",
+    "Cadet",
+    "Officer",
+    "Senior Officer",
+    "Sergeant",
+    "Lieutenant",
+    "Captain",
+    "Commander",
+    "Deputy Chief",
+    "Chief of Police",
+    "Assistant Commissioner",
+    "Deputy Commissioner",
+    "Commissioner",
+    "Deputy Chief of Staff",
+    "Chief of Staff",
+    "Chief" // Rank 16 = Chief
+};
+
 //MAX MODS
 #define MAX_MODS 17
 
