@@ -932,7 +932,8 @@ ptask PlayerData_WeaponAttach[1000](playerid)
 				if(pData[playerid][pWeapon] >= 1 && pData[playerid][pWeapon] <= 45 && pData[playerid][pWeapon] != 40 && pData[playerid][pWeapon] != 2 && GetWeapon(playerid)  != GetPlayerWeapon(playerid))
 				{
 					SendAdminMessage(COLOR_RED, "%s(%d) has possibly used weapon hacks (%s), Please to check /spec this player first!", ReturnName(playerid), playerid, ReturnWeaponName(pData[playerid][pWeapon]));
-					RefreshWeapon(playerid); //Reload old weapons
+					if(pData[playerid][pWeapon] >= 34 && pData[playerid][pWeapon] <= 38)
+					    RefreshWeapon(playerid); //Reload old weapons only for heavy/cheat weapons
 				}
 			}
 		}

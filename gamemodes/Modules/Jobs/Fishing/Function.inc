@@ -27,7 +27,8 @@ AddFish(playerid, Float:weight)
 {
     for(new i = 0; i < 5; i++) if(!FishWeight[playerid][i]) {
         FishWeight[playerid][i] = weight;
-        // format(FishName[playerid][i], 32, name);
+        pData[playerid][pFishTool]--;
+        pData[playerid][pWorm]--;
         SendCustomMessage(playerid, "FISHING", "{FFFF00}Ocean fish caught!, weight: %.1f lbs", weight);
         if(pData[playerid][pFishTool] == 0) return Info(playerid, "Fish tools anda rusak silahkan beli lagi");
         

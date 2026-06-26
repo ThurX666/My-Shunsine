@@ -16,8 +16,6 @@ CMD:fish(playerid,params[])
 				stop pData[playerid][pFishingTime];
 				pData[playerid][pFishingTime] = defer getFish(playerid);
 				pData[playerid][pInFish] = 1;
-				pData[playerid][pWorm]--;
-				pData[playerid][pFishTool]--;
 				SendCustomMessage(playerid, "FISHING", "You've started fishing, you can cancel anytime using {FFFF00}'Y'");
 				TogglePlayerControllable(playerid, 0);
 				ApplyAnimation(playerid,"SWORD","sword_block",50.0 ,0,1,0,1,1);
@@ -27,8 +25,6 @@ CMD:fish(playerid,params[])
 				stop pData[playerid][pFishingTime];
 				pData[playerid][pFishingTime] = defer getFish(playerid);
 				pData[playerid][pInFish] = 1;
-				pData[playerid][pWorm]--;
-				pData[playerid][pFishTool]--;
 				SendCustomMessage(playerid, "FISHING", "You've started fishing, you can cancel anytime using {FFFF00}'Y'");
 				TogglePlayerControllable(playerid, 0);
 				ApplyAnimation(playerid,"SWORD","sword_block",50.0 ,0,1,0,1,1);
