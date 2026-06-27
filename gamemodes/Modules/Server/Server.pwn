@@ -13,7 +13,11 @@ new
 	BalanceSAPD,
 	BalanceSAGS,
 	BalanceSAMD,
-	BalanceSAN;
+	BalanceSAN,
+	FactionBankSAPD,
+	FactionBankSAGS,
+	FactionBankSAMD,
+	FactionBankSAN;
 
 new 
 	ammountsellwheat,
@@ -155,7 +159,7 @@ Server_Save()
     new str[2024];
 
 	CreateServerPoint();
-    format(str, sizeof(str), "UPDATE server SET component='%d', crack='%d', material='%d', armoury='%d', sapdammo='%d', balancesapd='%d', balancesags='%d', balancesamd='%d', balancesan='%d' WHERE id=0",
+    format(str, sizeof(str), "UPDATE server SET component='%d', crack='%d', material='%d', armoury='%d', sapdammo='%d', balancesapd='%d', balancesags='%d', balancesamd='%d', balancesan='%d', factionbanksapd='%d', factionbanksags='%d', factionbanksamd='%d', factionbanksan='%d' WHERE id=0",
 	StockComponent,
 	StockCrack,
 	StockMaterial,
@@ -164,7 +168,11 @@ Server_Save()
 	BalanceSAPD,
 	BalanceSAGS,
 	BalanceSAMD,
-	BalanceSAN
+	BalanceSAN,
+	FactionBankSAPD,
+	FactionBankSAGS,
+	FactionBankSAMD,
+	FactionBankSAN
 	);
     return mysql_tquery(g_SQL, str);
 }
@@ -180,6 +188,10 @@ function LoadServer()
 	cache_get_value_name_int(0, "balancesags", BalanceSAGS);
 	cache_get_value_name_int(0, "balancesamd", BalanceSAMD);
 	cache_get_value_name_int(0, "balancesan", BalanceSAN);
+	cache_get_value_name_int(0, "factionbanksapd", FactionBankSAPD);
+	cache_get_value_name_int(0, "factionbanksags", FactionBankSAGS);
+	cache_get_value_name_int(0, "factionbanksamd", FactionBankSAMD);
+	cache_get_value_name_int(0, "factionbanksan", FactionBankSAN);
 	CreateServerPoint();
 }
 
