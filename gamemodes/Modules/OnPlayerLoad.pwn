@@ -326,23 +326,25 @@ loadPlayerChars(playerid,nummer)
 	if(nummer==1)
 	{
 		format(query,sizeof(query),"SELECT * FROM `players` WHERE `reg_id`='%d'", charData[playerid][cCharName]);
-		mysql_tquery(g_SQL,query, "AssignPlayerData", "i", playerid);
+		mysql_tquery(g_SQL,query, "AssignPlayerData", "dd", playerid, g_MysqlRaceCheck[playerid]);
 	}
 	if(nummer==2)
 	{
 		format(query,sizeof(query),"SELECT * FROM `players` WHERE `reg_id`='%d'", charData[playerid][cCharName2]);
-		mysql_tquery(g_SQL,query, "AssignPlayerData", "i", playerid);
+		mysql_tquery(g_SQL,query, "AssignPlayerData", "dd", playerid, g_MysqlRaceCheck[playerid]);
 	}
 	if(nummer==3)
 	{
 		format(query,sizeof(query),"SELECT * FROM `players` WHERE `reg_id`='%d'", charData[playerid][cCharName3]);
-		mysql_tquery(g_SQL,query, "AssignPlayerData", "i", playerid);
+		mysql_tquery(g_SQL,query, "AssignPlayerData", "dd", playerid, g_MysqlRaceCheck[playerid]);
 	}
 	return 1;
 }
 
-function AssignPlayerData(playerid)
+function AssignPlayerData(playerid, race_check)
 {
+	if(race_check != g_MysqlRaceCheck[playerid])
+	    return Kick(playerid);
 	new aname[MAX_PLAYER_NAME], name[MAX_PLAYER_NAME], 
 	str[412];
 	
