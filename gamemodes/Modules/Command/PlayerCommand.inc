@@ -536,7 +536,7 @@ CMD:gajiserver(playerid, params[])
 	format(string, sizeof(string), "%sTrucker Hauling\t$%s - $%s per cargo\n", string, FormatMoney(20000), FormatMoney(39900));
 	format(string, sizeof(string), "%sTrucker Crates\t$%s per crate\n", string, FormatMoney(1250));
 	format(string, sizeof(string), "%sFarmer\t$%s - $%s per unit panen\n", string, FormatMoney(100), FormatMoney(200));
-	format(string, sizeof(string), "%sLumber/Fish/Trashmaster\tSesuai jumlah item yang dijual/diantar\n", string);
+	format(string, sizeof(string), "%sLumber/Fish/Trashmaster/Milker	Sesuai jumlah item yang dijual/diantar\n", string);
 	Dialog_Show(playerid, ShowOnly, DIALOG_STYLE_TABLIST_HEADERS, "Gaji Server", string, "Close", "");
 	return 1;
 }

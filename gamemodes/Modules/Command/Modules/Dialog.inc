@@ -1467,7 +1467,7 @@ Dialog:DialogGpsPublic(playerid, response, listitem, inputtext[]) {
             }
             case 2:
             {
-                Dialog_Show(playerid, DialogGpsSideJobs, DIALOG_STYLE_LIST, "GPS JOB", "Sidejob: Sweeper\nSidejob: Bus [A/B]\nSidejob: Bus [C/D]\nSidejob: TrashMaster\nSidejob: Forklift\nSidejob: Courier\nSidejob: Miner\nActivity: Fishing", "Select", "Close");
+                Dialog_Show(playerid, DialogGpsSideJobs, DIALOG_STYLE_LIST, "GPS JOB", "Sidejob: Sweeper\nSidejob: Bus [A/B]\nSidejob: Bus [C/D]\nSidejob: TrashMaster\nSidejob: Forklift\nSidejob: Courier\nSidejob: Miner\nActivity: Fishing\nSidejob: Milker", "Select", "Close");
             }
         }
     }
@@ -1524,7 +1524,13 @@ Dialog:DialogGpsSideJobs(playerid, response, listitem, inputtext[]) {
             {
                 SetPlayerGPS(playerid, 361.2099,-2032.1703,7.8359);  //Fish
                 SendClientMessageEx(playerid, COLOR_ARWIN, "HINT: "WHITE_E"GPS active! follow the checkpoint.");
-                
+
+            }
+            case 8:
+            {
+                SetPlayerGPS(playerid, 1556.2843, -32.5951, 21.3849);  //Milker
+                SendClientMessageEx(playerid, COLOR_ARWIN, "HINT: "WHITE_E"GPS active! follow the checkpoint.");
+
             }
         }
     }
