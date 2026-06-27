@@ -1005,7 +1005,7 @@ Dialog:DialogHelp(playerid, response, listitem, inputtext[]) {
 			}
 			case 5:
 			{
-				Dialog_Show(playerid, DialogJobHelp, DIALOG_STYLE_LIST, "Jobs", "{00FFFF}Jobs: "WHITE_E"Taxi Drivers\n{00FFFF}Jobs: "WHITE_E"Mechanic\n{00FFFF}Jobs: "WHITE_E"Lumber Jack\n{00FFFF}Jobs: "WHITE_E"Trucker\n{00FFFF}Jobs: "WHITE_E"Farmer\n{00FFFF}Jobs: "WHITE_E"Builder\n"YELLOW_E"Sidejobs: "WHITE_E"TrashMaster\n"YELLOW_E"Sidejobs: "WHITE_E"Forklift\n"RED_E"IlegalJobs: "WHITE_E"Arms Dealer\n"RED_E"IlegalJobs: "WHITE_E"Drugs Dealer\n"RED_E"IlegalJobs: "WHITE_E"Smuggle", "Select", "Close");
+				Dialog_Show(playerid, DialogJobHelp, DIALOG_STYLE_LIST, "Jobs", "{00FFFF}Jobs: "WHITE_E"Taxi Drivers\n{00FFFF}Jobs: "WHITE_E"Mechanic\n{00FFFF}Jobs: "WHITE_E"Lumber Jack\n{00FFFF}Jobs: "WHITE_E"Trucker\n{00FFFF}Jobs: "WHITE_E"Farmer\n{00FFFF}Jobs: "WHITE_E"Builder\n"YELLOW_E"Sidejobs: "WHITE_E"TrashMaster\n"YELLOW_E"Sidejobs: "WHITE_E"Forklift\n"YELLOW_E"Sidejobs: "WHITE_E"Milker\n"RED_E"IlegalJobs: "WHITE_E"Arms Dealer\n"RED_E"IlegalJobs: "WHITE_E"Drugs Dealer\n"RED_E"IlegalJobs: "WHITE_E"Smuggle", "Select", "Close");
 				return 1;
 			}
 			case 6:
@@ -1105,15 +1105,21 @@ Dialog:DialogJobHelp(playerid, response, listitem, inputtext[]) {
 			}
 			case 8:
 			{
+				new string[512];
+				format(string, sizeof(string), "\n/startmilker	Untuk memulai sidejob Milker di locker area Blueberry\n/perahsusu	Memerah susu sapi di dekat anda\n/stopmilker	Menghentikan sidejob Milker\n"YELLOW_E"Tips:"WHITE_E" Tekan "GREEN_E"'N'"WHITE_E" di dekat sapi untuk memerah, antar susu ke drop-off point. Selesaikan 10 siklus untuk gaji $250!");
+				Dialog_Show(playerid, ShowOnly, DIALOG_STYLE_MSGBOX, "Sidejob Milker Help", string, "Close", "", "");
+			}
+			case 9:
+			{
 				new string[1024];
 				format(string, sizeof(string), "\n/buypacket\tUntuk membeli material di Black Market\n/creategun\tUntuk membuat sebuah senjata pada Blackmarket\n/creatammo\tUntuk membuat ammo senjata dengan type normal\n/creatammo [surplus]\tUntuk membuat ammo senjata ber type Surplus");
 				Dialog_Show(playerid, ShowOnly, DIALOG_STYLE_MSGBOX, "Arms Dealer Help", string, "Close", "", "");
 			}
-			case 9:
+			case 10:
 			{
 				ShowPlayerDialog(playerid, DIALOG_UNUSED, DIALOG_STYLE_MSGBOX, "Drugs Dealer Help", "/buycrack",  "", "Close");
 			}
-			case 10:
+			case 11:
 			{
 				new string[512];
 				format(string, sizeof(string), "\n/findpacket\tUntuk menemukan sebuah packet pada map anda\n/storepacket\tUntuk mengstore packet pada tempat store packet\n/getpacket\tUntuk mengambil packet yang belum di ambil pemain lain\n/pickpacket\tUntuk menaruh packet di lokasi anda");
@@ -1467,7 +1473,7 @@ Dialog:DialogGpsPublic(playerid, response, listitem, inputtext[]) {
             }
             case 2:
             {
-                Dialog_Show(playerid, DialogGpsSideJobs, DIALOG_STYLE_LIST, "GPS JOB", "Sidejob: Sweeper\nSidejob: Bus [A/B]\nSidejob: Bus [C/D]\nSidejob: TrashMaster\nSidejob: Forklift\nSidejob: Courier\nSidejob: Miner\nActivity: Fishing\nSidejob: Milker", "Select", "Close");
+                Dialog_Show(playerid, DialogGpsSideJobs, DIALOG_STYLE_LIST, "GPS JOB", "Sidejob: Sweeper\nSidejob: Bus [A/B]\nSidejob: Bus [C/D]\nSidejob: TrashMaster\nSidejob: Forklift\nSidejob: Courier\nSidejob: Miner\nActivity: Fishing\nSidejob: Milker {00FF00}(New)", "Select", "Close");
             }
         }
     }
