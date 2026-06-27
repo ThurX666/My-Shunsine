@@ -25,5 +25,5 @@
 - [x] Sidejob Milker: implement 10x cycle counter and salary $250.
 
 ## Release
-- [ ] Compile gamemodes/main.pwn.
-- [ ] Update CHANGELOG with v1.0.19 changes.
+- [x] Compile gamemodes/main.pwn — 0 errors, 0 warnings.
+- [x] Update CHANGELOG with v1.0.19 changes.
