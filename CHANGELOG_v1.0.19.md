@@ -1,6 +1,7 @@
 # Changelog v1.0.19
 
 ## Bug Fixes
+- **[Inventory/Weapon]** Fix cross-session data leak — `AssignPlayerData` callback sekarang pake `g_MysqlRaceCheck` untuk cegah data player sebelumnya (drugs, weapons, materials) ketimpa ke player baru saat session ID reuse. Root cause: race condition di `loadPlayerChars` → `AssignPlayerData` yang gak punya race check guard.
 - **[Weapon]** Prevent anti-cheat `RefreshWeapon` dari trigger saat kerja — work tools (chainsaw, sekop, dll.) gak lagi trigger false positive yang reset senjata player. RefreshWeapon sekarang cuma jalan untuk heavy weapons 34-38.
 - **[Fishing]** Fix `/fish` tidak dapat ikan — decrement `pWorm` dan `pFishTool` dipindah dari command `/fish` ke `AddFish()`. Tool dan umpan sekarang cuma berkurang ketika ikan **berhasil** ditangkap.
 
