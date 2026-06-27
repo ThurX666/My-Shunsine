@@ -1,25 +1,22 @@
-# Changelog v1.0.19
+# Changelog v1.0.19 Milker
 
-## Bug Fixes
-- **[Inventory/Weapon]** Fix cross-session data leak — `AssignPlayerData` callback sekarang pake `g_MysqlRaceCheck` untuk cegah data player sebelumnya (drugs, weapons, materials) ketimpa ke player baru saat session ID reuse. Root cause: race condition di `loadPlayerChars` → `AssignPlayerData` yang gak punya race check guard.
-- **[Weapon]** Prevent anti-cheat `RefreshWeapon` dari trigger saat kerja — work tools (chainsaw, sekop, dll.) gak lagi trigger false positive yang reset senjata player. RefreshWeapon sekarang cuma jalan untuk heavy weapons 34-38.
-- **[Fishing]** Fix `/fish` tidak dapat ikan — decrement `pWorm` dan `pFishTool` dipindah dari command `/fish` ke `AddFish()`. Tool dan umpan sekarang cuma berkurang ketika ikan **berhasil** ditangkap.
+## Added
 
-## Features
-- **[SAPD]** Faction rank diperluas dari 6 menjadi 16 tingkatan dengan rank names (Recruit → Chief). Update `/setfaction`, `/osetfaction`, `/setrank`, `/setleader`. Auto-set rank name via `SetDefaultFactionRankName()`.
-- **[Faction Bank]** Locker bank untuk semua faction (SAPD, SAGS, SAMD, SANA):
-  - Deposit — semua rank bisa deposit
-  - Withdraw — hanya leader/deputy/commissioner (rank 14+ atau FactionLead)
-  - Transaction History — 20 transaksi terakhir dari tabel `factionmanage`
-  - Balance tersimpan di database (Server_Save/LoadServer)
-- **[Sidejob: Milker]** Sidejob baru memerah susu sapi:
-  - `/startmilker` di locker (area Blueberry)
-  - Random CP ke 6 posisi sapi
-  - `/perahsusu` atau tekan `N` di dekat sapi → animasi squat 3 detik
-  - Bucket susu ter-attach, bawa ke drop-off point
-  - 10 siklus selesai → gaji $250 + cooldown 15 menit
-  - 44 map objects (kandang, pagar, pohon, milk crate)
+* **Sidejob Milker** - Sidejob baru memerah susu sapi! Player bisa `/startmilker` di locker area Blueberry, ikuti checkpoint ke 6 posisi sapi, tekan `N` atau `/perahsusu` untuk mulai memerah. Susu yang terkumpul diantar ke drop-off point. Selesaikan 10 siklus untuk gaji $250.
+* **Faction Bank Locker** - Setiap faction (SAPD, SAGS, SAMD, SANA) kini memiliki bank sendiri di locker. Semua rank bisa deposit, hanya leader/deputy/commissioner (rank 14+) yang bisa withdraw. Dilengkapi transaction history 20 transaksi terakhir.
+* **SAPD Rank 1-16** - Pangkat SAPD diperluas dari 6 menjadi 16 tingkatan dengan rank names (Recruit → Chief). Command `/setfaction`, `/osetfaction`, `/setrank`, `/setleader` sudah diupdate. Rank name otomatis terganti.
 
-## Technical
-- Compiled with Pawn 3.10.8 (0 errors, 0 warnings)
-- Total requirements: ~145 MB
+## Changed
+
+* **Version bump** - Server version kini `1.0.19 Milker`.
+
+## Fixed
+
+* **Inventory/Weapon Data Leak** - Memperbaiki bug dimana player bisa mendapatkan item random (drugs, weapons, materials) dari player sebelumnya. Root cause: callback `AssignPlayerData` tidak memiliki race check guard, sehingga data player lama bisa tertimpa ke player baru saat session ID reuse.
+* **Anti-Cheat Weapon Saat Kerja** - Work tools (chainsaw, sekop, dll.) tidak lagi memicu false positive anti-cheat yang mereset senjata player. RefreshWeapon sekarang hanya berjalan untuk heavy weapons 34-38.
+* **Fishing Tool & Umpan** - Tool pancing dan umpan sekarang hanya berkurang ketika ikan **berhasil** ditangkap, bukan setiap kali command `/fish` dipakai.
+
+**Catatan dari Developer:**
+> _"Update ini fokus pada stabilitas data player dengan memperbaiki root cause item leak yang sudah lama dilaporkan. Sidejob Milker hadir sebagai aktivitas baru yang ringan dan menghasilkan. Selamat memerah susu!"_
+
+@everyone
