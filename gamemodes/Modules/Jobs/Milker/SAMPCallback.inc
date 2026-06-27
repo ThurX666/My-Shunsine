@@ -1,0 +1,90 @@
+#include <YSI\y_hooks>
+
+// Milker map objects
+new g_MilkerObjectCount = 0;
+
+hook OnGameModeInit()
+{
+    // Load Milker map objects
+    new tmpobjid;
+    tmpobjid = CreateDynamicObject(3276, 1550.885009, -38.021865, 20.819431, 0.000000, 0.000000, 180.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(3276, 1539.214599, -38.021865, 20.819431, 0.000000, 0.000000, 180.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(3276, 1527.545043, -38.021865, 20.819431, 0.000000, 0.000000, 180.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(3276, 1521.704833, -43.757923, 20.709468, 0.000000, 1.100000, 270.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(3276, 1521.704833, -55.436401, 20.235260, 0.000000, 2.100001, 270.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(3276, 1521.704833, -67.140739, 19.595933, 0.000000, 2.100001, 270.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(3276, 1527.567138, -73.481628, 19.492324, 0.000001, -1.999973, 0.000027, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(3276, 1539.230468, -73.481628, 19.899618, 0.000001, -1.999973, 0.000027, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(3276, 1550.892822, -73.481628, 20.306877, 0.000001, -1.999973, 0.000027, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(886, 1556.826049, -49.654815, 19.986333, 0.000000, 0.000000, 0.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(3276, 1556.747680, -43.751911, 20.819431, 0.000000, 0.000000, 450.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(3276, 1556.747680, -67.571182, 20.779438, 0.000000, -0.999999, 450.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(886, 1556.806030, -61.654930, 19.986333, 0.000000, 0.000000, 0.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(886, 1522.166503, -72.924964, 18.466327, 0.000000, 0.000000, 0.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(886, 1522.166503, -38.284961, 20.346319, 0.000000, 0.000000, 0.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(19833, 1529.358398, -43.075923, 20.041366, 0.000000, 0.000000, 0.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(19833, 1537.599121, -49.145904, 20.031366, 0.000000, 0.000000, 137.500045, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(19833, 1529.770996, -56.788623, 19.501354, 0.000000, 0.000000, 89.100028, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(19833, 1532.624877, -70.131843, 18.961341, 0.000000, 0.000000, -151.799926, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(19833, 1538.888671, -62.472579, 19.501354, 0.000000, 0.000000, 78.599960, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(19833, 1544.108642, -55.175899, 20.011365, 0.000000, 0.000000, -44.200004, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(19833, 1552.679809, -69.829086, 19.751359, 0.000000, 0.000000, -44.200004, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(19833, 1552.180541, -43.009693, 20.231370, 0.000000, 0.000000, -106.799995, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(19833, 1552.292846, -43.043689, 20.739696, -37.499950, 0.000000, -106.799995, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(695, 1530.152099, -16.017759, 26.021369, 0.000000, 0.000000, 0.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(695, 1509.281616, -3.647759, 27.601381, 0.000000, 0.000000, -22.900005, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(695, 1499.860961, -27.965946, 26.551357, 0.000000, 0.000000, 25.499988, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(695, 1502.475830, -52.828289, 24.581306, 0.000000, 0.000000, 118.299957, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(695, 1503.693847, -65.559051, 24.311298, 0.000000, 0.000000, 62.499969, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(695, 1532.945556, -75.600723, 23.561269, 0.000000, 0.000000, 8.199966, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(19922, 1555.234497, -32.607860, 20.320831, 0.000000, 0.000000, 90.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(1299, 1554.900512, -35.869724, 20.755126, 0.000000, 0.000000, 0.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(1482, 1538.167480, -40.368103, 21.396976, 0.000000, 0.000000, 270.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(1482, 1545.017578, -40.368103, 21.396976, 0.000000, 0.000000, 270.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(14873, 1532.284423, -40.577133, 20.921436, 0.000000, 0.000000, 0.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(3252, 1550.716308, -40.414184, 15.417679, 0.000000, 0.000000, 180.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(19922, 1541.584594, -40.217861, 20.100826, 0.000000, 0.000000, 180.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(19922, 1544.714477, -40.207866, 20.100826, 0.000000, 0.000000, 360.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(1271, 1545.405761, -40.344352, 21.232599, 0.000000, 0.000000, 0.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(1271, 1544.685424, -40.344352, 21.232599, 0.000000, 0.000000, 0.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(1271, 1545.025756, -40.344352, 21.902605, 0.000000, 0.000000, 0.000000, -1, -1, -1, 300.00, 300.00);
+    tmpobjid = CreateDynamicObject(1458, 1547.418334, -41.709915, 20.423671, 0.000000, 0.000000, 360.000000, -1, -1, -1, 300.00, 300.00);
+
+    g_MilkerObjectCount = 44;
+    printf("*** [Milker] Loaded %d map objects.", g_MilkerObjectCount);
+    return 1;
+}
+
+hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
+{
+    // KEY_NO (N) - Perah Susu
+    if(newkeys & KEY_NO)
+    {
+        if(MilkerActive[playerid] && MilkerCowIndex[playerid] != -1)
+        {
+            if(IsPlayerInRangeOfPoint(playerid, 3.0, g_MilkerCowPos[MilkerCowIndex[playerid]][0], g_MilkerCowPos[MilkerCowIndex[playerid]][1], g_MilkerCowPos[MilkerCowIndex[playerid]][2]))
+            {
+                StartMilking(playerid);
+                return 1;
+            }
+        }
+    }
+    return 1;
+}
+
+hook OnPlayerEnterCheckpoint(playerid)
+{
+    if(MilkerActive[playerid])
+    {
+        // Check if at drop-off point
+        if(IsPlayerInRangeOfPoint(playerid, 4.0, g_MilkerDropOff[0], g_MilkerDropOff[1], g_MilkerDropOff[2]))
+        {
+            if(MilkerMilkCount[playerid] > 0)
+            {
+                DeliverMilk(playerid);
+                return 1;
+            }
+        }
+    }
+    return 1;
+}

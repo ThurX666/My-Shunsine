@@ -127,6 +127,7 @@ main(){}
 #include "./Modules/Jobs/Trashmasters.pwn"
 #include "./Modules/Jobs/Courier.pwn"
 #include "./Modules/Jobs/Miner.pwn"
+#include "./Modules/Jobs/Milker.pwn"
 //-----[ Modular Command]-----
 #include "./Modules/Command/Command.pwn"
 

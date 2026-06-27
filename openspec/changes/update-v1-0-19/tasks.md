@@ -16,13 +16,13 @@
 - [x] Faction bank locker: add deposit menu — all ranks can deposit.
 - [x] Faction bank locker: add withdraw menu — leader/deputy/commissioner only.
 - [x] Faction bank locker: add transaction log.
-- [ ] Sidejob Milker: load map objects in OnGameModeInit.
-- [ ] Sidejob Milker: implement start job at locker.
-- [ ] Sidejob Milker: implement CP random at cow positions (6 points).
-- [ ] Sidejob Milker: implement /perahsusu and KEY_NO handler.
-- [ ] Sidejob Milker: implement squat animation + carry box attach.
-- [ ] Sidejob Milker: implement drop-off at milk storage point.
-- [ ] Sidejob Milker: implement 10x cycle counter and salary $250.
+- [x] Sidejob Milker: load map objects in OnGameModeInit.
+- [x] Sidejob Milker: implement start job at locker.
+- [x] Sidejob Milker: implement CP random at cow positions (6 points).
+- [x] Sidejob Milker: implement /perahsusu and KEY_NO handler.
+- [x] Sidejob Milker: implement squat animation + carry box attach.
+- [x] Sidejob Milker: implement drop-off at milk storage point.
+- [x] Sidejob Milker: implement 10x cycle counter and salary $250.
 
 ## Release
 - [ ] Compile gamemodes/main.pwn.
