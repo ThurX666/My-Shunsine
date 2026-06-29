@@ -8,7 +8,7 @@
 
 ## Changed
 
-* **Version bump** - Server version kini `1.0.19 Milker`.
+* **Version bump** - Server version kini `v1.0.19 Milker`.
 
 ## Fixed
 
@@ -16,7 +16,7 @@
 * **Anti-Cheat Weapon Saat Kerja** - Work tools (chainsaw, sekop, dll.) tidak lagi memicu false positive anti-cheat yang mereset senjata player. RefreshWeapon sekarang hanya berjalan untuk heavy weapons 34-38.
 * **Fishing Tool & Umpan** - Tool pancing dan umpan sekarang hanya berkurang ketika ikan **berhasil** ditangkap, bukan setiap kali command `/fish` dipakai.
 
-**Catatan dari Developer:**
+**Catatan:**
 > _"Update ini fokus pada stabilitas data player dengan memperbaiki root cause item leak yang sudah lama dilaporkan. Sidejob Milker hadir sebagai aktivitas baru yang ringan dan menghasilkan. Selamat memerah susu!"_
 
 @everyone

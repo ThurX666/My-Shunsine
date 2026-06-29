@@ -1164,6 +1164,20 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					Bisnis_Save(bizid);
 					PlayerPlaySound(playerid, 1054, 0.0, 0.0, 0.0);
 				}
+				case 4:
+				{
+					if(!BusinnesProduct[bizid][BussinesProduct][4]) return Error(playerid, "This business is out of stock product.");
+					if(pData[playerid][pPhoneBook] > 0) return Error(playerid, "Anda sudah memiliki Phone Book!");
+					GivePlayerMoneyEx(playerid, -price);
+					pData[playerid][pPhoneBook] = 1;
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName4]), FormatMoney(price));
+					BusinnesProduct[bizid][BussinesProduct][4]--;
+					bData[bizid][bMoney] += Server_Percent(price);
+					Server_AddPercent(price);
+					Bisnis_Save(bizid);
+					PlayerPlaySound(playerid, 1054, 0.0, 0.0, 0.0);
+					ShowContacts(playerid);
+				}
 			}
 		}	
 		else if(bData[bizid][bType] == 6)

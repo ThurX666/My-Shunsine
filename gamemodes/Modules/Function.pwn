@@ -1394,12 +1394,17 @@ function EndOfflineCheckUCPList(playerid)
 	return 1;
 }
 
-// Set default faction rank name based on rank number (SAPD only)
 stock SetDefaultFactionRankName(playerid)
 {
-	if(pData[playerid][pFaction] == SAPD && pData[playerid][pFactionRank] >= 1 && pData[playerid][pFactionRank] <= 16)
+	if(pData[playerid][pFactionRank] < 1 || pData[playerid][pFactionRank] > 16) return 0;
+
+	switch(pData[playerid][pFaction])
 	{
-		format(pData[playerid][pFactionRankName], 24, "%s", g_sapdRankNames[pData[playerid][pFactionRank] - 1]);
+		case SAPD: format(pData[playerid][pFactionRankName], 24, "%s", g_sapdRankNames[pData[playerid][pFactionRank] - 1]);
+		case SAGS: format(pData[playerid][pFactionRankName], 24, "%s", g_sagsRankNames[pData[playerid][pFactionRank] - 1]);
+		case SAMD: format(pData[playerid][pFactionRankName], 24, "%s", g_samdRankNames[pData[playerid][pFactionRank] - 1]);
+		case SANEW: format(pData[playerid][pFactionRankName], 24, "%s", g_sanewRankNames[pData[playerid][pFactionRank] - 1]);
+		default: format(pData[playerid][pFactionRankName], 24, "Rank %d", pData[playerid][pFactionRank]);
 	}
 	return 1;
 }

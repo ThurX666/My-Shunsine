@@ -53,13 +53,28 @@ hook OnGameModeInit()
     g_MilkerObjectCount = 44;
     printf("*** [Milker] Loaded %d map objects.", g_MilkerObjectCount);
     #pragma unused tmpobjid_milker
+
+    // Milker Locker pickup & label
+    CreateDynamicPickup(1239, 1, g_MilkerLocker[0], g_MilkerLocker[1], g_MilkerLocker[2], -1, -1, -1, 30.0);
+    CreateDynamic3DTextLabel("[Milker Locker]\n/startmilker untuk memulai", COLOR_YELLOW, g_MilkerLocker[0], g_MilkerLocker[1], g_MilkerLocker[2], 30.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 1, -1, -1);
+
+    // Milker cow position pickups & labels
+    for(new i = 0; i < 6; i++)
+    {
+        CreateDynamicPickup(1239, 1, g_MilkerCowPos[i][0], g_MilkerCowPos[i][1], g_MilkerCowPos[i][2], -1, -1, -1, 30.0);
+        CreateDynamic3DTextLabel("[Sapi Perah]\nTekan N atau /perahsusu", COLOR_WHITE, g_MilkerCowPos[i][0], g_MilkerCowPos[i][1], g_MilkerCowPos[i][2], 30.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 1, -1, -1);
+    }
+
+    // Milker drop-off pickup & label
+    CreateDynamicPickup(1239, 1, g_MilkerDropOff[0], g_MilkerDropOff[1], g_MilkerDropOff[2], -1, -1, -1, 30.0);
+    CreateDynamic3DTextLabel("[Drop-off Susu]\nAntar susu ke sini setelah diperah", COLOR_WHITE, g_MilkerDropOff[0], g_MilkerDropOff[1], g_MilkerDropOff[2], 30.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 1, -1, -1);
+
     return 1;
 }
 
 hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 {
-    // KEY_NO (N) - Perah Susu
-    if(newkeys & KEY_NO)
+    if((newkeys & KEY_NO) && !(oldkeys & KEY_NO) && GetPlayerState(playerid) == PLAYER_STATE_ONFOOT)
     {
         if(MilkerActive[playerid] && MilkerCowIndex[playerid] != -1)
         {

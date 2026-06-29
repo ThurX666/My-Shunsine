@@ -219,13 +219,13 @@ UpdatePlayerData(playerid)
 	mysql_format(g_SQL, cQuery, sizeof(cQuery), "%s`claimvip` = '%d|%d|%d', ", cQuery, pData[playerid][pClaimVIP][0], pData[playerid][pClaimVIP][1], pData[playerid][pClaimVIP][2]);
 	mysql_format(g_SQL, cQuery, sizeof(cQuery), "%s`schematicgun` = '%d|%d|%d|%d|%d|%d', ", cQuery, pData[playerid][pSchematic][0], pData[playerid][pSchematic][1], pData[playerid][pSchematic][2], pData[playerid][pSchematic][3], pData[playerid][pSchematic][4], pData[playerid][pSchematic][5]);
 	mysql_format(g_SQL, cQuery, sizeof(cQuery), "%s`skillweapon` = '%d|%d|%d|%d|%d', ", cQuery, pData[playerid][pSkillWeapon][0], pData[playerid][pSkillWeapon][1], pData[playerid][pSkillWeapon][2], pData[playerid][pSkillWeapon][3], pData[playerid][pSkillWeapon][4]);
-	mysql_format(g_SQL, cQuery, sizeof(cQuery), "%s`TogAuto` = '%d|%d|%d|%d|%d|%d|%d|%d', ", cQuery, pData[playerid][pTogPaycheck], pData[playerid][pTogHandbrake], pData[playerid][pTogHelmet], pData[playerid][pRadioStream], pData[playerid][pTogChat], pData[playerid][pTogMask], pData[playerid][pTogSealtbelt], pData[playerid][pTogHandbrake], pData[playerid][pTogAmmo]);
+	mysql_format(g_SQL, cQuery, sizeof(cQuery), "%s`TogAuto` = '%d|%d|%d|%d|%d|%d|%d|%d', ", cQuery, pData[playerid][pTogPaycheck], pData[playerid][pTogHandbrake], pData[playerid][pTogHelmet], pData[playerid][pRadioStream], pData[playerid][pTogChat], pData[playerid][pTogMask], pData[playerid][pTogSealtbelt], pData[playerid][pTogAmmo]);
 	mysql_format(g_SQL, cQuery, sizeof(cQuery), "%s`Toggle` = '%d|%d|%d|%d|%d', ", cQuery, TogglePlayer[playerid][ToggleDate], TogglePlayer[playerid][ToggleTime], TogglePlayer[playerid][ToggleMoney], TogglePlayer[playerid][ToggleGPS], TogglePlayer[playerid][ToggleWeb]);
-	mysql_format(g_SQL, cQuery, sizeof(cQuery), "%s`Delay` = '%d|%d|%d|%d|%d|%d|%d|%d|%d|%d|%d|%d|%d', ", cQuery, DelayPlayer[playerid][DelaySweeper], DelayPlayer[playerid][DelayTrashmaster], DelayPlayer[playerid][DelayCourier], 
+	mysql_format(g_SQL, cQuery, sizeof(cQuery), "%s`Delay` = '%d|%d|%d|%d|%d|%d|%d|%d|%d|%d|%d|%d|%d|%d', ", cQuery, DelayPlayer[playerid][DelaySweeper], DelayPlayer[playerid][DelayTrashmaster], DelayPlayer[playerid][DelayCourier], 
 	DelayPlayer[playerid][DelayBusDriver], DelayPlayer[playerid][DelayForklift], DelayPlayer[playerid][DelayFishing], DelayPlayer[playerid][DelayDelivery],
 	DelayPlayer[playerid][DelayHauling], DelayPlayer[playerid][DelayLumberJack], DelayPlayer[playerid][DelaySmuggler], DelayPlayer[playerid][DelayWeaponCreate], 
 	DelayPlayer[playerid][DelayTraining], DelayPlayer[playerid][DelayAdvertisement], DelayPlayer[playerid][DelayMiner]);
-	mysql_format(g_SQL, cQuery, sizeof(cQuery), "%s`Bush` = '%d|%d', ", cQuery, DelayPlayer[playerid][DelayForager], pData[playerid][pBushForager]);
+	mysql_format(g_SQL, cQuery, sizeof(cQuery), "%s`Bush` = '%d|%d|%d', ", cQuery, DelayPlayer[playerid][DelayForager], pData[playerid][pBushForager], DelayPlayer[playerid][DelayMilker]);
 	mysql_format(g_SQL, cQuery, sizeof(cQuery), "%s`starterpack` = '%d', ", cQuery, pData[playerid][pStarterPack]);
 
 	mysql_format(g_SQL, cQuery, sizeof(cQuery), "%s`last_login` = CURRENT_TIMESTAMP() WHERE `reg_id` = '%d'", cQuery, pData[playerid][pID]);

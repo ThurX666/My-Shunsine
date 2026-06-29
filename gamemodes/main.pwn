@@ -686,6 +686,23 @@ TryAutoRoleplay(playerid, text[])
 		format(action, sizeof(action), "bersiap melakukan perlawanan dengan gerakan tangan yang agresif.");
 	else if(!strcmp(text, "rpgun", true))
 		format(action, sizeof(action), "meraih senjatanya dengan sigap dan bersiap menembak.");
+	else if(!strcmp(text, "rpperiksa", false))
+	{
+		if(pData[playerid][pFaction] == SAMD)
+		{
+			new targetid = INVALID_PLAYER_ID;
+			foreach(new i : Player) if(i != playerid && NearPlayer(playerid, i, 5.0))
+			{
+				targetid = i;
+				break;
+			}
+			if(targetid == INVALID_PLAYER_ID) return 0;
+			format(action, sizeof(action), "sedang memeriksa kesehatan %s.", ReturnName2(targetid));
+			SendNearbyMessage(playerid, 20.0, 0xC2A2DAFF, "* %s %s", ReturnName2(playerid), action);
+			Health_Show(playerid, targetid);
+			return 1;
+		}
+	}
 	else return 0;
 
 	if(pData[playerid][pMaskOn] == 1) SendNearbyMessage(playerid, 20.0, 0xC2A2DAFF, "* Mask_%d %s", pData[playerid][pMaskID], action);
@@ -2169,7 +2186,7 @@ public OnPlayerEnterDynamicArea(playerid, areaid)
                 {
                     if(GetPVarType(playerid, "pAudioStream")) StopAudioStreamForPlayer(playerid);
                     else SetPVarInt(playerid, "pAudioStream", 1);
-                    PlayAudioStreamForPlayer(playerid, station, GetPVarFloat(i, "BBX"), GetPVarFloat(i, "BBY"), GetPVarFloat(i, "BBZ"), 30.0, 1);
+                    PlayAudioStreamForPlayer(playerid, station, GetPVarFloat(i, "BBX"), GetPVarFloat(i, "BBY"), GetPVarFloat(i, "BBZ"), 15.0, 1);
                 }
             }
             break;

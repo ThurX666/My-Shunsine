@@ -571,16 +571,16 @@ function AssignPlayerData(playerid, race_check)
 	cache_get_value_name(0, "skillweapon", str);
 	sscanf(str, "p<|>ddddd", pData[playerid][pSkillWeapon][0], pData[playerid][pSkillWeapon][1], pData[playerid][pSkillWeapon][2], pData[playerid][pSkillWeapon][3], pData[playerid][pSkillWeapon][4]);
 	cache_get_value_name(0, "TogAuto", str);
-	sscanf(str, "p<|>ddddddddd", pData[playerid][pTogPaycheck], pData[playerid][pTogHandbrake], pData[playerid][pTogHelmet], pData[playerid][pRadioStream], pData[playerid][pTogChat], pData[playerid][pTogMask], pData[playerid][pTogSealtbelt], pData[playerid][pTogAmmo]);
+	sscanf(str, "p<|>dddddddd", pData[playerid][pTogPaycheck], pData[playerid][pTogHandbrake], pData[playerid][pTogHelmet], pData[playerid][pRadioStream], pData[playerid][pTogChat], pData[playerid][pTogMask], pData[playerid][pTogSealtbelt], pData[playerid][pTogAmmo]);
 	cache_get_value_name(0, "Toggle", str);
 	sscanf(str, "p<|>ddddd", TogglePlayer[playerid][ToggleDate], TogglePlayer[playerid][ToggleTime], TogglePlayer[playerid][ToggleMoney], TogglePlayer[playerid][ToggleGPS], TogglePlayer[playerid][ToggleWeb]);
 	cache_get_value_name(0, "Delay", str);
-	sscanf(str, "p<|>ddddddddddddd", DelayPlayer[playerid][DelaySweeper], DelayPlayer[playerid][DelayTrashmaster], DelayPlayer[playerid][DelayCourier],
+	sscanf(str, "p<|>dddddddddddddd", DelayPlayer[playerid][DelaySweeper], DelayPlayer[playerid][DelayTrashmaster], DelayPlayer[playerid][DelayCourier],
 	DelayPlayer[playerid][DelayBusDriver], DelayPlayer[playerid][DelayForklift], DelayPlayer[playerid][DelayFishing], DelayPlayer[playerid][DelayDelivery],
 	DelayPlayer[playerid][DelayHauling], DelayPlayer[playerid][DelayLumberJack], DelayPlayer[playerid][DelaySmuggler], DelayPlayer[playerid][DelayWeaponCreate],
 	DelayPlayer[playerid][DelayTraining], DelayPlayer[playerid][DelayAdvertisement], DelayPlayer[playerid][DelayMiner]);
 	cache_get_value_name(0, "Bush", str);
-	sscanf(str, "p<|>dd", DelayPlayer[playerid][DelayForager], pData[playerid][pBushForager]);
+	sscanf(str, "p<|>ddd", DelayPlayer[playerid][DelayForager], pData[playerid][pBushForager], DelayPlayer[playerid][DelayMilker]);
 	cache_get_value_name_int(0, "starterpack", pData[playerid][pStarterPack]);
 	
 	for (new i = 0; i < 31; i++)

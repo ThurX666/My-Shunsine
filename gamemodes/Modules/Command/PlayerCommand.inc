@@ -536,7 +536,7 @@ CMD:gajiserver(playerid, params[])
 	format(string, sizeof(string), "%sTrucker Hauling\t$%s - $%s per cargo\n", string, FormatMoney(20000), FormatMoney(39900));
 	format(string, sizeof(string), "%sTrucker Crates\t$%s per crate\n", string, FormatMoney(1250));
 	format(string, sizeof(string), "%sFarmer\t$%s - $%s per unit panen\n", string, FormatMoney(100), FormatMoney(200));
-	format(string, sizeof(string), "%sLumber/Fish/Trashmaster/Milker	Sesuai jumlah item yang dijual/diantar\n", string);
+	format(string, sizeof(string), "%sLumber/Fish/Trashmaster/Milker\tSesuai jumlah item yang dijual/diantar\n", string);
 	Dialog_Show(playerid, ShowOnly, DIALOG_STYLE_TABLIST_HEADERS, "Gaji Server", string, "Close", "");
 	return 1;
 }
@@ -618,7 +618,7 @@ CMD:delays(playerid)
 	if(pData[playerid][IsLoggedIn] == false) return Error(playerid, "You must logged in!");
 	new string[700];
   	format(string, sizeof(string), "Delay type\tTime (minutes)\n");
-    format(string, sizeof(string), "%sSweeper\t%d\nTrash Collector\t%d\nCourier\t%d\nBus Driver\t%d\nForklift Driver\t%d\nFishing\t%d\nTruck Delivery \t%d\nHauling\t%d\nLumber Jack\t%d\nSmuggler\t%d\nForeger\t%d\nWeapon Creation\t%d\nWeapon Training\t%d\nAdvertisement\t%d\n", 
+    format(string, sizeof(string), "%sSweeper\t%d\nTrash Collector\t%d\nCourier\t%d\nBus Driver\t%d\nForklift Driver\t%d\nFishing\t%d\nTruck Delivery \t%d\nHauling\t%d\nLumber Jack\t%d\nSmuggler\t%d\nForeger\t%d\nMiner\t%d\nWeapon Creation\t%d\nWeapon Training\t%d\nAdvertisement\t%d\nMilker\t%d\n",
     string, 
     DelayPlayer[playerid][DelaySweeper]/60,
     DelayPlayer[playerid][DelayTrashmaster]/60,
@@ -633,7 +633,9 @@ CMD:delays(playerid)
 	DelayPlayer[playerid][DelayForager]/60,
     DelayPlayer[playerid][DelayWeaponCreate]/60,
     DelayPlayer[playerid][DelayTraining]/60,
-    DelayPlayer[playerid][DelayAdvertisement]/60);
+    DelayPlayer[playerid][DelayAdvertisement]/60,
+    DelayPlayer[playerid][DelayMiner]/60,
+    DelayPlayer[playerid][DelayMilker]/60);
 
 	Dialog_Show(playerid, DIALOG_UNUSED, DIALOG_STYLE_TABLIST_HEADERS, "Delays", string, "Close", "");
 	return 1;
@@ -2252,6 +2254,64 @@ CMD:ame(playerid, params[])
     return 1;
 }
 
+stock ProcessAtTags(playerid, params[], output[], outputSize)
+{
+    #pragma unused playerid
+    output[0] = '\0';
+    new idx = 0, len = strlen(params);
+
+    while(idx < len)
+    {
+        new atPos = -1;
+        for(new i = idx; params[i] != '\0'; i++)
+        {
+            if(params[i] == '@' && (i == idx || params[i-1] == ' '))
+            {
+                atPos = i;
+                break;
+            }
+        }
+
+        if(atPos == -1)
+        {
+            new rest[256];
+            strmid(rest, params, idx, len, sizeof(rest));
+            strcat(output, rest, outputSize);
+            break;
+        }
+
+        if(atPos > idx)
+        {
+            new chunk[256];
+            strmid(chunk, params, idx, atPos, sizeof(chunk));
+            strcat(output, chunk, outputSize);
+        }
+
+        new idEnd = atPos + 1;
+        while(params[idEnd] >= '0' && params[idEnd] <= '9') idEnd++;
+
+        new idStr[8];
+        strmid(idStr, params, atPos + 1, idEnd, sizeof(idStr));
+        new targetid = strval(idStr);
+
+        if(IsPlayerConnected(targetid) && targetid >= 0 && targetid < MAX_PLAYERS)
+        {
+            new formatted[64];
+            format(formatted, sizeof(formatted), "%s", ReturnName2(targetid));
+            strcat(output, formatted, outputSize);
+        }
+        else
+        {
+            new raw[8];
+            strmid(raw, params, atPos, idEnd, sizeof(raw));
+            strcat(output, raw, outputSize);
+        }
+
+        idx = idEnd;
+    }
+    return 1;
+}
+
 CMD:me(playerid, params[])
 {
     if(isnull(params))
@@ -2259,19 +2319,23 @@ CMD:me(playerid, params[])
 	
 	if(GetPVarType(playerid, "Caps")) UpperToLower(params);
 	if(pData[playerid][pTogChat]) params[0] = toupper(params[0]);
-    if(strlen(params) > 64) 
+
+	new processedParams[256];
+	ProcessAtTags(playerid, params, processedParams, sizeof(processedParams));
+
+    if(strlen(processedParams) > 64) 
 	{
 		if(pData[playerid][pMaskOn] == 1)
 		{
 			new name[52];
 			format(name, sizeof(name), "Mask %d", pData[playerid][pMaskID]);
-			SendNearbyMessage(playerid, 20.0, COLOR_PURPLE, "* %s %.64s ..", name, params);
-        	SendNearbyMessage(playerid, 20.0, COLOR_PURPLE, "...%s", params[64]);
+			SendNearbyMessage(playerid, 20.0, COLOR_PURPLE, "* %s %.64s ..", name, processedParams);
+         	SendNearbyMessage(playerid, 20.0, COLOR_PURPLE, "...%s", processedParams[64]);
 		}
 		else
 		{
-			SendNearbyMessage(playerid, 20.0, COLOR_PURPLE, "* %s %.64s ..", ReturnName2(playerid), params);
-        	SendNearbyMessage(playerid, 20.0, COLOR_PURPLE, "...%s", params[64]);
+			SendNearbyMessage(playerid, 20.0, COLOR_PURPLE, "* %s %.64s ..", ReturnName2(playerid), processedParams);
+         	SendNearbyMessage(playerid, 20.0, COLOR_PURPLE, "...%s", processedParams[64]);
 		}
     }
     else 
@@ -2280,11 +2344,11 @@ CMD:me(playerid, params[])
 		{
 			new name[52];
 			format(name, sizeof(name), "Mask %d", pData[playerid][pMaskID]);
-			SendNearbyMessage(playerid, 20.0, COLOR_PURPLE, "* %s %s", name, params);
+			SendNearbyMessage(playerid, 20.0, COLOR_PURPLE, "* %s %s", name, processedParams);
 		}
 		else
 		{
-			SendNearbyMessage(playerid, 20.0, COLOR_PURPLE, "* %s %s", ReturnName2(playerid), params);
+			SendNearbyMessage(playerid, 20.0, COLOR_PURPLE, "* %s %s", ReturnName2(playerid), processedParams);
 		}
     }
     return 1;
@@ -2906,6 +2970,31 @@ CMD:showidcard(playerid, params[])
 	SendClientMessageEx(otherid, -1, "Full Name: "GREEN_E"%s", ReturnName2(playerid));
 	SendClientMessageEx(otherid, -1, "Sex: "GREEN_E"%s", GetPlayerGender(playerid));
 	SendClientMessageEx(otherid, -1, "Date Of Birth: "GREEN_E"%s", pData[playerid][pAge]);
+	return 1;
+}
+
+CMD:showlic(playerid, params[])
+{
+	new otherid;
+	if(sscanf(params, "u", otherid)) {
+		SendClientMessageEx(playerid, -1, ""YELLOW_E"==========[ "AQUA_E"San Andreas Licenses "YELLOW_E"]==========");
+		SendClientMessageEx(playerid, -1, "Full Name: "GREEN_E"%s", ReturnName2(playerid));
+		SendClientMessageEx(playerid, -1, "Driver License: %s", GetLicenseDriver(playerid));
+		SendClientMessageEx(playerid, -1, "Boat License: %s", GetLicenseBoat(playerid));
+		SendClientMessageEx(playerid, -1, "Gun License: %s", GetLicenseGun(playerid));
+		SendClientMessageEx(playerid, -1, "Fly License: %s", GetLicenseFly(playerid));
+		SendClientMessageEx(playerid, -1, "Trucker License: %s", GetLicenseTrucker(playerid));
+		return 1;
+	}
+	if(otherid == INVALID_PLAYER_ID || !NearPlayer(playerid, otherid, 5.0)) return Error(playerid, "That player is disconnected or not near you.");
+	SendNearbyMessage(playerid, 20.0, COLOR_PURPLE, "* %s shows their licenses to %s", ReturnName2(playerid), ReturnName2(otherid));
+	SendClientMessageEx(otherid, -1, ""YELLOW_E"==========[ "AQUA_E"San Andreas Licenses "YELLOW_E"]==========");
+	SendClientMessageEx(otherid, -1, "Full Name: "GREEN_E"%s", ReturnName2(playerid));
+	SendClientMessageEx(otherid, -1, "Driver License: %s", GetLicenseDriver(playerid));
+	SendClientMessageEx(otherid, -1, "Boat License: %s", GetLicenseBoat(playerid));
+	SendClientMessageEx(otherid, -1, "Gun License: %s", GetLicenseGun(playerid));
+	SendClientMessageEx(otherid, -1, "Fly License: %s", GetLicenseFly(playerid));
+	SendClientMessageEx(otherid, -1, "Trucker License: %s", GetLicenseTrucker(playerid));
 	return 1;
 }
 

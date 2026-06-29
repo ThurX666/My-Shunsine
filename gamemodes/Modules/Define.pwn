@@ -1,5 +1,5 @@
 // Server Define
-#define TEXT_GAMEMODE	"Version 1.0.19 Milker"
+#define TEXT_GAMEMODE	"Version 1.0.20"
 #define TEXT_WEBURL		"discord.gg/mysunshine"
 #define TEXT_LANGUAGE	"Bahasa Indonesia / English"
 
@@ -64,7 +64,67 @@ new const g_sapdRankNames[16][] = {
     "Commissioner",
     "Deputy Chief of Staff",
     "Chief of Staff",
-    "Chief" // Rank 16 = Chief
+    "Chief"
+};
+
+// SAGS Rank Names (1-16)
+new const g_sagsRankNames[16][] = {
+    "Intern",
+    "Junior Staff",
+    "Staff",
+    "Senior Staff",
+    "Supervisor",
+    "Manager",
+    "Senior Manager",
+    "Director",
+    "Senior Director",
+    "Deputy Secretary",
+    "Secretary",
+    "Under Secretary",
+    "Deputy Minister",
+    "Minister",
+    "Deputy Governor",
+    "Governor"
+};
+
+// SAMD Rank Names (1-16)
+new const g_samdRankNames[16][] = {
+    "Intern",
+    "Paramedic Trainee",
+    "Paramedic",
+    "Senior Paramedic",
+    "Lead Paramedic",
+    "Supervisor",
+    "Chief Paramedic",
+    "Medical Officer",
+    "Senior Medical Officer",
+    "Head of Department",
+    "Deputy Medical Director",
+    "Medical Director",
+    "Chief Medical Officer",
+    "Deputy Surgeon General",
+    "Surgeon General",
+    "Chief"
+};
+
+// SANA Rank Names (1-16)
+new const g_sanewRankNames[16][] = {
+    "Intern",
+    "Junior Reporter",
+    "Reporter",
+    "Senior Reporter",
+    "Correspondent",
+    "Senior Correspondent",
+    "Editor",
+    "Senior Editor",
+    "Chief Editor",
+    "Deputy Director",
+    "Director",
+    "Head of Broadcasting",
+    "Vice President",
+    "President",
+    "CEO",
+    "Chief"
 };
 
 //MAX MODS

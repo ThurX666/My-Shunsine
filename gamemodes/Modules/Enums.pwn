@@ -464,7 +464,8 @@ enum delayplayer {
 	DelayTraining,
 	DelayAdvertisement,
 	DelayForager,
-	DelayMiner
+	DelayMiner,
+	DelayMilker
 }
 
 new DelayPlayer[MAX_PLAYERS][delayplayer]; //DelayPlayer[playerid][DelayWeaponCreate]

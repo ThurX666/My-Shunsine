@@ -440,6 +440,10 @@ ptask PlayerData_Minus[1000](playerid)
 	{
         if(--DelayPlayer[playerid][DelayAdvertisement] == 0) DelayPlayer[playerid][DelayAdvertisement] = 0;	
 	}
+	if(DelayPlayer[playerid][DelayMilker] > 0)
+	{
+		if(--DelayPlayer[playerid][DelayMilker] == 0) SendClientMessage(playerid, COLOR_ARWIN, "SIDEJOB: "YELLOW_E"You can now work as a milker again!");
+	}
 	return 1;
 }
 

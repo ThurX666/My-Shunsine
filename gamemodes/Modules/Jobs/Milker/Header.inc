@@ -1,6 +1,7 @@
 // Sidejob Milker Definitions
 #define MAX_MILKER_CYCLES 10
 #define MILKER_SALARY 25000 // $250.00
+#define SIDEJOB_MILKER 402
 
 // Milker Cow Positions (6 points)
 new const Float:g_MilkerCowPos[6][3] = {
@@ -18,10 +19,9 @@ new const Float:g_MilkerDropOff[3] = {1541.9679, -41.2531, 21.2003};
 // Milker Locker Start Point
 new const Float:g_MilkerLocker[4] = {1556.2843, -32.5951, 21.3849, 90.0};
 
-// Player variables
 new
     MilkerCycles[MAX_PLAYERS],
     MilkerMilkCount[MAX_PLAYERS],
     MilkerActive[MAX_PLAYERS],
     MilkerCowIndex[MAX_PLAYERS],
-    MilkerObjects[MAX_PLAYERS]; // Attached box object
+    MilkerObjects[MAX_PLAYERS];
