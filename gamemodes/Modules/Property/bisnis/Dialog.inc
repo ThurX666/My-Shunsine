@@ -61,7 +61,7 @@ Dialog:RandNumber(playerid, response, listitem, inputtext[])
 		if(!BusinnesProduct[bizid][BussinesProduct][0]) return Error(playerid, "This business is out of stock product.");
         pData[playerid][pPhone] = strval(inputtext);
 
-		SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName0]), FormatMoney(price));
+		SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName0]), FormatMoney(price));
 		SendCustomMessage(playerid, "NOTE", ""YELLOW_E"Nomor handphone anda %d", pData[playerid][pPhone]);
 		bData[bizid][bProd]--;
 		BusinnesProduct[bizid][BussinesProduct][0]--;
@@ -148,7 +148,7 @@ Dialog:BisnisBuyRestock(playerid, response, listitem, inputtext[])
 		if(bData[bid][bMoney] < value) return Error(playerid, "Uang Di Bisnis anda tidak cukup untuk merestock bisnis");
 		bData[bid][bMoney] -= value;
 		bData[bid][bProd] += idiot;
-		format(String, sizeof(String), "BISNIS: "WHITE_E"Anda telah membeli product bisnis {00FFFF}%d "WHITE_E"unit dengan harga "YELLOW_E"$%s", idiot, FormatMoney(value));
+		format(String, sizeof(String), "BISNIS: "WHITE_E"Anda telah membeli product bisnis {00FFFF}%d "WHITE_E"unit dengan harga "YELLOW_E"%s", idiot, FormatMoney(value));
 		SendClientMessage(playerid, COLOR_ARWIN, String);
 	}
 	return 1;
@@ -201,7 +201,7 @@ Dialog:MenuBisnis(playerid, response, listitem, inputtext[])
 			{	
 				new mstr[248], lstr[512];
 				format(mstr,sizeof(mstr),"Bisnis ID %d", bid);
-				format(lstr,sizeof(lstr),"Bisnis Name:\t%s\nBisnis Locked:\t%s\nBisnis Product:\t%d\nBisnis Vault:\t$%s", ReplaceString(bData[bid][bName]), lock, bData[bid][bProd], FormatMoney(bData[bid][bMoney]));
+				format(lstr,sizeof(lstr),"Bisnis Name:\t%s\nBisnis Locked:\t%s\nBisnis Product:\t%d\nBisnis Vault:\t%s", ReplaceString(bData[bid][bName]), lock, bData[bid][bProd], FormatMoney(bData[bid][bMoney]));
 				Dialog_Show(playerid, DIALOG_UNUSED, DIALOG_STYLE_TABLIST, mstr, lstr,"Back","Close");
 			}
 			case 1:
@@ -246,7 +246,7 @@ Dialog:BisnisInfo(playerid, response, listitem, inputtext[])
 			else if(bData[bid][bType] == 6) type= "GYM";
 			else if(bData[bid][bType] == 7) type= "Ammunation";
 			else type = "Unknow";
-			format(line9, sizeof(line9), "Bisnis ID: %d\nBisnis Owner: %s\nBisnis Name: %s\nBisnis Price: $%s\nBisnis Type: %s\nBisnis Status: %s\nBisnis Product: %d",
+			format(line9, sizeof(line9), "Bisnis ID: %d\nBisnis Owner: %s\nBisnis Name: %s\nBisnis Price: %s\nBisnis Type: %s\nBisnis Status: %s\nBisnis Product: %d",
 			bid, bData[bid][bOwner], ReplaceString(bData[bid][bName]), FormatMoney(bData[bid][bPrice]), type, lock, bData[bid][bProd]);
 
 			Dialog_Show(playerid, ShowOnly, DIALOG_STYLE_MSGBOX, "Bisnis Info", line9, "Close","");
@@ -317,7 +317,7 @@ Dialog:BussinesRestock(playerid, response, listitem, inputtext[])
             bData[bizid][bMoney] -= value;
 			Bisnis_Save(bizid);
             Bisnis_ProductStock(playerid, bizid);
-            SendCustomMessage(playerid, "BUSSINES", "Anda telah merestock product "YELLOW_E"%d units "WHITE_E"dengan harga "GREEN_E"$%s", idiot, FormatMoney(value));
+            SendCustomMessage(playerid, "BUSSINES", "Anda telah merestock product "YELLOW_E"%d units "WHITE_E"dengan harga "GREEN_E"%s", idiot, FormatMoney(value));
 		}
 		else Bisnis_ProductStock(playerid, bizid);
 	}
@@ -377,7 +377,7 @@ Dialog:BisnisSetPrice(playerid, response, listitem, inputtext[])
 			bData[bizid][bP][pData[playerid][pProductModify]] = strval(duit);
 			Bisnis_Save(bizid);
 
-			SendCustomMessage(playerid, "BISNIS", "You have adjusted the price of %s to: $%s!", item, FormatMoney(strval(duit)));
+			SendCustomMessage(playerid, "BISNIS", "You have adjusted the price of %s to: %s!", item, FormatMoney(strval(duit)));
 			Bisnis_ProductMenu(playerid, bizid);
 		}
 		else
@@ -684,7 +684,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					new Float:darah;
 					GetPlayerHealth(playerid, darah);
 					SetPlayerHealthEx(playerid, darah+10);
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName0]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName0]), FormatMoney(price));
 					
 					bData[bizid][bMoney] += Server_Percent(price);
 					BusinnesProduct[bizid][BussinesProduct][0]--;
@@ -701,7 +701,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					new Float:darah;
 					GetPlayerHealth(playerid, darah);
 					SetPlayerHealthEx(playerid, darah+10);
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName1]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName1]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][1]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -717,7 +717,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					new Float:darah;
 					GetPlayerHealth(playerid, darah);
 					SetPlayerHealthEx(playerid, darah+10);
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName2]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName2]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][2]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -738,7 +738,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					new Float:darah;
 					GetPlayerHealth(playerid, darah);
 					SetPlayerHealthEx(playerid, darah+10);
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName3]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName3]), FormatMoney(price));
 				}
 			}
 		}
@@ -752,7 +752,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					if(pData[playerid][pSnack] >= 5) return Error(playerid, "Maximum snack inventory is 5.");
 					GivePlayerMoneyEx(playerid, -price);
 					pData[playerid][pSnack]++;
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName0]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName0]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][0]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -766,7 +766,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					GivePlayerMoneyEx(playerid, -price);
 					pData[playerid][pSprunk]++;
 					
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName1]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName1]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][1]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -779,7 +779,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					if(pData[playerid][pBandage] >= 5) return Error(playerid, "Maximum bandage inventory is 5.");
 					GivePlayerMoneyEx(playerid, -price);
 					pData[playerid][pBandage]++;
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName2]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName2]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][2]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -792,7 +792,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					if(pData[playerid][pRokok] >= 5) return Error(playerid, "Maximum cigarettes inventory is 5.");
 					GivePlayerMoneyEx(playerid, -price);
 					pData[playerid][pRokok]++;
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName3]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName3]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][3]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -804,7 +804,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					if(!BusinnesProduct[bizid][BussinesProduct][4]) return Error(playerid, "This business is out of stock product.");
 					GivePlayerMoneyEx(playerid, -price);
 					pData[playerid][pPayToll] += 50;
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName4]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName4]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][4]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -855,7 +855,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 
 					Bisnis_Save(bizid);
 					PlayerPlaySound(playerid, 1054, 0.0, 0.0, 0.0);
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Toys {ffffff}for {00ff00}$%s", FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Toys {ffffff}for {00ff00}%s", FormatMoney(price));
 					pData[playerid][pClothesType] = 2;
 						
 					for (new id; id < sizeof(accList); id++) if(accList[id][accListType] == 1) {
@@ -878,7 +878,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					GivePlayerMoneyEx(playerid, -price);
 					BusinnesProduct[bizid][BussinesProduct][2]--;
 					bData[bizid][bMoney] += Server_Percent(price);
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Toys {ffffff}for {00ff00}$%s", FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Toys {ffffff}for {00ff00}%s", FormatMoney(price));
 					Bisnis_Save(bizid);
 					PlayerPlaySound(playerid, 1054, 0.0, 0.0, 0.0);
 					pData[playerid][pClothesType] = 3;
@@ -903,7 +903,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					GivePlayerMoneyEx(playerid, -price);
 					BusinnesProduct[bizid][BussinesProduct][3]--;
 					bData[bizid][bMoney] += Server_Percent(price);
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Toys {ffffff}for {00ff00}$%s", FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Toys {ffffff}for {00ff00}%s", FormatMoney(price));
 					Bisnis_Save(bizid);
 					PlayerPlaySound(playerid, 1054, 0.0, 0.0, 0.0);
 					pData[playerid][pClothesType] = 4;
@@ -928,7 +928,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					GivePlayerMoneyEx(playerid, -price);
 					BusinnesProduct[bizid][BussinesProduct][4]--;
 					bData[bizid][bMoney] += Server_Percent(price);
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Toys {ffffff}for {00ff00}$%s", FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Toys {ffffff}for {00ff00}%s", FormatMoney(price));
 					Bisnis_Save(bizid);
 					PlayerPlaySound(playerid, 1054, 0.0, 0.0, 0.0);
 					pData[playerid][pClothesType] = 5;
@@ -954,7 +954,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					GivePlayerMoneyEx(playerid, -price);
 					BusinnesProduct[bizid][BussinesProduct][5]--;
 					bData[bizid][bMoney] += Server_Percent(price);
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Toys {ffffff}for {00ff00}$%s", FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Toys {ffffff}for {00ff00}%s", FormatMoney(price));
 					Bisnis_Save(bizid);
 					PlayerPlaySound(playerid, 1054, 0.0, 0.0, 0.0);
 					pData[playerid][pClothesType] = 6;
@@ -979,7 +979,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					GivePlayerMoneyEx(playerid, -price);
 					BusinnesProduct[bizid][BussinesProduct][6]--;
 					bData[bizid][bMoney] += Server_Percent(price);
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Toys {ffffff}for {00ff00}$%s", FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Toys {ffffff}for {00ff00}%s", FormatMoney(price));
 					Bisnis_Save(bizid);
 					PlayerPlaySound(playerid, 1054, 0.0, 0.0, 0.0);
 					pData[playerid][pClothesType] = 7;
@@ -1029,7 +1029,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					GivePlayerMoneyEx(playerid, -price);
 					BusinnesProduct[bizid][BussinesProduct][8]--;
 					bData[bizid][bMoney] += Server_Percent(price);
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Toys {ffffff}for {00ff00}$%s", FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Toys {ffffff}for {00ff00}%s", FormatMoney(price));
 					Bisnis_Save(bizid);
 					PlayerPlaySound(playerid, 1054, 0.0, 0.0, 0.0);
 					pData[playerid][pClothesType] = 9;
@@ -1050,7 +1050,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					if(!BusinnesProduct[bizid][BussinesProduct][0]) return Error(playerid, "This business is out of stock product.");
 					GivePlayerMoneyEx(playerid, -price);
 					GivePlayerWeaponEx(playerid, 5, 1);
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName0]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName0]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][0]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -1062,7 +1062,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					if(!BusinnesProduct[bizid][BussinesProduct][1]) return Error(playerid, "This business is out of stock product.");
 					GivePlayerMoneyEx(playerid, -price);
 					GivePlayerWeaponEx(playerid, 6, 1);
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName1]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName1]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][1]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -1074,7 +1074,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					if(!BusinnesProduct[bizid][BussinesProduct][2]) return Error(playerid, "This business is out of stock product.");
 					GivePlayerMoneyEx(playerid, -price);
 					GivePlayerWeaponEx(playerid, 15, 1);
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName2]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName2]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][2]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -1087,7 +1087,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					if(pData[playerid][pFishTool] > 1) return Error(playerid, "Anda masih memiliki pancingan!");
 					GivePlayerMoneyEx(playerid, -price);
 					pData[playerid][pFishTool] = 100;
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName3]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName3]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][3]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -1101,7 +1101,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					GivePlayerMoneyEx(playerid, -price);
 					pData[playerid][pMask] = 1;
 					pData[playerid][pMaskID] = random(9999)+1000+pData[playerid][pMask];
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName4]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName4]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][4]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -1132,7 +1132,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					if(pData[playerid][pGPS] > 0) return Error(playerid, "Anda sudah memiliki GPS");
 					GivePlayerMoneyEx(playerid, -price);
 					pData[playerid][pGPS] = 1;
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName1]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName1]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][1]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -1144,7 +1144,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					if(!BusinnesProduct[bizid][BussinesProduct][2]) return Error(playerid, "This business is out of stock product.");
 					GivePlayerMoneyEx(playerid, -price);
 					pData[playerid][pPhoneCredit] += 1000;
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName2]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName2]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][2]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -1157,7 +1157,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					if(pData[playerid][pWT] > 0) return Error(playerid, "Anda sudah memiliki walkie talkie");
 					GivePlayerMoneyEx(playerid, -price);
 					pData[playerid][pWT] = 1;
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName3]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName3]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][3]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -1170,7 +1170,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					if(pData[playerid][pPhoneBook] > 0) return Error(playerid, "Anda sudah memiliki Phone Book!");
 					GivePlayerMoneyEx(playerid, -price);
 					pData[playerid][pPhoneBook] = 1;
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName4]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName4]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][4]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -1190,7 +1190,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					GivePlayerMoneyEx(playerid, -price);
 					pData[playerid][pGYMMember] = pData[playerid][pInBiz];
 					pData[playerid][pGYMMemberTime] = (gettime()+3600);
-					format(string, sizeof(string), "SHOP: {ffffff}You've purchased {ffff00}GYM Membership {ffffff}for {00ff00}$%s", FormatMoney(price));
+					format(string, sizeof(string), "SHOP: {ffffff}You've purchased {ffff00}GYM Membership {ffffff}for {00ff00}%s", FormatMoney(price));
 					SendClientMessage(playerid, COLOR_ARWIN, string);
 					BusinnesProduct[bizid][BussinesProduct][0]--;
 					bData[bizid][bMoney] += Server_Percent(price);
@@ -1205,7 +1205,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					GivePlayerMoneyEx(playerid, -price);
 					pData[playerid][pSprunk]++;
 					
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName1]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName1]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][1]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -1219,7 +1219,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					if(pData[playerid][pSnack] > 5) return Error(playerid, "maximum bring snacks in invetory 5");
 					GivePlayerMoneyEx(playerid, -price);
 					pData[playerid][pSnack]++;
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName3]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName3]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][2]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -1242,7 +1242,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					if(pData[playerid][pGunLic] == 0) return Error(playerid, "You don't have a gun license");
 					new string[212];
 					GivePlayerMoneyEx(playerid, -price);
-					format(string, sizeof(string), "SHOP: {ffffff}You've purchased {ffff00}Weapon AK47 {ffffff}for {00ff00}$%s", FormatMoney(price));
+					format(string, sizeof(string), "SHOP: {ffffff}You've purchased {ffff00}Weapon AK47 {ffffff}for {00ff00}%s", FormatMoney(price));
 					GivePlayerWeaponEx(playerid, 30, 200);
 					SendClientMessage(playerid, COLOR_ARWIN, string);
 					bData[bizid][bMoney] += Server_Percent(price);
@@ -1257,7 +1257,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					if(pData[playerid][pGunLic] == 0) return Error(playerid, "You don't have a gun license");
 					GivePlayerMoneyEx(playerid, -price);
 					GivePlayerWeaponEx(playerid, 29, 200);
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Weapon MP5 {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName1]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Weapon MP5 {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName1]), FormatMoney(price));
 					bData[bizid][bMoney] += Server_Percent(price);
 					BusinnesProduct[bizid][BussinesProduct][1]--;
 					Server_AddPercent(price);
@@ -1270,7 +1270,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					if(pData[playerid][pGunLic] == 0) return Error(playerid, "You don't have a gun license");
 					GivePlayerMoneyEx(playerid, -price);
 					GivePlayerWeaponEx(playerid, 24, 200);
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Weapon Desert Eeagle {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName3]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Weapon Desert Eeagle {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName3]), FormatMoney(price));
 					bData[bizid][bMoney] += Server_Percent(price);
 					BusinnesProduct[bizid][BussinesProduct][2]--;
 					Server_AddPercent(price);
@@ -1283,7 +1283,7 @@ Dialog:BisnisPlayerBuyProd(playerid, response, listitem, inputtext[])
 					if(pData[playerid][pGunLic] == 0) return Error(playerid, "You don't have a gun license");
 					GivePlayerMoneyEx(playerid, -price);
 					GivePlayerWeaponEx(playerid, 25, 200);
-					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Weapon Shotgun {ffffff}for {00ff00}$%s", ReplaceString(bData[bizid][bPName3]), FormatMoney(price));
+					SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}Weapon Shotgun {ffffff}for {00ff00}%s", ReplaceString(bData[bizid][bPName3]), FormatMoney(price));
 					BusinnesProduct[bizid][BussinesProduct][3]--;
 					bData[bizid][bMoney] += Server_Percent(price);
 					Server_AddPercent(price);
@@ -1320,7 +1320,7 @@ Dialog:FightStyle(playerid, response, listitem, inputtext[])
 			{
 				SetPlayerFightingStyle(playerid, 4);
 				GivePlayerMoneyEx(playerid, -price);
-				SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", inputtext, FormatMoney(price));
+				SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", inputtext, FormatMoney(price));
 				bData[bizid][bProd]--;
 				bData[bizid][bMoney] += Server_Percent(price);
 				Server_AddPercent(price);
@@ -1332,7 +1332,7 @@ Dialog:FightStyle(playerid, response, listitem, inputtext[])
 			{
 				SetPlayerFightingStyle(playerid, 5);
 				GivePlayerMoneyEx(playerid, -price);
-				SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", inputtext, FormatMoney(price));
+				SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", inputtext, FormatMoney(price));
 				bData[bizid][bProd]--;
 				bData[bizid][bMoney] += Server_Percent(price);
 				Server_AddPercent(price);
@@ -1344,7 +1344,7 @@ Dialog:FightStyle(playerid, response, listitem, inputtext[])
 			{
 				SetPlayerFightingStyle(playerid, 6);
 				GivePlayerMoneyEx(playerid, -price);
-				SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", inputtext, FormatMoney(price));
+				SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", inputtext, FormatMoney(price));
 				bData[bizid][bProd]--;
 				bData[bizid][bMoney] += Server_Percent(price);
 				Server_AddPercent(price);
@@ -1355,7 +1355,7 @@ Dialog:FightStyle(playerid, response, listitem, inputtext[])
 			case 3:
 			{
 				SetPlayerFightingStyle(playerid, 7);
-				SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", inputtext, FormatMoney(price));
+				SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", inputtext, FormatMoney(price));
 				bData[bizid][bProd]--;
 				bData[bizid][bMoney] += Server_Percent(price);
 				Server_AddPercent(price);
@@ -1366,7 +1366,7 @@ Dialog:FightStyle(playerid, response, listitem, inputtext[])
 			case 4:
 			{
 				SetPlayerFightingStyle(playerid, 15);
-				SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", inputtext, FormatMoney(price));
+				SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", inputtext, FormatMoney(price));
 				bData[bizid][bProd]--;
 				bData[bizid][bMoney] += Server_Percent(price);
 				Server_AddPercent(price);
@@ -1377,7 +1377,7 @@ Dialog:FightStyle(playerid, response, listitem, inputtext[])
 			case 5:
 			{
 				SetPlayerFightingStyle(playerid, 16);
-				SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}$%s", inputtext, FormatMoney(price));
+				SendClientMessageEx(playerid, COLOR_ARWIN, "SHOP: {ffffff}You've purchased {ffff00}%s {ffffff}for {00ff00}%s", inputtext, FormatMoney(price));
 				bData[bizid][bProd]--;
 				bData[bizid][bMoney] += Server_Percent(price);
 				Server_AddPercent(price);

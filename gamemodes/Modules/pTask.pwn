@@ -65,11 +65,11 @@ task PriceUpdate[1000]()
 		HargaBensin = Random(100,200);
 		StockMaterial += 10000;
 		StockCrack += 2500;
-		HargaAnggur = Random(100,200);
-		HargaBlueberry = Random(100,200);
-		HargaStrawberry = Random(100,200);
-		HargaGandum = Random(100,200);
-		HargaTomat = Random(100,200);
+		HargaAnggur = 200;
+		HargaBlueberry = 200;
+		HargaStrawberry = 200;
+		HargaGandum = 200;
+		HargaTomat = 200;
 		ammountsellwheat = 0;
 		ammountsellonion = 0;
 		ammountsellcarrot = 0;
@@ -80,7 +80,7 @@ task PriceUpdate[1000]()
 		format(String2,sizeof(String2),""PURPLE_E2"Plant Price\n{FFFFFF}Wheat: "GREEN_E"$0.%s"WHITE_E"\nOnion: "GREEN_E"$0.%s"WHITE_E"\nCarrot: "GREEN_E"$0.%s"WHITE_E"\nPotato: "GREEN_E"$0.%s"WHITE_E"\nCorn: "GREEN_E"$0.%s"WHITE_E"", FormatMoney(HargaAnggur), FormatMoney(HargaBlueberry), FormatMoney(HargaStrawberry), FormatMoney(HargaGandum), FormatMoney(HargaTomat));
 		SetDynamicObjectMaterialText(SELLFARM2, 0, String2, 130, "Arial", 30, 1, 0xFFFFFFFF, 0xFF000000, 1);
 		//Fish
-		FishPrice = Random(450, 800);
+		FishPrice = Random(400, 600);
 		new String3[212];
 		format(String3,sizeof(String3),"Fish Price: \n"GREEN_E"$%s"WHITE_E"/lb", FormatMoney(FishPrice));
 		SetDynamicObjectMaterialText(SELLFISH, 0, String3, 130, "Arial", 40, 1, 0xFFFFFFFF, 0xFF000000, 1);
@@ -137,7 +137,7 @@ ptask PlayerTimeDuty[1000](playerid) {
 		pData[playerid][pTaxiTime]++;
 		if(pData[playerid][pTaxiTime] > 900) {
 			pData[playerid][pTaxiTime] = 0;
-			AddPlayerSalary(playerid, "Taxi Service", "Duty Taxi Service", 1500);
+			AddPlayerSalary(playerid, "Taxi Service", "Duty Taxi Service", 5000);
 			SendClientMessageEx(playerid, COLOR_ARWIN, "SALARY: {ffffff}Your salary statement has been updated, please check command {ffff00}'/mysalary'");
 		}
 	}
@@ -145,7 +145,7 @@ ptask PlayerTimeDuty[1000](playerid) {
 		pData[playerid][pMechTime]++;
 		if(pData[playerid][pMechTime] > 900) {
 			pData[playerid][pMechTime] = 0;
-			AddPlayerSalary(playerid, "Mechanic Center", "Duty Mechanic Service", 1500);
+			AddPlayerSalary(playerid, "Mechanic Center", "Duty Mechanic Service", 5000);
 			SendClientMessageEx(playerid, COLOR_ARWIN, "SALARY: {ffffff}Your salary statement has been updated, please check command {ffff00}'/mysalary'");
 		}
 	}

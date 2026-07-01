@@ -120,29 +120,41 @@ CMD:atm(playerid, params[])
 
 CMD:deposit(playerid, params[])
 {
-	new String[500], amount[32], duit[32];
+	new String[500], amount[32];
 	foreach(new id : Locations) if(Location[id][locInterior] == GetPlayerInterior(playerid) && Location[id][locWorld] == GetPlayerVirtualWorld(playerid)) {
 		if(Location[id][locType] == 4 && IsPlayerInRangeOfPoint(playerid, 3.0, Location[id][locPos][0], Location[id][locPos][1], Location[id][locPos][2])) {
 			if(sscanf(params, "s[32]", amount))
 			{
-				SendClientMessageEx(playerid, COLOR_WHITE, "KEGUNAAN: /deposit [amount(dollars.cents)]");
+				SendClientMessageEx(playerid, COLOR_WHITE, "KEGUNAAN: /deposit [amount($0.01+)]");
 				return 1;
 			}
-			format(duit, sizeof(duit), "%d00", strval(amount));
-			if (strval(duit) > GetPlayerMoney(playerid))
+
+			new totalcash[25], dollars, cents;
+			if(strfind(amount, ".", true) != -1)
+			{
+				sscanf(amount, "p<.>dd", dollars, cents);
+				format(totalcash, sizeof(totalcash), "%d%02d", dollars, cents);
+			}
+			else
+			{
+				sscanf(amount, "d", dollars);
+				format(totalcash, sizeof(totalcash), "%d00", dollars);
+			}
+
+			if(strval(totalcash) > GetPlayerMoney(playerid))
 			{
 				SendClientMessageEx(playerid, COLOR_GREY, "Anda tidak memiliki uang sebesar itu.");
 				return 1;
 			}
-			if(strval(duit) <= 0) { SendClientMessageEx(playerid,COLOR_WHITE,"ERROR: Tidak bisa dibawah $0.00 ."); return 1; }
-			GivePlayerMoneyEx(playerid, -strval(duit));
-			pData[playerid][pBankMoney] += strval(duit);
+			if(strval(totalcash) <= 0) { SendClientMessageEx(playerid,COLOR_WHITE,"ERROR: Tidak bisa dibawah $0.00 ."); return 1; }
+			GivePlayerMoneyEx(playerid, -strval(totalcash));
+			pData[playerid][pBankMoney] += strval(totalcash);
 			new query[512];
 			mysql_format(g_SQL, query, sizeof(query), "UPDATE players SET bmoney=%d,money=%d WHERE reg_id=%d", pData[playerid][pBankMoney], pData[playerid][pMoney], pData[playerid][pID]);
 			mysql_tquery(g_SQL, query);
-			format(String, sizeof(String), "BANK: {ffffff}You've stored {ffff00}$%s{ffffff} into your bank account", FormatMoney(strval(duit)));
+			format(String, sizeof(String), "BANK: {ffffff}You've stored {ffff00}%s{ffffff} into your bank account", FormatMoney(strval(totalcash)));
 			SendClientMessageEx(playerid, COLOR_ARWIN, String);
-			format(String, sizeof(String), "BALANCE: {ffff00}$%s", FormatMoney(pData[playerid][pBankMoney]));
+			format(String, sizeof(String), "BALANCE: {ffff00}%s", FormatMoney(pData[playerid][pBankMoney]));
 			SendClientMessageEx(playerid, COLOR_ARWIN, String);
 		}
 	}
@@ -151,30 +163,42 @@ CMD:deposit(playerid, params[])
 
 CMD:withdraw(playerid, params[])
 {
-	new String[500], amount[32], duit[32];
+	new String[500], amount[32];
 	foreach(new id : Locations) if(Location[id][locInterior] == GetPlayerInterior(playerid) && Location[id][locWorld] == GetPlayerVirtualWorld(playerid)) {
 		if(Location[id][locType] == 4 && IsPlayerInRangeOfPoint(playerid, 3.0, Location[id][locPos][0], Location[id][locPos][1], Location[id][locPos][2])) {
 			if(sscanf(params, "s[32]", amount))
 			{
 				SendClientMessageEx(playerid, COLOR_GRAD2, "KEGUNAAN: /withdraw [Jumlah]");
-				format(String, sizeof(String), "BANK: "WHITE_E"Anda memiliki uang sebesar "GREEN_E"$%s "WHITE_E"di dalam Akun ATM Anda.", FormatMoney(pData[playerid][pBankMoney]));
+				format(String, sizeof(String), "BANK: "WHITE_E"Anda memiliki uang sebesar "GREEN_E"%s "WHITE_E"di dalam Akun ATM Anda.", FormatMoney(pData[playerid][pBankMoney]));
 				SendClientMessageEx(playerid, COLOR_ARWIN, String);
 				return 1;
 			}
-			format(duit, sizeof(duit), "%d00", strval(amount));
-			if(strval(duit) > pData[playerid][pBankMoney])
+
+			new totalcash[25], dollars, cents;
+			if(strfind(amount, ".", true) != -1)
+			{
+				sscanf(amount, "p<.>dd", dollars, cents);
+				format(totalcash, sizeof(totalcash), "%d%02d", dollars, cents);
+			}
+			else
+			{
+				sscanf(amount, "d", dollars);
+				format(totalcash, sizeof(totalcash), "%d00", dollars);
+			}
+
+			if(strval(totalcash) > pData[playerid][pBankMoney])
 			{
 				return SendClientMessageEx(playerid, COLOR_GRAD2, "Anda tidak memiliki uang sebesar itu di dalam Akun ATM anda!");
 			}
-			if(strval(duit) <= 0) return SendClientMessageEx(playerid, COLOR_GREY, "Tidak bisa dibawah $0.00");
-			GivePlayerMoneyEx(playerid, strval(duit));
-			pData[playerid][pBankMoney] -= strval(duit);
+			if(strval(totalcash) <= 0) return SendClientMessageEx(playerid, COLOR_GREY, "Tidak bisa dibawah $0.00");
+			GivePlayerMoneyEx(playerid, strval(totalcash));
+			pData[playerid][pBankMoney] -= strval(totalcash);
 			new query[512];
 			mysql_format(g_SQL, query, sizeof(query), "UPDATE players SET bmoney=%d,money=%d WHERE reg_id=%d", pData[playerid][pBankMoney], pData[playerid][pMoney], pData[playerid][pID]);
 			mysql_tquery(g_SQL, query);
-			format(String, sizeof(String), "BANK: {ffffff}You've withdrawn {ffff00}$%s{ffffff} from your bank account", FormatMoney(strval(duit)));
+			format(String, sizeof(String), "BANK: {ffffff}You've withdrawn {ffff00}%s{ffffff} from your bank account", FormatMoney(strval(totalcash)));
 			SendClientMessageEx(playerid, COLOR_ARWIN, String);
-			format(String, sizeof(String), "BALANCE: {ffff00}$%s",FormatMoney(pData[playerid][pBankMoney]));
+			format(String, sizeof(String), "BALANCE: {ffff00}%s",FormatMoney(pData[playerid][pBankMoney]));
 			SendClientMessageEx(playerid, COLOR_ARWIN, String);
 		}
 	}
@@ -183,19 +207,31 @@ CMD:withdraw(playerid, params[])
 
 CMD:transfer(playerid, params[])
 {
-	new amount[32], duit[32], otherid;
+	new amount[32], otherid;
 	foreach(new id : Locations) if(Location[id][locInterior] == GetPlayerInterior(playerid) && Location[id][locWorld] == GetPlayerVirtualWorld(playerid)) {
 		if(Location[id][locType] == 4 && IsPlayerInRangeOfPoint(playerid, 3.0, Location[id][locPos][0], Location[id][locPos][1], Location[id][locPos][2])) {
 			if(sscanf(params, "us[32]", otherid, amount)) return SendClientMessageEx(playerid, COLOR_WHITE, "KEGUNAAN: /transfer [playerid/name] [ammount]");
 			if(otherid == INVALID_PLAYER_ID) return Error(playerid, "That player is disconnected.");
 			if(otherid == playerid) return Error(playerid, "You can't transfer money to yourself.");
-			format(duit, sizeof(duit), "%d00", strval(amount));
-			if (strval(duit) > pData[playerid][pBankMoney]) return SendClientMessageEx(playerid, COLOR_GREY, "Anda tidak memiliki uang sebesar itu dibank anda");
-			if(strval(duit) <= 0) { SendClientMessageEx(playerid,COLOR_WHITE,"ERROR: Tidak bisa dibawah $0.00 ."); return 1; }
-			pData[playerid][pBankMoney] -= strval(duit);
-			pData[otherid][pBankMoney] += strval(duit);
-			SendCustomMessage(playerid, "BANK", "You successfully transferred "GREEN_E"$%s "WHITE_E"to "AQUA_E"%s", FormatMoney(strval(duit)), pData[otherid][pName]);
-			SendCustomMessage(otherid, "BANK", "You transferred "GREEN_E"$%s "WHITE_E"from "AQUA_E"%s", FormatMoney(strval(duit)), pData[playerid][pName]);
+
+			new totalcash[25], dollars, cents;
+			if(strfind(amount, ".", true) != -1)
+			{
+				sscanf(amount, "p<.>dd", dollars, cents);
+				format(totalcash, sizeof(totalcash), "%d%02d", dollars, cents);
+			}
+			else
+			{
+				sscanf(amount, "d", dollars);
+				format(totalcash, sizeof(totalcash), "%d00", dollars);
+			}
+
+			if(strval(totalcash) > pData[playerid][pBankMoney]) return SendClientMessageEx(playerid, COLOR_GREY, "Anda tidak memiliki uang sebesar itu dibank anda");
+			if(strval(totalcash) <= 0) { SendClientMessageEx(playerid,COLOR_WHITE,"ERROR: Tidak bisa dibawah $0.00 ."); return 1; }
+			pData[playerid][pBankMoney] -= strval(totalcash);
+			pData[otherid][pBankMoney] += strval(totalcash);
+			SendCustomMessage(playerid, "BANK", "You successfully transferred "GREEN_E"%s "WHITE_E"to "AQUA_E"%s", FormatMoney(strval(totalcash)), pData[otherid][pName]);
+			SendCustomMessage(otherid, "BANK", "You transferred "GREEN_E"%s "WHITE_E"from "AQUA_E"%s", FormatMoney(strval(totalcash)), pData[playerid][pName]);
 		}
 	}
 	return 1;

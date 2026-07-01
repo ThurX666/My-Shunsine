@@ -1,6 +1,6 @@
 // Sidejob Milker Definitions
 #define MAX_MILKER_CYCLES 10
-#define MILKER_SALARY 25000 // $250.00
+#define MILKER_SALARY 6700 // $67.00
 #define SIDEJOB_MILKER 402
 
 // Milker Cow Positions (6 points)

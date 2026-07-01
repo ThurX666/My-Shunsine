@@ -2522,7 +2522,7 @@ CMD:setfaction(playerid, params[])
 	new fid, rank, otherid, tmp[64];
     if(pData[playerid][pDivision] != 1) return Error(playerid, "You must be a faction division.");
 
-    if(sscanf(params, "udd", otherid, fid, rank))
+    if(sscanf(params, "udD<1>", otherid, fid, rank))
         return Usage(playerid, "/setfaction [playerid/PartOfName] [0.Keluar, 1.SAPD, 2.SAGS, 3.SAMD, 4.SANEW] [rank 1-16]");
 
     if(!IsPlayerConnected(otherid))
@@ -3561,7 +3561,7 @@ CMD:osetfamily(playerid, params[])
 
 CMD:randompricefish(playerid, params[])
 {
-	FishPrice = Random(450, 800);
+	FishPrice = Random(400, 600);
 	
 	new String3[212];
 	format(String3,sizeof(String3),""PINK_E"Fish Factory\n{FFFFFF}Fish Price: \n"GREEN_E"$%s"WHITE_E"/lb", FormatMoney(FishPrice));

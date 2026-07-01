@@ -8,17 +8,17 @@ ptask MiningOre[100](playerid) {
             new rand = RandomEx(0, 3);
             switch(rand) {
                 case 0: {
-                    new cash = RandomEx(1500, 3500);
+                    new cash = RandomEx(30, 70);
                     SendCustomMessage(playerid, "MINER", "You have found "ORANGE_E"Copper ore "WHITE_E"worth "GREEN_E"$%s", FormatMoney(cash));
                     pData[playerid][pMiner] += cash;
                 }
                 case 1: {
-                    new cash = RandomEx(800, 2500);
+                    new cash = RandomEx(20, 50);
                     SendCustomMessage(playerid, "MINER", "You've found "RED_E"Coal ore "WHITE_E"worth "GREEN_E"$%s", FormatMoney(cash));
                     pData[playerid][pMiner] += cash;
                 }
                 case 2: {
-                    new cash = RandomEx(4000, 8000);
+                    new cash = RandomEx(60, 120);
                     SendCustomMessage(playerid, "MINER", "You've found "AQUA_E"Diamond ore "WHITE_E"worth "GREEN_E"$%s", FormatMoney(cash));
                     pData[playerid][pMiner] += cash;
                 }

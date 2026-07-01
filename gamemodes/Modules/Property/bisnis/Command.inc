@@ -473,9 +473,9 @@ CMD:bwithdraw(playerid, params[])
 		if(strval(duit) < 0) return SendClientMessageEx(playerid, COLOR_GREY, "Tidak bisa dibawah $0.00");
 		GivePlayerMoneyEx(playerid,strval(duit));
 		bData[bid][bMoney]=bData[bid][bMoney]-strval(duit);
-		format(String, sizeof(String), "BISNIS: {ffffff}You've withdrawn {ffff00}$%s{ffffff} from your bisnis account", FormatMoney(strval(duit)));
+		format(String, sizeof(String), "BISNIS: {ffffff}You've withdrawn {ffff00}%s{ffffff} from your bisnis account", FormatMoney(strval(duit)));
 		SendClientMessageEx(playerid, COLOR_ARWIN, String);
-		format(String, sizeof(String), "BISNIS: {ffff00}$%s",FormatMoney(bData[bid][bMoney]));
+		format(String, sizeof(String), "BISNIS: {ffff00}%s",FormatMoney(bData[bid][bMoney]));
 		SendClientMessageEx(playerid, COLOR_ARWIN, String);
 	}
 	else
@@ -490,9 +490,9 @@ CMD:bwithdraw(playerid, params[])
 		if(strval(duit) < 0) return SendClientMessageEx(playerid, COLOR_GREY, "Tidak bisa dibawah $0.00");
 		GivePlayerMoneyEx(playerid,strval(duit));
 		bData[bid][bMoney]=bData[bid][bMoney]-strval(duit);
-		format(String, sizeof(String), "BISNIS: {ffffff}You've withdrawn {ffff00}$%s{ffffff} from your bisnis account", FormatMoney(strval(duit)));
+		format(String, sizeof(String), "BISNIS: {ffffff}You've withdrawn {ffff00}%s{ffffff} from your bisnis account", FormatMoney(strval(duit)));
 		SendClientMessageEx(playerid, COLOR_ARWIN, String);
-		format(String, sizeof(String), "BISNIS: {ffff00}$%s",FormatMoney(bData[bid][bMoney]));
+		format(String, sizeof(String), "BISNIS: {ffff00}%s",FormatMoney(bData[bid][bMoney]));
 		SendClientMessageEx(playerid, COLOR_ARWIN, String);
 	}
 	return 1;
@@ -524,9 +524,9 @@ CMD:bdeposit(playerid, params[])
 	if(strval(duit) < 0) return SendClientMessageEx(playerid, COLOR_GREY, "Tidak bisa dibawah $0.00");
 	GivePlayerMoneyEx(playerid, -strval(duit));
 	bData[bid][bMoney]+=strval(duit);
-	format(String, sizeof(String), "BISNIS: {ffffff}You have saved {ffff00}$%s{ffffff} to your business account", FormatMoney(strval(duit)));
+	format(String, sizeof(String), "BISNIS: {ffffff}You have saved {ffff00}%s{ffffff} to your business account", FormatMoney(strval(duit)));
 	SendClientMessageEx(playerid, COLOR_ARWIN, String);
-	format(String, sizeof(String), "BISNIS: {ffff00}$%s",FormatMoney(bData[bid][bMoney]));
+	format(String, sizeof(String), "BISNIS: {ffff00}%s",FormatMoney(bData[bid][bMoney]));
 	SendClientMessageEx(playerid, COLOR_ARWIN, String);
 	return 1;
 }

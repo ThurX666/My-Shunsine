@@ -28,8 +28,8 @@
 #pragma option -E 
 new DB:AO_DB, DBResult:AO_RESULT;
 
-//#define Production
-#define Local
+#define Production
+//#define Local
 //#define DEBUG_MODE
 
 main(){}

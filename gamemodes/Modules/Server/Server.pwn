@@ -61,12 +61,12 @@ CreateServerPoint()
 	FishStockRefresh();
 	ComponentStockRefresh();
 
-	FishPrice = Random(450, 800);
-	HargaAnggur = Random(16,22);
-	HargaBlueberry = Random(16,22);
-	HargaStrawberry = Random(16,22);
-	HargaGandum = Random(16,22);
-	HargaTomat = Random(16,22);
+	FishPrice = Random(400, 600);
+	HargaAnggur = 200;
+	HargaBlueberry = 200;
+	HargaStrawberry = 200;
+	HargaGandum = 200;
+	HargaTomat = 200;
 	HargaBensin = Random(100,200);
 
 	if(IsValidDynamic3DTextLabel(PlantCrate)) DestroyDynamic3DTextLabel(PlantCrate); 

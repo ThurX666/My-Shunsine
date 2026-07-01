@@ -1,5 +1,3 @@
-// Economy Configuration System v1.1.0
-
 #define MAX_ECONOMY_KEYS 13
 
 enum E_ECONOMY_DATA
@@ -12,19 +10,19 @@ enum E_ECONOMY_DATA
 
 new g_Economy[MAX_ECONOMY_KEYS][E_ECONOMY_DATA] =
 {
-    {"taxi_payout",        1500,     1500,     "Taxi 15min duty payout"},
-    {"mechanic_payout",    1500,     1500,     "Mechanic 15min duty payout"},
-    {"courier_packet",     25000,    25000,    "Courier per packet"},
-    {"bus_lap",            15000,    15000,    "Bus per lap"},
-    {"trucker_cargo",      25000,    25000,    "Trucker per cargo"},
-    {"trucker_crate",      1250,     1250,     "Trucker per crate"},
-    {"lumber_item",        150,      150,      "Lumber per item"},
-    {"milker_cycle",       25000,    25000,    "Milker 10 cycles"},
-    {"farmer_unit",        150,      150,      "Farmer per unit"},
-    {"faction_duty",       50000,    50000,    "Faction 60min duty"},
-    {"fuel_price",         2,        2,        "Fuel per unit (cents)"},
-    {"toll_price",         5000,     5000,     "Toll price"},
-    {"fish_price",         500,      500,      "Fish per lb (cents)"}
+    {"taxi_payout",        5000,     5000,     "Taxi 15min duty payout ($50.00)"},
+    {"mechanic_payout",    5000,     5000,     "Mechanic 15min duty payout ($50.00)"},
+    {"courier_packet",     3300,     3300,     "Courier per packet ($33.00)"},
+    {"bus_lap",            5000,     5000,     "Bus per lap ($50.00)"},
+    {"trucker_cargo",      6700,     6700,     "Trucker per cargo ($67.00)"},
+    {"trucker_crate",      2000,     2000,     "Trucker per crate ($20.00)"},
+    {"lumber_item",        200,      200,      "Lumber per item ($2.00)"},
+    {"milker_cycle",       6700,     6700,     "Milker 10 cycles ($67.00)"},
+    {"farmer_unit",        200,      200,      "Farmer per unit ($2.00)"},
+    {"faction_duty",       20000,    20000,    "Faction 60min duty ($200.00)"},
+    {"fuel_price",         5,        5,        "Fuel per unit ($0.05)"},
+    {"toll_price",         2000,     2000,     "Toll price ($20.00)"},
+    {"fish_price",         500,      500,      "Fish per lb ($5.00)"}
 };
 
 stock GetEconomyValue(const key[])

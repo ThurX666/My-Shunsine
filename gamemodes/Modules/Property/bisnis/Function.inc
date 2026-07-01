@@ -224,7 +224,7 @@ Bisnis_ProductStock(playerid, bizid)
         }
         case 4:
         {
-            format(string, sizeof(string), "%s (Baseball bat)\tStock %d unit(s)\n%s (Shovel)\tStock %d unit(s)\n%s (Cane)\tStock %d unit(s)\n%s (Fish Tool)- $%s\n%s (Mask)- $%s",
+            format(string, sizeof(string), "%s (Baseball bat)\tStock %d unit(s)\n%s (Shovel)\tStock %d unit(s)\n%s (Cane)\tStock %d unit(s)\n%s (Fish Tool)- %s\n%s (Mask)- %s",
                 ReplaceString(bData[bizid][bPName0]),
 				BusinnesProduct[bizid][BussinesProduct][0],
 				ReplaceString(bData[bizid][bPName1]),
@@ -240,7 +240,7 @@ Bisnis_ProductStock(playerid, bizid)
         }
 		case 5:
         {
-            format(string, sizeof(string), "%s (Handphone)\tStock %d unit(s)\n%s (GPS)\tStock %d unit(s)\n%s (Phone Credit (1000))\tStock %d unit(s)\n%s (Portable Radio)- $%s",
+            format(string, sizeof(string), "%s (Handphone)\tStock %d unit(s)\n%s (GPS)\tStock %d unit(s)\n%s (Phone Credit (1000))\tStock %d unit(s)\n%s (Portable Radio)- %s",
                 ReplaceString(bData[bizid][bPName0]),
 				BusinnesProduct[bizid][BussinesProduct][0],
 				ReplaceString(bData[bizid][bPName1]),
@@ -296,7 +296,7 @@ Bisnis_BuyMenu(playerid, bizid)
     {
 		case 1:
         {
-            format(string, sizeof(string), "%s (Menu +20)  - $%s\n%s (Menu +10)  - $%s\n%s (Energy +20)  - $%s\n%s (Energy +10) - $%s",
+            format(string, sizeof(string), "%s (Menu +20)  - %s\n%s (Menu +10)  - %s\n%s (Energy +20)  - %s\n%s (Energy +10) - %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -310,7 +310,7 @@ Bisnis_BuyMenu(playerid, bizid)
         }
         case 2:
         {
-            format(string, sizeof(string), "%s (Snack) - $%s\n%s (Water) - $%s\n%s (Bandage) - $%s\n%s (Pack of Cigarettes) - $%s\n%s (Toll Card (50)) - $%s",
+            format(string, sizeof(string), "%s (Snack) - %s\n%s (Water) - %s\n%s (Bandage) - %s\n%s (Pack of Cigarettes) - %s\n%s (Toll Card (50)) - %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -326,7 +326,7 @@ Bisnis_BuyMenu(playerid, bizid)
         }
         case 3:
         {
-            format(string, sizeof(string), "%s (Clothes) - $%s\n%s (Caps) - $%s\n%s (Bandana) - $%s\n%s (Mask) - $%s\n%s (Helmet) - $%s\n%s (Watch) - $%s\n%s (Glasses) - $%s\n%s (Hair) - $%s\n%s (Misc) - $%s",
+            format(string, sizeof(string), "%s (Clothes) - %s\n%s (Caps) - %s\n%s (Bandana) - %s\n%s (Mask) - %s\n%s (Helmet) - %s\n%s (Watch) - %s\n%s (Glasses) - %s\n%s (Hair) - %s\n%s (Misc) - %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -350,7 +350,7 @@ Bisnis_BuyMenu(playerid, bizid)
         }
         case 4:
         {
-            format(string, sizeof(string), "%s (Baseball bat) - $%s\n%s (Shovel) - $%s\n%s (Cane) - $%s\n%s (Fish Tool)- $%s\n%s (Mask)- $%s",
+            format(string, sizeof(string), "%s (Baseball bat) - %s\n%s (Shovel) - %s\n%s (Cane) - %s\n%s (Fish Tool)- %s\n%s (Mask)- %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -366,7 +366,7 @@ Bisnis_BuyMenu(playerid, bizid)
         }
 		case 5:
         {
-            format(string, sizeof(string), "%s (Handphone) - $%s\n%s (GPS) - $%s\n%s (Phone Credit (1000)) - $%s\n%s (Portable Radio)- $%s",
+            format(string, sizeof(string), "%s (Handphone) - %s\n%s (GPS) - %s\n%s (Phone Credit (1000)) - %s\n%s (Portable Radio)- %s\n%s (Phone Book)- %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -374,13 +374,15 @@ Bisnis_BuyMenu(playerid, bizid)
 				ReplaceString(bData[bizid][bPName2]),
                 FormatMoney(bData[bizid][bP][2]),
 				ReplaceString(bData[bizid][bPName3]),
-                FormatMoney(bData[bizid][bP][3])
+                FormatMoney(bData[bizid][bP][3]),
+				ReplaceString(bData[bizid][bPName4]),
+                FormatMoney(bData[bizid][bP][4])
             );
             Dialog_Show(playerid, BisnisPlayerBuyProd, DIALOG_STYLE_LIST, ReplaceString(bData[bizid][bName]), string, "Buy", "Cancel");
         }
 		case 6:
         {
-            format(string, sizeof(string), "%s (GYM Membership) - $%s\n%s (Water) - $%s\n%s (Snack) - $%s\n%s (Fight Style) - $%s",
+            format(string, sizeof(string), "%s (GYM Membership) - %s\n%s (Water) - %s\n%s (Snack) - %s\n%s (Fight Style) - %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -394,7 +396,7 @@ Bisnis_BuyMenu(playerid, bizid)
         }
 		case 7:
         {
-            format(string, sizeof(string), "%s (Weapon AK47) - $%s\n%s (Weapon MP5) - $%s\n%s (Weapon Desert Eagle) - $%s\n%s (Weapon Shotgun) - $%s\n%s (Training) - $%s",
+            format(string, sizeof(string), "%s (Weapon AK47) - %s\n%s (Weapon MP5) - %s\n%s (Weapon Desert Eagle) - %s\n%s (Weapon Shotgun) - %s\n%s (Training) - %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -420,7 +422,7 @@ Bisnis_ProductMenu(playerid, bizid)
     {
         case 1:
         {
-            format(string, sizeof(string), "%s (Menu +40)  - $%s\n%s (Menu +30)  - $%s\n%s (Energy +40)  - $%s\n%s (Energy +30) - $%s",
+            format(string, sizeof(string), "%s (Menu +40)  - %s\n%s (Menu +30)  - %s\n%s (Energy +40)  - %s\n%s (Energy +30) - %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -434,7 +436,7 @@ Bisnis_ProductMenu(playerid, bizid)
         }
         case 2:
         {
-            format(string, sizeof(string), "%s (Snack) - $%s\n%s (Water) - $%s\n%s (Bandage) - $%s\n%s (Pack of Cigarettes) - $%s\n%s (Toll Card (50)) - $%s",
+            format(string, sizeof(string), "%s (Snack) - %s\n%s (Water) - %s\n%s (Bandage) - %s\n%s (Pack of Cigarettes) - %s\n%s (Toll Card (50)) - %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -450,7 +452,7 @@ Bisnis_ProductMenu(playerid, bizid)
         }
         case 3:
         {
-            format(string, sizeof(string), "%s (Clothes) - $%s\n%s (Caps) - $%s\n%s (Bandana) - $%s\n%s (Mask) - $%s\n%s (Helmet) - $%s\n%s (Watch) - $%s\n%s (Glasses) - $%s\n%s (Hair) - $%s\n%s (Misc) - $%s",
+            format(string, sizeof(string), "%s (Clothes) - %s\n%s (Caps) - %s\n%s (Bandana) - %s\n%s (Mask) - %s\n%s (Helmet) - %s\n%s (Watch) - %s\n%s (Glasses) - %s\n%s (Hair) - %s\n%s (Misc) - %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -474,7 +476,7 @@ Bisnis_ProductMenu(playerid, bizid)
         }
         case 4:
         {
-            format(string, sizeof(string), "%s (Baseball bat) - $%s\n%s (Shovel) - $%s\n%s (Cane) - $%s\n%s (Fish Tool)- $%s\n%s (Mask)- $%s",
+            format(string, sizeof(string), "%s (Baseball bat) - %s\n%s (Shovel) - %s\n%s (Cane) - %s\n%s (Fish Tool)- %s\n%s (Mask)- %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -490,7 +492,7 @@ Bisnis_ProductMenu(playerid, bizid)
         }
 		case 5:
         {
-            format(string, sizeof(string), "%s (Handphone) - $%s\n%s (GPS) - $%s\n%s (Phone Credit (1000)) - $%s\n%s (Portable Radio)- $%s",
+            format(string, sizeof(string), "%s (Handphone) - %s\n%s (GPS) - %s\n%s (Phone Credit (1000)) - %s\n%s (Portable Radio)- %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -504,7 +506,7 @@ Bisnis_ProductMenu(playerid, bizid)
         }
 		case 6:
         {
-            format(string, sizeof(string), "%s (GYM Membership) - $%s\n%s (Energy Drink) - $%s\n%s (Water) - $%s\n%s (Snack) - $%s",
+            format(string, sizeof(string), "%s (GYM Membership) - %s\n%s (Energy Drink) - %s\n%s (Water) - %s\n%s (Snack) - %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -518,7 +520,7 @@ Bisnis_ProductMenu(playerid, bizid)
         }
 		case 7:
         {
-            format(string, sizeof(string), "%s (Weapon AK47) - $%s\n%s (Weapon MP5) - $%s\n%s (Weapon Desert Eagle) - $%s\n%s (Weapon Shotgun) - $%s",
+            format(string, sizeof(string), "%s (Weapon AK47) - %s\n%s (Weapon MP5) - %s\n%s (Weapon Desert Eagle) - %s\n%s (Weapon Shotgun) - %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -542,7 +544,7 @@ Bisnis_ProductMenuName(playerid, bizid)
     {
         case 1:
         {
-            format(string, sizeof(string), "%s (Menu +40)  - $%s\n%s (Menu +30)  - $%s\n%s (Energy +40)  - $%s\n%s (Energy +30) - $%s",
+            format(string, sizeof(string), "%s (Menu +40)  - %s\n%s (Menu +30)  - %s\n%s (Energy +40)  - %s\n%s (Energy +30) - %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -556,7 +558,7 @@ Bisnis_ProductMenuName(playerid, bizid)
         }
         case 2:
         {
-            format(string, sizeof(string), "%s (Snack) - $%s\n%s (Water) - $%s\n%s (Bandage) - $%s\n%s (Pack of Cigarettes) - $%s\n%s (Toll Card (50)) - $%s",
+            format(string, sizeof(string), "%s (Snack) - %s\n%s (Water) - %s\n%s (Bandage) - %s\n%s (Pack of Cigarettes) - %s\n%s (Toll Card (50)) - %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -572,7 +574,7 @@ Bisnis_ProductMenuName(playerid, bizid)
         }
         case 3:
         {
-            format(string, sizeof(string), "%s (Clothes) - $%s\n%s (Caps) - $%s\n%s (Bandana) - $%s\n%s (Mask) - $%s\n%s (Helmet) - $%s\n%s (Watch) - $%s\n%s (Glasses) - $%s\n%s (Hair) - $%s\n%s (Misc) - $%s",
+            format(string, sizeof(string), "%s (Clothes) - %s\n%s (Caps) - %s\n%s (Bandana) - %s\n%s (Mask) - %s\n%s (Helmet) - %s\n%s (Watch) - %s\n%s (Glasses) - %s\n%s (Hair) - %s\n%s (Misc) - %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -596,7 +598,7 @@ Bisnis_ProductMenuName(playerid, bizid)
         }
         case 4:
         {
-            format(string, sizeof(string), "%s (Baseball bat) - $%s\n%s (Shovel) - $%s\n%s (Cane) - $%s\n%s (Fish Tool)- $%s\n%s (Mask)- $%s",
+            format(string, sizeof(string), "%s (Baseball bat) - %s\n%s (Shovel) - %s\n%s (Cane) - %s\n%s (Fish Tool)- %s\n%s (Mask)- %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -612,7 +614,7 @@ Bisnis_ProductMenuName(playerid, bizid)
         }
 		case 5:
         {
-            format(string, sizeof(string), "%s (Handphone) - $%s\n%s (GPS) - $%s\n%s (Phone Credit (1000)) - $%s\n%s (Portable Radio)- $%s",
+            format(string, sizeof(string), "%s (Handphone) - %s\n%s (GPS) - %s\n%s (Phone Credit (1000)) - %s\n%s (Portable Radio)- %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -626,7 +628,7 @@ Bisnis_ProductMenuName(playerid, bizid)
         }
 		case 6:
         {
-            format(string, sizeof(string), "%s (GYM Membership) - $%s\n%s (Energy Drink) - $%s\n%s (Water) - $%s\n%s (Snack) - $%s",
+            format(string, sizeof(string), "%s (GYM Membership) - %s\n%s (Energy Drink) - %s\n%s (Water) - %s\n%s (Snack) - %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -640,7 +642,7 @@ Bisnis_ProductMenuName(playerid, bizid)
         }
 		case 7:
         {
-            format(string, sizeof(string), "%s (Weapon AK47) - $%s\n%s (Weapon MP5) - $%s\n%s (Weapon Desert Eagle) - $%s\n%s (Weapon Shotgun) - $%s",
+            format(string, sizeof(string), "%s (Weapon AK47) - %s\n%s (Weapon MP5) - %s\n%s (Weapon Desert Eagle) - %s\n%s (Weapon Shotgun) - %s",
                 ReplaceString(bData[bizid][bPName0]),
 				FormatMoney(bData[bizid][bP][0]),
 				ReplaceString(bData[bizid][bPName1]),
@@ -899,7 +901,7 @@ Bisnis_Refresh(id)
 			format(string, sizeof(string), "{00FFFF}[id:%d]\n{00FF00}%s{FFFFFF}\nOwner: {FFFF00}%s", id, ReplaceString(bData[id][bName]), bData[id][bOwner]);
 			
         } else {
-            format(string, sizeof(string), "{00FFFF}[id:%d]\n{00D900}this businesses for sale!\n{FFFF00}Type: {FFFFFF}%s\n{FFFFFF}Price: {00FF00}$%s\n{00D900}use '/buy' for buy this businesess", id, type, FormatMoney(bData[id][bPrice]), type);
+            format(string, sizeof(string), "{00FFFF}[id:%d]\n{00D900}this businesses for sale!\n{FFFF00}Type: {FFFFFF}%s\n{FFFFFF}Price: {00FF00}%s\n{00D900}use '/buy' for buy this businesess", id, type, FormatMoney(bData[id][bPrice]), type);
         } 
 		if(bData[id][bSegel] == 1) {
 			format(string, sizeof(string), "{00FFFF}[id:%d]\n{FF0000}This businesses sealed by authority\nOwner: {FFFF00}%s", id, bData[id][bOwner]);
