@@ -134,7 +134,7 @@ CMD:deposit(playerid, params[])
 				SendClientMessageEx(playerid, COLOR_GREY, "Anda tidak memiliki uang sebesar itu.");
 				return 1;
 			}
-			if(strval(duit) < 0) { SendClientMessageEx(playerid,COLOR_WHITE,"ERROR: Tidak bisa dibawah $0.00 ."); return 1; }
+			if(strval(duit) <= 0) { SendClientMessageEx(playerid,COLOR_WHITE,"ERROR: Tidak bisa dibawah $0.00 ."); return 1; }
 			GivePlayerMoneyEx(playerid, -strval(duit));
 			pData[playerid][pBankMoney] += strval(duit);
 			new query[512];
@@ -166,8 +166,8 @@ CMD:withdraw(playerid, params[])
 			{
 				return SendClientMessageEx(playerid, COLOR_GRAD2, "Anda tidak memiliki uang sebesar itu di dalam Akun ATM anda!");
 			}
-			if(strval(duit) < 0) return SendClientMessageEx(playerid, COLOR_GREY, "Tidak bisa dibawah $0.00");
-			GivePlayerMoneyEx(playerid,strval(duit));
+			if(strval(duit) <= 0) return SendClientMessageEx(playerid, COLOR_GREY, "Tidak bisa dibawah $0.00");
+			GivePlayerMoneyEx(playerid, strval(duit));
 			pData[playerid][pBankMoney] -= strval(duit);
 			new query[512];
 			mysql_format(g_SQL, query, sizeof(query), "UPDATE players SET bmoney=%d,money=%d WHERE reg_id=%d", pData[playerid][pBankMoney], pData[playerid][pMoney], pData[playerid][pID]);
@@ -191,7 +191,7 @@ CMD:transfer(playerid, params[])
 			if(otherid == playerid) return Error(playerid, "You can't transfer money to yourself.");
 			format(duit, sizeof(duit), "%d00", strval(amount));
 			if (strval(duit) > pData[playerid][pBankMoney]) return SendClientMessageEx(playerid, COLOR_GREY, "Anda tidak memiliki uang sebesar itu dibank anda");
-			if(strval(duit) < 0) { SendClientMessageEx(playerid,COLOR_WHITE,"ERROR: Tidak bisa dibawah $0.00 ."); return 1; }
+			if(strval(duit) <= 0) { SendClientMessageEx(playerid,COLOR_WHITE,"ERROR: Tidak bisa dibawah $0.00 ."); return 1; }
 			pData[playerid][pBankMoney] -= strval(duit);
 			pData[otherid][pBankMoney] += strval(duit);
 			SendCustomMessage(playerid, "BANK", "You successfully transferred "GREEN_E"$%s "WHITE_E"to "AQUA_E"%s", FormatMoney(strval(duit)), pData[otherid][pName]);

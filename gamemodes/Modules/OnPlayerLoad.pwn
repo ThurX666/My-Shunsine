@@ -216,6 +216,7 @@ function OnPlayerDataLoaded(playerid, race_check)
 
 function OnPlayerDataLoaded1(playerid, race_check)
 {
+	if(race_check != g_MysqlRaceCheck[playerid]) return Kick(playerid);
 	if(cache_num_rows() > 0)
 	{
 		cache_get_value_name(0, "ucpname", charData[playerid][cName], 52);
@@ -610,7 +611,7 @@ function AssignPlayerData(playerid, race_check)
 	mysql_tquery(g_SQL, string, "LoadPlayerToys", "d", playerid);
 
 	format(string,sizeof(string),"SELECT * FROM `vehicle` WHERE `owner` = '%d' ORDER BY `id` ASC", pData[playerid][pID]);
-	mysql_tquery(g_SQL, string, "LoadPlayerVehicle", "");
+	mysql_tquery(g_SQL, string, "LoadPlayerVehicle", "dd", playerid, g_MysqlRaceCheck[playerid]);
 
 	//mysql_tquery(g_SQL, sprintf("SELECT * FROM `weapon_players` WHERE `userid` = '%d';", pData[playerid][pID]), "OnLoadPlayerWeapons", "d", playerid);
 

@@ -1259,7 +1259,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				case 0:
 				{
 					new modelid = 522;
-					new tstr[128], price = GetVehicleCostVIP(modelid);
+					new tstr[128], price = GetVehicleDealerCost(modelid);
 					pData[playerid][pBuyPvModel] = modelid;
 					format(tstr, sizeof(tstr), ""WHITE_E"Anda akan membeli kendaraan "PINK_E"%s "WHITE_E"dengan harga "LG_E"$%s", GetVehicleModelName(modelid), FormatMoney(price));
 					ShowPlayerDialog(playerid, DIALOG_BUYVEHVIP_CONFIRM2, DIALOG_STYLE_MSGBOX, "Private Vehicles", tstr, "Buy", "Batal");
@@ -1267,7 +1267,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				case 1:
 				{
 					new modelid = 411;
-					new tstr[128], price = GetVehicleCostVIP(modelid);
+					new tstr[128], price = GetVehicleDealerCost(modelid);
 					pData[playerid][pBuyPvModel] = modelid;
 					format(tstr, sizeof(tstr), ""WHITE_E"Anda akan membeli kendaraan "PINK_E"%s "WHITE_E"dengan harga "LG_E"$%s", GetVehicleModelName(modelid), FormatMoney(price));
 					ShowPlayerDialog(playerid, DIALOG_BUYVEHVIP_CONFIRM2, DIALOG_STYLE_MSGBOX, "Private Vehicles", tstr, "Buy", "Batal");
@@ -1275,7 +1275,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				case 2:
 				{
 					new modelid = 451;
-					new tstr[128], price = GetVehicleCostVIP(modelid);
+					new tstr[128], price = GetVehicleDealerCost(modelid);
 					pData[playerid][pBuyPvModel] = modelid;
 					format(tstr, sizeof(tstr), ""WHITE_E"Anda akan membeli kendaraan "PINK_E"%s "WHITE_E"dengan harga "LG_E"$%s", GetVehicleModelName(modelid), FormatMoney(price));
 					ShowPlayerDialog(playerid, DIALOG_BUYVEHVIP_CONFIRM2, DIALOG_STYLE_MSGBOX, "Private Vehicles", tstr, "Buy", "Batal");
@@ -1283,7 +1283,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				case 3:
 				{
 					new modelid = 494;
-					new tstr[128], price = GetVehicleCostVIP(modelid);
+					new tstr[128], price = GetVehicleDealerCost(modelid);
 					pData[playerid][pBuyPvModel] = modelid;
 					format(tstr, sizeof(tstr), ""WHITE_E"Anda akan membeli kendaraan "PINK_E"%s "WHITE_E"dengan harga "LG_E"$%s", GetVehicleModelName(modelid), FormatMoney(price));
 					ShowPlayerDialog(playerid, DIALOG_BUYVEHVIP_CONFIRM2, DIALOG_STYLE_MSGBOX, "Private Vehicles", tstr, "Buy", "Batal");
@@ -1291,7 +1291,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				case 4:
 				{
 					new modelid = 541;
-					new tstr[128], price = GetVehicleCostVIP(modelid);
+					new tstr[128], price = GetVehicleDealerCost(modelid);
 					pData[playerid][pBuyPvModel] = modelid;
 					format(tstr, sizeof(tstr), ""WHITE_E"Anda akan membeli kendaraan "PINK_E"%s "WHITE_E"dengan harga "LG_E"$%s", GetVehicleModelName(modelid), FormatMoney(price));
 					ShowPlayerDialog(playerid, DIALOG_BUYVEHVIP_CONFIRM2, DIALOG_STYLE_MSGBOX, "Private Vehicles", tstr, "Buy", "Batal");
@@ -1299,7 +1299,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				case 5:
 				{
 					new modelid = 573;
-					new tstr[128], price = GetVehicleCostVIP(modelid);
+					new tstr[128], price = GetVehicleDealerCost(modelid);
 					pData[playerid][pBuyPvModel] = modelid;
 					format(tstr, sizeof(tstr), ""WHITE_E"Anda akan membeli kendaraan "PINK_E"%s "WHITE_E"dengan harga "LG_E"$%s", GetVehicleModelName(modelid), FormatMoney(price));
 					ShowPlayerDialog(playerid, DIALOG_BUYVEHVIP_CONFIRM2, DIALOG_STYLE_MSGBOX, "Private Vehicles", tstr, "Buy", "Batal");
@@ -1313,7 +1313,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		if(response)
 		{
 			if(modelid <= 0) return Error(playerid, "Invalid model id.");
-			new cost = GetVehicleCostVIP(modelid);
+			new cost = GetVehicleDealerCost(modelid);
 			
 			if(pData[playerid][pMoney] < cost)
 			{

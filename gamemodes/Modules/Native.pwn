@@ -2139,96 +2139,133 @@ GetVehicleCost(carid)
 
 GetVehicleDealerCost(carid)
 {
-	if(carid == 401) return 230000; //Bravura
-	if(carid == 585) return 950000;  //Emperor
-	if(carid == 546) return 220000; //Intruder
-	if(carid == 547) return 220000; //Primo
-	if(carid == 549) return 260000; //Tampa
-	if(carid == 560) return 560000; //Sultan
-	if(carid == 550) return 280000; //Sunrise
-	if(carid == 551) return 210000; //Merit
-	if(carid == 562) return 530000; //Elegy
-	if(carid == 540) return 210000; //Vincent
-	if(carid == 542) return 280000; //Clover
-	if(carid == 529) return 260000; //Willard
-	if(carid == 527) return 85000; //Cadrona
-	if(carid == 517) return 210000; //Majestic
-	if(carid == 518) return 200000; //Buccaneer
-	if(carid == 507) return 140000; //Elegant
-	if(carid == 516) return 210000; //Nebula
-	if(carid == 492) return 180000; //Greenwood
-	if(carid == 491) return 170000; //Virgo
-	if(carid == 474) return 90000; //Hermes
-	if(carid == 436) return 220000; //Previon
-	if(carid == 445) return 250000; //Admiral
-	if(carid == 419) return 100000; //Esperanto
-	if(carid == 426) return 290000; //Premier
-	if(carid == 421) return 230000; //Washington
-	if(carid == 410) return 200000; //Manana
-	if(carid == 405) return 190000; //Sentinel
-	if(carid == 466) return 200000; //Glendale
-	if(carid == 467) return 190000; //Oceanic
-	if(carid == 581) return 160000; //BF-400
-	if(carid == 586) return 140000; //Wayfarer
-	if(carid == 521) return 540000; //FCR-900
-	if(carid == 468) return 100000; //Sanchez
-	if(carid == 471) return 310000; //Quad
-	if(carid == 462) return 60000; //Faggio
-	if(carid == 463) return 190000; //Freeway
-	if(carid == 461) return 180000; //PCJ-600
-	if(carid == 404) return 190000; //Perenniel
-	if(carid == 458) return 380000; //Solair
-	if(carid == 561) return 400000; //Stratum
-	if(carid == 479) return 290000; //Regina
-	if(carid == 418) return 290000; //Moonbeam
-	if(carid == 534) return 290000; //Remington
-	if(carid == 535) return 390000; //Slamvan
-	if(carid == 536) return 290000; //Blade
-	if(carid == 566) return 270000; //Tahoma
-	if(carid == 567) return 270000; //Savanna
-	if(carid == 575) return 250000; //Broadway
-	if(carid == 576) return 180000; //Tornado
-	if(carid == 412) return 190000; //Voodoo
-	if(carid == 400) return 320000; //Landstalker
-	if(carid == 500) return 360000; //Mesa
-	if(carid == 579) return 500000; //Huntley
-	if(carid == 554) return 390000; //Yosemite
-	if(carid == 545) return 300000; //Hustler
-	if(carid == 483) return 125000; //Camper
-	if(carid == 508) return 490000; //Journey
-	if(carid == 480) return 350000; //Comet
-	if(carid == 439) return 430000; //Stallion
-	if(carid == 533) return 420000; //Feltzer
-	if(carid == 413) return 230000; //Pony
-	if(carid == 543) return 140000; //Sadler
-	if(carid == 422) return 170000; //Bobcat
-	if(carid == 478) return 120000; //Walton
-	if(carid == 482) return 95000; //Burrito
-	if(carid == 600) return 130000; //Picador
-	if(carid == 602) return 220000; //Alpha
-	if(carid == 587) return 250000; //Euros
-	if(carid == 589) return 330000; //Club
-	if(carid == 565) return 330000; //Flash
-	if(carid == 559) return 250000; //Jester
-	if(carid == 558) return 150000; //Uranus
-	if(carid == 429) return 900000; //Banshee
-	if(carid == 402) return 280000; //Bufallo
-	if(carid == 415) return 750000; //Cheetah
-	if(carid == 475) return 170000; //Sabre
-	if(carid == 477) return 380000; //ZR-350
-	if(carid == 496) return 150000; //Blista Compact
- 	return -1;
-}
+	// =====================================
+	// Economy / Entry-Level (50k-150k)
+	// =====================================
+	if(carid == 462) return 50000;  // Faggio
+	if(carid == 527) return 70000;  // Cadrona
+	if(carid == 578) return 80000;  // DFT-30 (dump truck)
+	if(carid == 468) return 85000;  // Sanchez
+	if(carid == 482) return 85000;  // Burrito
+	if(carid == 478) return 90000;  // Walton
+	if(carid == 600) return 95000;  // Picador
+	if(carid == 419) return 100000; // Esperanto
+	if(carid == 474) return 100000; // Hermes
+	if(carid == 543) return 110000; // Sadler
+	if(carid == 422) return 120000; // Bobcat
 
-GetVehicleCostVIP(carid)
-{
-	if(carid == 522) return 2000000; //NRG-500
-	if(carid == 411) return 1500000; //Infernus
-	if(carid == 451) return 1250000; //Turismo
-	if(carid == 494) return 1250000; //Hotring
-	if(carid == 541) return 1100000; //Bullet
-	if(carid == 573) return 2000000; //Duneride
- 	return -1;
+	// =====================================
+	// Standard Sedans (130k-280k)
+	// =====================================
+	if(carid == 491) return 130000; // Virgo
+	if(carid == 576) return 130000; // Tornado
+	if(carid == 467) return 140000; // Oceanic
+	if(carid == 517) return 140000; // Majestic
+	if(carid == 412) return 140000; // Voodoo
+	if(carid == 507) return 140000; // Elegant
+	if(carid == 492) return 150000; // Greenwood
+	if(carid == 405) return 150000; // Sentinel
+	if(carid == 540) return 160000; // Vincent
+	if(carid == 551) return 160000; // Merit
+	if(carid == 536) return 160000; // Blade
+	if(carid == 426) return 170000; // Premier
+	if(carid == 466) return 170000; // Glendale
+	if(carid == 401) return 170000; // Bravura
+	if(carid == 542) return 180000; // Clover
+	if(carid == 410) return 180000; // Manana
+	if(carid == 549) return 190000; // Tampa
+	if(carid == 550) return 190000; // Sunrise
+
+	// =====================================
+	// Luxury Sedans (200k-320k)
+	// =====================================
+	if(carid == 546) return 180000; // Intruder
+	if(carid == 547) return 180000; // Primo
+	if(carid == 529) return 180000; // Willard
+	if(carid == 518) return 180000; // Buccaneer
+	if(carid == 516) return 180000; // Nebula
+	if(carid == 436) return 190000; // Previon
+	if(carid == 534) return 190000; // Remington
+	if(carid == 445) return 200000; // Admiral
+	if(carid == 421) return 200000; // Washington
+	if(carid == 404) return 200000; // Perenniel
+	if(carid == 458) return 220000; // Solair
+	if(carid == 561) return 250000; // Stratum
+	if(carid == 535) return 260000; // Slamvan
+	if(carid == 567) return 260000; // Savanna
+	if(carid == 575) return 260000; // Broadway
+	if(carid == 566) return 270000; // Tahoma
+	if(carid == 479) return 280000; // Regina
+	if(carid == 418) return 280000; // Moonbeam
+	if(carid == 585) return 320000; // Emperor
+
+	// =====================================
+	// Utility / Vans (150k-400k)
+	// =====================================
+	if(carid == 413) return 150000; // Pony
+	if(carid == 483) return 200000; // Camper
+	if(carid == 508) return 350000; // Journey
+
+	// =====================================
+	// SUVs / Trucks (250k-600k)
+	// =====================================
+	if(carid == 545) return 280000; // Hustler
+	if(carid == 554) return 320000; // Yosemite
+	if(carid == 579) return 450000; // Huntley
+	if(carid == 500) return 480000; // Mesa
+	if(carid == 400) return 500000; // Landstalker
+
+	// =====================================
+	// Sports (450k-900k)
+	// =====================================
+	if(carid == 477) return 400000; // ZR-350
+	if(carid == 439) return 420000; // Stallion
+	if(carid == 559) return 420000; // Jester
+	if(carid == 565) return 450000; // Flash
+	if(carid == 587) return 480000; // Euros
+	if(carid == 533) return 480000; // Feltzer
+	if(carid == 589) return 480000; // Club
+	if(carid == 558) return 450000; // Uranus
+	if(carid == 496) return 450000; // Blista Compact
+	if(carid == 475) return 450000; // Sabre
+	if(carid == 402) return 480000; // Buffalo
+	if(carid == 560) return 500000; // Sultan
+	if(carid == 562) return 500000; // Elegy
+	if(carid == 480) return 520000; // Comet
+
+	// =====================================
+	// Supercars (800k-1.5M)
+	// =====================================
+	if(carid == 415) return 800000;  // Cheetah
+	if(carid == 429) return 850000;  // Banshee
+	if(carid == 541) return 950000;  // Bullet (VIP)
+	if(carid == 451) return 1100000; // Turismo (VIP)
+	if(carid == 494) return 1100000; // Hotring (VIP)
+	if(carid == 411) return 1250000; // Infernus (VIP)
+
+	// =====================================
+	// Motorcycles (50k-550k)
+	// =====================================
+	if(carid == 586) return 120000; // Wayfarer
+	if(carid == 463) return 150000; // Freeway
+	if(carid == 461) return 160000; // PCJ-600
+	if(carid == 581) return 180000; // BF-400
+	if(carid == 471) return 200000; // Quad
+	if(carid == 521) return 350000; // FCR-900
+	if(carid == 522) return 550000; // NRG-500 (VIP)
+
+	// =====================================
+	// Special / Others
+	// =====================================
+	if(carid == 484) return 250000; // Marquis (boat)
+	if(carid == 473) return 250000; // Dinghy (boat)
+	if(carid == 493) return 300000; // Jetmax (boat)
+	if(carid == 595) return 350000; // Launch (boat)
+	if(carid == 573) return 950000; // Dune
+	if(carid == 453) return 300000; // Squalo
+	if(carid == 446) return 200000; // Speeder
+
+	return -1;
 }
 
 SendClientMessageEx(playerid, color, const text[], {Float, _}:...)
@@ -3005,26 +3042,40 @@ ReturnName2(playerid)
 }
 
 //Format Money
-FormatMoney(Float:amount, delimiter[2]=".", comma[2]=",")
+stock FormatMoney(amount, delimiter[2] = ".", comma[2] = ",", dollar[2] = "$")
 {
-	#define MAX_MONEY_String 16
-	new txt[MAX_MONEY_String];
-	format(txt, MAX_MONEY_String, "%d", floatround(amount));
-	new l = strlen(txt);
-	if (amount < 0) // -
-	{
-		if (l > 2) strins(txt,delimiter,l-2);
-		if (l > 5) strins(txt,comma,l-5);
-		if (l > 8) strins(txt,comma,l-8);
-	}
-	else
-	{//1000000
-		if (l > 2) strins(txt,delimiter,l-2);
-		if (l > 5) strins(txt,comma,l-5);
-		if (l > 9) strins(txt,comma,l-8);
-	}
-//	if (l <= 2) format(txt,sizeof( szStr ),"00,%s",txt);
-	return txt;
+    #define MAX_MONEY_STRING 32
+    new txt[MAX_MONEY_STRING];
+    new output[MAX_MONEY_STRING];
+    output[0] = '\0';
+
+    new bool:isNegative = amount < 0;
+    if (isNegative) amount = -amount;
+
+    new dollars = amount / 100;
+    new cents = amount % 100;
+
+    format(txt, MAX_MONEY_STRING, "%d", dollars);
+
+    new len = strlen(txt);
+    new index = 0;
+
+    for (new i = 0; i < len; i++)
+    {
+        output[index++] = txt[i];
+        if ((len - i - 1) % 3 == 0 && i < len - 1)
+            output[index++] = comma[0];
+    }
+
+    output[index] = '\0';
+    format(output, sizeof(output), "%s%s%02d", output, delimiter, cents);
+
+    strins(output, dollar, 0);
+
+    if (isNegative)
+        strins(output, "-", 0);
+
+    return output;
 }
 
 RandomEx(min, max)
@@ -3147,12 +3198,9 @@ ReturnTime()
 
 ConvertTdColor(value) {
     new color;
-    if(value >= 60 && value < 70) color = 0xC2A756FF;
-    else if(value >= 50 && value < 60) color = 0xC2A756FF;
-    else if(value >= 40 && value < 50) color = 0xC2A756FF;
-    else if(value >= 30 && value < 40) color = 0x670E10FF;
-    else if(value >= 10 && value < 30) color = 0x670E10FF;
-    else if(value >= 0 && value < 10) color = 0x670E10FF;
+    if(value >= 61 && value <= 100) color = 0x1b9913FF;    // Green
+    else if(value >= 31 && value <= 60) color = 0xC2A756FF; // Yellow
+    else if(value >= 0 && value <= 30) color = 0x670E10FF;  // Red
     else color = COLOR_WHITE;
     return color;
 }

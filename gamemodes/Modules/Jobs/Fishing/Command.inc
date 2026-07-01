@@ -46,10 +46,10 @@ CMD:sellallfish(playerid,params[])
 			count += FishWeight[playerid][i];
 			format(String, sizeof(String), "%s"WHITE_E"Ocean Fish\t"WHITE_E"%.1f lbs\t"GREEN_E"$%s\n", String, FishWeight[playerid][i], FormatMoney(total));
 	    }
-		format(String, sizeof(String), "%s"WHITE_E"Total:\t%.1f lbs\t"GREEN_E"$%s",String,count,FormatMoney(count*FishPrice));
+		format(String, sizeof(String), "%s"WHITE_E"Total:\t%.1f lbs\t"GREEN_E"$%s",String,count,FormatMoney(floatround(count*FishPrice)));
 		Dialog_Show(playerid,SellFish,DIALOG_STYLE_TABLIST_HEADERS,"Selling Fish",String,"Sell","Cancel");
-    }
-    else if(IsPlayerInRangeOfPoint(playerid, 4.0, -769.01, 1637.18, 27.32))
+   	}
+   	else if(IsPlayerInRangeOfPoint(playerid, 4.0, -769.01, 1637.18, 27.32))
     {
 		new String[412], Float:count;
 		format(String, sizeof(String), "Fish\tWeight\tPrice\n");
@@ -58,8 +58,8 @@ CMD:sellallfish(playerid,params[])
 			count += FishWeight[playerid][i];
 			format(String, sizeof(String), "%s"WHITE_E"Ocean Fish\t"WHITE_E"%.1f lbs\t"GREEN_E"$%s\n", String, FishWeight[playerid][i], FormatMoney(total));
 	    }
-		format(String, sizeof(String), "%s"WHITE_E"Total:\t%.1f lbs\t"GREEN_E"$%s",String,count,FormatMoney(count*FishPrice));
+		format(String, sizeof(String), "%s"WHITE_E"Total:\t%.1f lbs\t"GREEN_E"$%s",String,count,FormatMoney(floatround(count*FishPrice)));
 		Dialog_Show(playerid,SellFish,DIALOG_STYLE_TABLIST_HEADERS,"Selling Fish",String,"Sell","Cancel");
-    }
-    return 1;
+   	}
+   	return 1;
 }

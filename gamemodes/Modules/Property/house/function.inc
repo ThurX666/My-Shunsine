@@ -407,7 +407,7 @@ House_Save(houseid)
     hData[houseid][hTypeAmmo][8], hData[houseid][hTypeAmmo][9], hData[houseid][hTypeAmmo][10], hData[houseid][hTypeAmmo][11],
     hData[houseid][hTypeAmmo][12], hData[houseid][hTypeAmmo][13], hData[houseid][hTypeAmmo][14]);
 
-	format(cQuery, sizeof(cQuery), "%s, houseint='%d', extvw='%d', extint='%d', extposx='%f', extposy='%f', extposz='%f', extposa='%f', intposx='%f', intposy='%f', intposz='%f', intposa='%f', visit='%d', garage='%d', garageposx='%f', garageposy='%f', garageposz='%f', houseBuilder = '%d', houseBuilderTime = '%d' WHERE ID='%d'",
+	format(cQuery, sizeof(cQuery), "%s, houseint='%d', extvw='%d', extint='%d', extposx='%f', extposy='%f', extposz='%f', extposa='%f', intposx='%f', intposy='%f', intposz='%f', intposa='%f', visit='%d', garage='%d', garageposx='%f', garageposy='%f', garageposz='%f', segel='%d', segeltime='%d', segeladmin='%s', segelreason='%s', houseBuilder = '%d', houseBuilderTime = '%d' WHERE ID='%d'",
         cQuery,
         hData[houseid][hInt],
 		hData[houseid][hExtVw],
@@ -425,6 +425,10 @@ House_Save(houseid)
         hData[houseid][hGarageposX],
         hData[houseid][hGarageposY],
 		hData[houseid][hGarageposZ],
+		hData[houseid][hSegel],
+		hData[houseid][hSegelTime],
+		hData[houseid][hSegelAdmin],
+		hData[houseid][hSegelReason],
         hData[houseid][houseBuilder],
         hData[houseid][houseBuilderTime],
         houseid
@@ -592,8 +596,12 @@ House_Refresh(houseid)
 			type= "Unknow";
 		}
 
-        if(strcmp(hData[houseid][hOwner], "-")) format(string, sizeof(string), ""AQUA_E"[H:%d]\n"YELLOW_E"Owner: {FFFFFF}%s\n"GREY_E"%s", houseid, hData[houseid][hOwner], hData[houseid][hAddress]);
-        else  format(string, sizeof(string), "{00FFFF}[H:%d]\n{00FF00}This house for sell\n{FFFFFF}Addres: {FFFF00}%s\n{FFFFFF}House Price: {FFFF00}$%s\n"WHITE_E"Type /buy to purchase", houseid, hData[houseid][hAddress], FormatMoney(hData[houseid][hPrice]));
+        if(hData[houseid][hSegel] == 1)
+            format(string, sizeof(string), "{FF0000}[H:%d - SEALED]\n{FFFFFF}%s\n{FFFF00}Admin: %s\n%s", houseid, hData[houseid][hOwner], hData[houseid][hSegelAdmin], hData[houseid][hSegelReason]);
+        else if(strcmp(hData[houseid][hOwner], "-")) 
+            format(string, sizeof(string), "{00FFFF}[H:%d]\n{FFFF00}Owner: {FFFFFF}%s\n{808080}%s", houseid, hData[houseid][hOwner], hData[houseid][hAddress]);
+        else  
+            format(string, sizeof(string), "{00FFFF}[H:%d]\n{00FF00}This house for sell\n{FFFFFF}Addres: {FFFF00}%s\n{FFFFFF}House Price: {FFFF00}$%s\n{FFFFFF}Type /buy to purchase", houseid, hData[houseid][hAddress], FormatMoney(hData[houseid][hPrice]));
         
         hData[houseid][hPickup][0] = CreateDynamicPickup(19132, 23, hData[houseid][hExtposX], hData[houseid][hExtposY], hData[houseid][hExtposZ]+0.2, 0, 0, _, 5);
         hData[houseid][hPickup][1] = CreateDynamicPickup(19132, 23, hData[houseid][hIntposX], hData[houseid][hIntposY], hData[houseid][hIntposZ]+0.2, houseid, hData[houseid][hInt], _, 5);
@@ -815,6 +823,10 @@ function LoadHouses()
 			cache_get_value_name_float(i, "garageposz", hData[hid][hGarageposZ]);
 			cache_get_value_name_int(i, "houseBuilder", hData[hid][houseBuilder]);
 			cache_get_value_name_int(i, "houseBuilderTime", hData[hid][houseBuilderTime]);
+			cache_get_value_name_int(i, "segel", hData[hid][hSegel]);
+			cache_get_value_name_int(i, "segeltime", hData[hid][hSegelTime]);
+			cache_get_value_name(i, "segeladmin", hData[hid][hSegelAdmin], 24);
+			cache_get_value_name(i, "segelreason", hData[hid][hSegelReason], 128);
 
 			hData[hid][hID] = hid;
 

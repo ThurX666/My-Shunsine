@@ -77,10 +77,10 @@ hook OnPlayerStateChange(playerid, newstate, oldstate)
     {
         if(pData[playerid][pRadioVehicleOn])
         {
+            StopAudioStreamForPlayer(playerid);
             pData[playerid][pRadioVehicleOn] = 0;
             pData[playerid][pRadioVehicleVeh] = 0;
-            // Jangan stop audio — biarkan ProcessVehicleRadio yang handle
-            // karena player mungkin masih dalam radius
+            pData[playerid][pRadioVehicleListening] = 0;
         }
     }
 

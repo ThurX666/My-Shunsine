@@ -1301,7 +1301,7 @@ CMD:treatment(playerid, params[])
     if(otherid == playerid)
         return Error(playerid, "You can't treatment yourself.");
 	
-	if(pData[playerid][pActivity] != 0)
+	if(pData[playerid][pActivity] != -1)
 		return Error(playerid, "You are already doing an activity.");
 
 	pData[playerid][pActivity] = 1;
@@ -1490,7 +1490,7 @@ ptask TreatmentProgress[200](playerid) {
 
 	new targetid = pData[playerid][pTreatTarget];
 	if(!IsPlayerConnected(targetid) || !NearPlayer(playerid, targetid, 5.0)) {
-		pData[playerid][pActivity] = 0;
+		pData[playerid][pActivity] = -1;
 		pData[playerid][pActivityTime] = 0;
 		pData[playerid][pTreatTarget] = INVALID_PLAYER_ID;
 		ClearAnimations(playerid, 1);
@@ -1503,7 +1503,7 @@ ptask TreatmentProgress[200](playerid) {
 	SetProgressBar(playerid, pData[playerid][pActivityTime]);
 
 	if(pData[playerid][pActivityTime] >= 100) {
-		pData[playerid][pActivity] = 0;
+		pData[playerid][pActivity] = -1;
 		pData[playerid][pActivityTime] = 0;
 		pData[playerid][pMedkit]--;
 

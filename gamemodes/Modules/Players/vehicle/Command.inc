@@ -418,11 +418,11 @@ CMD:lock(playerid, params[])
 	return 1;
 }
 
-CMD:vradio(playerid, params[])
+CMD:vsong(playerid, params[])
 {
 	if(isnull(params)) 
 	{
-		Usage(playerid, "/vradio [listen/stop/url]");
+		Usage(playerid, "/vsong [listen/stop/url]");
 		return 1;
 	}
 	if(IsABike(GetPlayerVehicleID(playerid))) return Error(playerid, "Bike does't have radio.");
@@ -438,12 +438,12 @@ CMD:vradio(playerid, params[])
 	} else if (!strcmp(params, "stop", true)) 
 	{
 		StopVehicleRadio(GetPlayerVehicleID(playerid));
-		SendCustomMessage(playerid, "RADIO", "You've been stopped vehicle radio.");
+		SendCustomMessage(playerid, "RADIO", "You've been stopped vehicle song.");
 	} 
 	else if (!strcmp(params, "url", true)) 
 	{
-		Dialog_Show(playerid, RadioLink, DIALOG_STYLE_INPUT, "Insert URL", "Masukkan link radio yang akan di dengar:", "Play", "Close");
-	} else Usage(playerid, "/vradio [listen/stop/url]");
+		Dialog_Show(playerid, RadioLink, DIALOG_STYLE_INPUT, "Insert URL", "Masukkan link lagu yang akan di dengar:", "Play", "Close");
+	} else Usage(playerid, "/vsong [listen/stop/url]");
 	return 1;
 }
 

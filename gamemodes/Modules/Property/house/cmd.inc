@@ -460,3 +460,111 @@ CMD:dyoh(playerid, params[]) {
     Error(playerid, "You're not in any house.");
     return 1;
 }
+
+CMD:segelrumah(playerid, params[])
+{
+    if(pData[playerid][pAdmin] < 6) return PermissionError(playerid);
+    
+    new hid, reason[64];
+    if(sscanf(params, "ds[64]", hid, reason))
+        return Usage(playerid, "/segelrumah [houseid] [alasan]");
+
+    if(!Iter_Contains(Houses, hid)) return Error(playerid, "Rumah tidak ditemukan.");
+
+    if(!strcmp(hData[hid][hOwner], "-"))
+        return Error(playerid, "Rumah ini tidak memiliki pemilik.");
+
+    if(hData[hid][hSegel] == 1)
+        return Error(playerid, "Rumah ini sudah dalam status segel.");
+
+    if(gettime() - hData[hid][hLastVisited] < 15 * 86400)
+        return Error(playerid, "Pemilik masih aktif dalam 15 hari terakhir. Tidak bisa disegel.");
+
+    hData[hid][hSegel] = 1;
+    hData[hid][hSegelTime] = gettime();
+    format(hData[hid][hSegelAdmin], 24, "%s", pData[playerid][pAdminname]);
+    format(hData[hid][hSegelReason], 128, "%s", reason);
+    hData[hid][hLocked] = 1;
+
+    House_Refresh(hid);
+    House_Save(hid);
+
+    Servers(playerid, "Anda telah menyegel rumah ID %d dengan alasan: %s", hid, reason);
+    new str[128];
+    format(str, sizeof(str), "INFO: Rumah ID %d milik %s telah disegel oleh admin.", hid, hData[hid][hOwner]);
+    SendClientMessageToAll(COLOR_RED, str);
+    return 1;
+}
+
+CMD:hapussegel(playerid, params[])
+{
+    if(pData[playerid][pAdmin] < 6) return PermissionError(playerid);
+
+    new hid;
+    if(sscanf(params, "d", hid))
+        return Usage(playerid, "/hapussegel [houseid]");
+
+    if(!Iter_Contains(Houses, hid)) return Error(playerid, "Rumah tidak ditemukan.");
+    if(hData[hid][hSegel] == 0) return Error(playerid, "Rumah ini tidak dalam status segel.");
+
+    hData[hid][hSegel] = 0;
+    hData[hid][hSegelTime] = 0;
+    format(hData[hid][hSegelAdmin], 24, "-");
+    format(hData[hid][hSegelReason], 128, "-");
+
+    House_Refresh(hid);
+    House_Save(hid);
+
+    Servers(playerid, "Anda telah membuka segel rumah ID %d.", hid);
+    return 1;
+}
+
+CMD:tebusrumah(playerid, params[])
+{
+    new hid;
+    if(sscanf(params, "d", hid))
+        return Usage(playerid, "/tebusrumah [houseid]");
+
+    if(!Iter_Contains(Houses, hid)) return Error(playerid, "Rumah tidak ditemukan.");
+    if(hData[hid][hSegel] == 0) return Error(playerid, "Rumah ini tidak dalam status segel.");
+
+    if(strcmp(hData[hid][hOwner], pData[playerid][pName]))
+        return Error(playerid, "Anda bukan pemilik rumah ini.");
+
+    if(gettime() - hData[hid][hSegelTime] > 7 * 86400)
+        return Error(playerid, "Waktu tebus sudah habis (7 hari). Rumah akan dilelang oleh admin.");
+
+    new tebus = hData[hid][hPrice] * 25 / 100; // 25% of house price
+    if(pData[playerid][pMoney] < tebus)
+        return Error(playerid, "Uang anda tidak cukup. Butuh $%s untuk menebus.", FormatMoney(tebus));
+
+    GivePlayerMoneyEx(playerid, -tebus);
+    hData[hid][hSegel] = 0;
+    hData[hid][hSegelTime] = 0;
+    format(hData[hid][hSegelAdmin], 24, "-");
+    format(hData[hid][hSegelReason], 128, "-");
+
+    House_Refresh(hid);
+    House_Save(hid);
+
+    SendCustomMessage(playerid, "HOUSE", "Anda telah menebus rumah ID %d seharga $%s.", hid, FormatMoney(tebus));
+    return 1;
+}
+
+CMD:infosegel(playerid, params[])
+{
+    new hid, hari;
+    if(sscanf(params, "d", hid))
+        return Usage(playerid, "/infosegel [houseid]");
+
+    if(!Iter_Contains(Houses, hid)) return Error(playerid, "Rumah tidak ditemukan.");
+    if(hData[hid][hSegel] == 0) return Error(playerid, "Rumah ini tidak dalam status segel.");
+
+    hari = (gettime() - hData[hid][hSegelTime]) / 86400;
+    SendClientMessageEx(playerid, -1, "{FF0000}=====[ {FFFFFF}House Seal Info {FF0000}]=====");
+    SendClientMessageEx(playerid, -1, "House ID: %d | Owner: %s", hid, hData[hid][hOwner]);
+    SendClientMessageEx(playerid, -1, "Admin: %s | Alasan: %s", hData[hid][hSegelAdmin], hData[hid][hSegelReason]);
+    SendClientMessageEx(playerid, -1, "Disimpan: %d hari yang lalu | Sisa: %d hari lagi untuk tebus.", hari, 7 - hari);
+    SendClientMessageEx(playerid, -1, "Harga Tebus: $%s (25%% dari harga rumah)", FormatMoney(hData[hid][hPrice] * 25 / 100));
+    return 1;
+}

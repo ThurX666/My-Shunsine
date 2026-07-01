@@ -58,13 +58,6 @@ hook OnGameModeInit()
     CreateDynamicPickup(1239, 1, g_MilkerLocker[0], g_MilkerLocker[1], g_MilkerLocker[2], -1, -1, -1, 30.0);
     CreateDynamic3DTextLabel("[Milker Locker]\n/startmilker untuk memulai", COLOR_YELLOW, g_MilkerLocker[0], g_MilkerLocker[1], g_MilkerLocker[2], 30.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 1, -1, -1);
 
-    // Milker cow position pickups & labels
-    for(new i = 0; i < 6; i++)
-    {
-        CreateDynamicPickup(1239, 1, g_MilkerCowPos[i][0], g_MilkerCowPos[i][1], g_MilkerCowPos[i][2], -1, -1, -1, 30.0);
-        CreateDynamic3DTextLabel("[Sapi Perah]\nTekan N atau /perahsusu", COLOR_WHITE, g_MilkerCowPos[i][0], g_MilkerCowPos[i][1], g_MilkerCowPos[i][2], 30.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 1, -1, -1);
-    }
-
     // Milker drop-off pickup & label
     CreateDynamicPickup(1239, 1, g_MilkerDropOff[0], g_MilkerDropOff[1], g_MilkerDropOff[2], -1, -1, -1, 30.0);
     CreateDynamic3DTextLabel("[Drop-off Susu]\nAntar susu ke sini setelah diperah", COLOR_WHITE, g_MilkerDropOff[0], g_MilkerDropOff[1], g_MilkerDropOff[2], 30.0, INVALID_PLAYER_ID, INVALID_VEHICLE_ID, 1, -1, -1);
@@ -88,19 +81,37 @@ hook OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
     return 1;
 }
 
-hook OnPlayerEnterCheckpoint(playerid)
+hook OnPlayerEnterDynamicCP(playerid, checkpointid)
+{
+    if(MilkerActive[playerid] && pData[playerid][pSideJob] == SIDEJOB_MILKER)
+    {
+        // At cow checkpoint — show GameText
+        if(checkpointid == MilkerCP[playerid] && MilkerCowIndex[playerid] != -1)
+        {
+            GameTextForPlayer(playerid, "~y~Cow Point~n~~w~Use ~r~N button~w~ or ~r~/perahsusu~w~ to start.", 5000, 6);
+            return ~1;
+        }
+        // At drop-off checkpoint
+        if(checkpointid == MilkerCP[playerid] && MilkerMilkCount[playerid] > 0)
+        {
+            DeliverMilk(playerid);
+            return ~1;
+        }
+    }
+    return ~1;
+}
+
+hook OnPlayerDisconnect(playerid, reason)
 {
     if(MilkerActive[playerid])
     {
-        // Check if at drop-off point
-        if(IsPlayerInRangeOfPoint(playerid, 4.0, g_MilkerDropOff[0], g_MilkerDropOff[1], g_MilkerDropOff[2]))
-        {
-            if(MilkerMilkCount[playerid] > 0)
-            {
-                DeliverMilk(playerid);
-                return 1;
-            }
-        }
+        if(pData[playerid][pActivity] != -1) KillTimer(pData[playerid][pActivity]), pData[playerid][pActivity] = -1;
+        MilkerActive[playerid] = 0;
+        MilkerCycles[playerid] = 0;
+        MilkerMilkCount[playerid] = 0;
+        MilkerCowIndex[playerid] = -1;
+        MilkerObjects[playerid] = -1;
+        if(MilkerCP[playerid] != -1) DestroyDynamicCP(MilkerCP[playerid]), MilkerCP[playerid] = -1;
     }
     return 1;
 }

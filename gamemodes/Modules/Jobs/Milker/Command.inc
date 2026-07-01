@@ -22,15 +22,15 @@ CMD:startmilker(playerid, params[])
     MilkerCowIndex[playerid] = -1;
     MilkerObjects[playerid] = -1;
 
-    new pointStr[256];
+    new pointStr[512];
     format(pointStr, sizeof(pointStr),
-        ""YELLOW_E"Sidejob Milker dimulai!\n\n"WHITE_E\
+        "{FFFF00}Sidejob Milker dimulai!{FFFFFF}\n\n"\
         "Pergi ke sapi untuk memerah susu.\n"\
-        "Tekan "GREEN_E"'N' "WHITE_E"atau ketik "YELLOW_E"'/perahsusu' "WHITE_E"di dekat sapi.\n\n"\
-        "Sapi: "GREEN_E"6 posisi\n"\
-        "Target: "GREEN_E"10 siklus\n"\
-        "Gaji: "GREEN_E"$250.00\n\n"\
-        ""YELLOW_E"Tips: "WHITE_E"Antar susu ke drop-off point setelah memerah."
+        "Tekan {00FF00}'N' {FFFFFF}atau ketik {FFFF00}'/perahsusu' {FFFFFF}di dekat sapi.\n\n"\
+        "{FFFFFF}Sapi: {00FFFF}6 posisi\n"\
+        "{FFFFFF}Target: {FFFF00}10 siklus\n"\
+        "{FFFFFF}Gaji: {00FF00}$250.00\n\n"\
+        "{FFFF00}Tips: {FFFFFF}Antar susu ke drop-off point setelah memerah."
     );
     Dialog_Show(playerid, ShowOnly, DIALOG_STYLE_MSGBOX, "MILKER - Sidejob Pemerah Susu", pointStr, "Mulai", "");
 

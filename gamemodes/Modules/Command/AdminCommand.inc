@@ -1347,6 +1347,111 @@ CMD:aka(playerid, params[])
     return 1;
 }
 
+Dialog:EconomyCategory(playerid, response, listitem, inputtext[])
+{
+    if(!response) return 1;
+
+    new output[1024], str[128];
+    switch(listitem)
+    {
+        case 0:
+        {
+            strcat(output, "Key\tValue\tDefault\n");
+            for(new i = 0; i < 9; i++)
+            {
+                format(str, sizeof(str), "%s\t%s\t%s\n", g_Economy[i][e_EconomyDesc], FormatMoney(g_Economy[i][e_EconomyValue]),FormatMoney(g_Economy[i][e_EconomyDefault]));
+                strcat(output, str);
+            }
+            SetPVarInt(playerid, "EconCat", 0);
+            Dialog_Show(playerid, EconomyEdit, DIALOG_STYLE_TABLIST_HEADERS, "Job & Sidejob Payout", output, "Edit", "Back");
+        }
+        case 1:
+        {
+            new i = 9;
+            format(output, sizeof(output), "Key\tValue\tDefault\n%s\t%s\t%s\n",
+                g_Economy[i][e_EconomyDesc],
+                FormatMoney(g_Economy[i][e_EconomyValue]),
+                FormatMoney(g_Economy[i][e_EconomyDefault]));
+            SetPVarInt(playerid, "EconCat", 1);
+            Dialog_Show(playerid, EconomyEdit, DIALOG_STYLE_TABLIST_HEADERS, "Faction Salary", output, "Edit", "Back");
+        }
+        case 2:
+        {
+            strcat(output, "Key\tValue\tDefault\n");
+            for(new i = 10; i < MAX_ECONOMY_KEYS; i++)
+            {
+                format(str, sizeof(str), "%s\t%s\t%s\n",
+                    g_Economy[i][e_EconomyDesc],
+                    FormatMoney(g_Economy[i][e_EconomyValue]),
+                    FormatMoney(g_Economy[i][e_EconomyDefault]));
+                strcat(output, str);
+            }
+            SetPVarInt(playerid, "EconCat", 2);
+            Dialog_Show(playerid, EconomyEdit, DIALOG_STYLE_TABLIST_HEADERS, "Other Prices", output, "Edit", "Back");
+        }
+        case 3:
+        {
+            for(new i = 0; i < MAX_ECONOMY_KEYS; i++)
+            {
+                SetEconomyValue(g_Economy[i][e_EconomyKey], g_Economy[i][e_EconomyDefault]);
+            }
+            SendClientMessageEx(playerid, COLOR_ARWIN, "ECONOMY: All values have been reset to defaults.");
+        }
+    }
+    return 1;
+}
+
+Dialog:EconomyEdit(playerid, response, listitem, inputtext[])
+{
+    if(!response) return callcmd::economy(playerid, "");
+
+    new category = GetPVarInt(playerid, "EconCat");
+    new base = 0;
+    switch(category)
+    {
+        case 0: { base = 0; }
+        case 1: { base = 9; }
+        case 2: { base = 10; }
+    }
+    new idx = base + listitem;
+
+    if(idx < 0 || idx >= MAX_ECONOMY_KEYS) return 1;
+
+    new str[256];
+    format(str, sizeof(str), "Current: $%s (default: $%s)\nEnter new value in cents (100 = $1.00):",
+        FormatMoney(g_Economy[idx][e_EconomyValue]),
+        FormatMoney(g_Economy[idx][e_EconomyDefault]));
+    SetPVarInt(playerid, "EconItem", listitem);
+    Dialog_Show(playerid, EconomyInput, DIALOG_STYLE_INPUT,
+        g_Economy[idx][e_EconomyDesc], str, "Save", "Back");
+    return 1;
+}
+
+Dialog:EconomyInput(playerid, response, listitem, inputtext[])
+{
+    if(!response) return callcmd::economy(playerid, "");
+
+    new category = GetPVarInt(playerid, "EconCat");
+    new base = 0;
+    switch(category)
+    {
+        case 0: { base = 0; }
+        case 1: { base = 9; }
+        case 2: { base = 10; }
+    }
+    new idx = base + GetPVarInt(playerid, "EconItem");
+
+    new val = strval(inputtext);
+    if(val < 0) return Error(playerid, "Value tidak boleh negatif.");
+
+    SetEconomyValue(g_Economy[idx][e_EconomyKey], val);
+    SendClientMessageEx(playerid, COLOR_ARWIN, "ECONOMY: {FFFF00}%s {FFFFFF}set to {00FF00}$%s {FFFFFF}(default: $%s).",
+        g_Economy[idx][e_EconomyDesc],
+        FormatMoney(g_Economy[idx][e_EconomyValue]),
+        FormatMoney(g_Economy[idx][e_EconomyDefault]));
+    return callcmd::economy(playerid, "");
+}
+
 Dialog:ShowOnly(playerid, response, listitem, inputtext[]) {
     playerid = INVALID_PLAYER_ID;
     response = 0;
@@ -2418,7 +2523,7 @@ CMD:setfaction(playerid, params[])
     if(pData[playerid][pDivision] != 1) return Error(playerid, "You must be a faction division.");
 
     if(sscanf(params, "udd", otherid, fid, rank))
-        return Usage(playerid, "/setfaction [playerid/PartOfName] [1.SAPD, 2.SAGS, 3.SAMD, 4.SANEW] [rank 1-16]");
+        return Usage(playerid, "/setfaction [playerid/PartOfName] [0.Keluar, 1.SAPD, 2.SAGS, 3.SAMD, 4.SANEW] [rank 1-16]");
 
     if(!IsPlayerConnected(otherid))
         return Error(playerid, "Player tidak on!");
@@ -2429,19 +2534,19 @@ CMD:setfaction(playerid, params[])
     if(fid < 0 || fid > 4)
         return Error(playerid, "You have specified an invalid faction ID 0 - 4.");
 
-	if(rank < 1 || rank > 16)
-        return Error(playerid, "You have specified an invalid rank 1 - 16.");
-
 	if(fid == 0)
 	{
 		pData[otherid][pFaction] = 0;
 		pData[otherid][pFactionRank] = 0;
-		format(pData[playerid][pUnit], 24, "None");
+		format(pData[otherid][pUnit], 24, "None");
 		Servers(playerid, "You have removed %s's from faction.", ReturnName(otherid));
 		Servers(otherid, "%s has removed your faction.", ReturnName(playerid));
 	}
 	else
 	{
+		if(rank < 1 || rank > 16)
+        	return Error(playerid, "You have specified an invalid rank 1 - 16.");
+
 		pData[otherid][pFaction] = fid;
 		pData[otherid][pFactionRank] = rank;
 		SetDefaultFactionRankName(otherid);
@@ -2499,10 +2604,10 @@ CMD:takemoney(playerid, params[])
 	if(pData[playerid][pAdmin] < 4)
 		return PermissionError(playerid);
 
-	new money, otherid;
-	if(sscanf(params, "ud", otherid, money))
+	new cash[32], otherid, mstr[32], money;
+	if(sscanf(params, "ds[32]", otherid, cash))
 	{
-	    Usage(playerid, "/takemoney <ID/Name> <amount>");
+	    Usage(playerid, "/takemoney <ID/Name> <ammount>");
 	    return true;
 	}
 
@@ -2512,11 +2617,14 @@ CMD:takemoney(playerid, params[])
 	if(!IsValidTarget(playerid, otherid))
 	    return Error(playerid, "Kamu tidak bisa menggunakan command ini pada diri sendiri.");
 
+	format(mstr, sizeof(mstr), "%d00", strval(cash));
+	money = strval(mstr);
+
  	if(money > pData[otherid][pMoney])
 		return Error(playerid, "Player doesn't have enough money to deduct from!");
 
 	GivePlayerMoneyEx(otherid, -money);
-	SendClientMessageToAllEx(TOMATO, "Admcmd: Admin %s(%i) has taken away money $%s from $%s", pData[playerid][pAdminname], FormatMoney(money), ReturnName(otherid));
+	SendClientMessageToAllEx(TOMATO, "Admcmd: Admin %s(%i) has taken away money $%s from %s", pData[playerid][pAdminname], playerid, FormatMoney(money), ReturnName(otherid));
 	return true;
 }
 
@@ -2680,7 +2788,7 @@ CMD:setmoney(playerid, params[])
 		return PermissionError(playerid);
 
 	new cash[32], otherid, tmp[64], totalcash[25];
-	if(sscanf(params, "us[32", otherid, cash))
+	if(sscanf(params, "us[32]", otherid, cash))
 	{
 	    Usage(playerid, "/setmoney <ID/Name> <money>");
 	    return true;
@@ -2709,7 +2817,7 @@ CMD:setbankmoney(playerid, params[])
 		return PermissionError(playerid);
 
 	new cash[32], otherid, tmp[64], totalcash[25];
-	if(sscanf(params, "us[32", otherid, cash))
+	if(sscanf(params, "us[32]", otherid, cash))
 	{
 	    Usage(playerid, "/setbankmoney <ID/Name> <money>");
 	    return true;
@@ -3299,7 +3407,7 @@ CMD:getchar(playerid, params[])
 CMD:unbanucp(playerid, params[])
 {
    	if(pData[playerid][pAdmin] < 1)
-			return PermissionError(playerid);
+		return PermissionError(playerid);
 
 	new tmp[24];
 	if(sscanf(params, "s[24]", tmp))
@@ -3316,7 +3424,7 @@ CMD:unbanucp(playerid, params[])
 CMD:ounbanucp(playerid, params[])
 {
    	if(pData[playerid][pAdmin] < 1)
-			return PermissionError(playerid);
+		return PermissionError(playerid);
 
 	new tmp[24];
 	if(sscanf(params, "s[24]", tmp))
@@ -3333,7 +3441,7 @@ CMD:ounbanucp(playerid, params[])
 CMD:banucp(playerid, params[])
 {
    	if(pData[playerid][pAdmin] < 1)
-			return PermissionError(playerid);
+		return PermissionError(playerid);
 
 	new tmp[24], reasonoban[128];
 	if(sscanf(params, "s[24]s[128]", tmp, reasonoban))
@@ -3350,7 +3458,7 @@ CMD:banucp(playerid, params[])
 CMD:obanucp(playerid, params[])
 {
    	if(pData[playerid][pAdmin] < 1)
-			return PermissionError(playerid);
+		return PermissionError(playerid);
 
 	new tmp[24], reasonoban[128];
 	if(sscanf(params, "s[24]s[128]", tmp, reasonoban))
@@ -3468,6 +3576,16 @@ CMD:bizinterior(playerid, params[])
 {
 	if(pData[playerid][pAdmin] > 5) Dialog_Show(playerid, BussinesINT, DIALOG_STYLE_LIST, "Businesses Interiors Categories","24/7's\nFast Foods Interiors\nResturants & Clubs\nAmmunation Interiors\nCasino Interiors\nElectronics Stores Interiors\nClothes Stores Interiors\nRandom usefull Interiors", "Select", "Cancel");
 	return 1;
+}
+
+CMD:economy(playerid, params[])
+{
+    if(pData[playerid][pAdmin] < 6) return PermissionError(playerid);
+
+    Dialog_Show(playerid, EconomyCategory, DIALOG_STYLE_LIST, "Economy Configuration",
+        "Job & Sidejob Payout\nFaction Salary\nOther Prices\nReset All Defaults",
+        "Select", "Cancel");
+    return 1;
 }
 
 

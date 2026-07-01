@@ -56,11 +56,10 @@ SetProgressBar(playerid, value) {
 
 HideProgressBar(playerid) {
     for (new i; i < 3; i++) PlayerTextDrawHide(playerid, ProggresBar[playerid][i]);
-    if(pData[playerid][pActivity] != 0)
-    {
-        KillTimer(pData[playerid][pActivity]);
-        pData[playerid][pActivity] = 0;
-    }
+    if(pData[playerid][pActivity] != -1)
+        return Error(playerid, "You are doing activity.");
+
+    if(pData[playerid][pActivity] != -1) KillTimer(pData[playerid][pActivity]), pData[playerid][pActivity] = -1;
     pData[playerid][pActivityTime] = 0;
     return 1;
 }

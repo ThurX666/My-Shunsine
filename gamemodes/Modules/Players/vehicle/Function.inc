@@ -307,8 +307,9 @@ function PlayerToPoint(Float:radi, playerid, Float:x, Float:y, Float:z)
 }
 
 
-function LoadPlayerVehicle()
+function LoadPlayerVehicle(playerid, race_check)
 {
+    if(race_check != g_MysqlRaceCheck[playerid]) return Kick(playerid);
     new count = cache_num_rows(), i;
 	if(count > 0)
 	{
@@ -417,7 +418,19 @@ function LoadPlayerVehicle()
 				cache_get_value_name_int(z, "vehgarage", pvData[i][cVehicleGarage]);
 				cache_get_value_name_int(z, "fuel", pvData[i][cFuel]);
 
-				if(!IsValidVehicle(pvData[i][cVeh])) OnPlayerVehicleRespawn(i);
+				if(!IsValidVehicle(pvData[i][cVeh]))
+				{
+				    if(pvData[i][cImpound] > 0 || pvData[i][cVehicleGarage] > -1 || pvData[i][cClaim] == 1)
+				    {
+				        OnPlayerVehicleRespawn(i);
+				    }
+				    else if(GetPlayerDistanceFromPoint(playerid, pvData[i][cPosX], pvData[i][cPosY], pvData[i][cPosZ]) > 30.0)
+				    {
+				        pvData[i][cDespawn] = 1;
+				        SendVehicleOwnedMessage(i, sprintf("VEHICLE: "WHITE_E"Your "AQUA_E"%s "WHITE_E"is too far and has been despawned. Use /spawn near its location.", GetVehicleModelName(pvData[i][cModel])));
+				    }
+				    else OnPlayerVehicleRespawn(i);
+				}
 			}
 		}
 	}
@@ -1174,7 +1187,7 @@ function VehBuyVIP(playerid, pid, model, color1, color2, cost, Float:x, Float:y,
 	if(IsValidDynamic3DTextLabel(pvData[i][vLockTireText])) DestroyDynamic3DTextLabel(pvData[i][vLockTireText]);
 	Iter_Add(PVehicles, i);
 	OnPlayerVehicleRespawn(i);
-	SendClientMessageEx(playerid, COLOR_ARWIN, "VEHICLE: "WHITE_E"You have purchased a vehicle for "GREEN_E"%s "WHITE_E"with model {00FFFF}%s", FormatMoney(GetVehicleCostVIP(model)), GetVehicleModelName(model));
+	SendClientMessageEx(playerid, COLOR_ARWIN, "VEHICLE: "WHITE_E"You have purchased a vehicle for "GREEN_E"%s "WHITE_E"with model {00FFFF}%s", FormatMoney(GetVehicleDealerCost(model)), GetVehicleModelName(model));
 	PutPlayerInVehicle(playerid, pvData[i][cVeh], 0);
 	pData[playerid][pBuyPvModel] = 0;
 	return 1;

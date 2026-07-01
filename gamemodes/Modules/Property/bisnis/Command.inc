@@ -28,51 +28,81 @@ CMD:createbisnis(playerid, params[])
 	bData[bid][bMoney] = 0;
 	bData[bid][bProd] = 1000;
 
-	if(type == 1)
+	if(type == 1) // Fast Food
 	{
-		bData[bid][bP][0] = 75;
+		// $5.00 - Fried Chicken (Menu +12, HP+10)
+		bData[bid][bP][0] = 500;
+		// $8.00 - Pizza Stack (Menu +20, HP+10)
+		bData[bid][bP][1] = 800;
+		// $12.00 - Patty Burger (Menu +30, HP+10)
+		bData[bid][bP][2] = 1200;
+		// $5.00 - Sprunk (Energy +20, HP+10)
+		bData[bid][bP][3] = 500;
+	}
+	else if(type == 2) // 24/7 Market
+	{
+		// $3.00 - Snack (1x inventory item)
+		bData[bid][bP][0] = 300;
+		// $3.00 - Sprunk (1x inventory item)
 		bData[bid][bP][1] = 300;
-		bData[bid][bP][2] = 350;
-		bData[bid][bP][3] = 375;
+		// $15.00 - Bandage (1x heal item)
+		bData[bid][bP][2] = 1500;
+		// $5.00 - Cigarettes (pack)
+		bData[bid][bP][3] = 500;
+		// $12.00 - Toll Card (50 uses)
+		bData[bid][bP][4] = 1200;
 	}
-	else if(type == 2)
+	else if(type == 3) // Clothes Store
 	{
-		bData[bid][bP][0] = 100;
-		bData[bid][bP][1] = 100;
-		bData[bid][bP][2] = 2250;
-		bData[bid][bP][3] = 2250;
-		bData[bid][bP][4] = 2500;
-	}
-	else if(type == 3)
-	{
+		// $25.00 - Clothes
 		bData[bid][bP][0] = 2500;
+		// $10.00 - Hats
 		bData[bid][bP][1] = 1000;
+		// $10.00 - Glasses
 		bData[bid][bP][2] = 1000;
+		// $10.00 - Helmet
 		bData[bid][bP][3] = 1000;
-		bData[bid][bP][4] = 1000;
-		bData[bid][bP][5] = 1000;
+		// $15.00 - Accessory
+		bData[bid][bP][4] = 1500;
+		// $15.00 - Mask
+		bData[bid][bP][5] = 1500;
 	}
-	else if(type == 4)
+	else if(type == 4) // Sports Store
 	{
-		bData[bid][bP][0] = 375;
-		bData[bid][bP][1] = 375;
-		bData[bid][bP][2] = 375;
-		bData[bid][bP][3] = 3750;
-		bData[bid][bP][4] = 3750;
+		// $5.00 - Baseball Bat
+		bData[bid][bP][0] = 500;
+		// $5.00 - Shovel
+		bData[bid][bP][1] = 500;
+		// $5.00 - Cane
+		bData[bid][bP][2] = 500;
+		// $35.00 - Fishing Tools
+		bData[bid][bP][3] = 3500;
+		// $35.00 - Mask
+		bData[bid][bP][4] = 3500;
 	}
-	else if(type == 5)
+	else if(type == 5) // Electronic Store
 	{
+		// $250.00 - Handphone
+		bData[bid][bP][0] = 25000;
+		// $50.00 - GPS
+		bData[bid][bP][1] = 5000;
+		// $10.00 - Phone Credit (1000)
+		bData[bid][bP][2] = 1000;
+		// $25.00 - Walkie Talkie
+		bData[bid][bP][3] = 2500;
+		// $50.00 - Phone Book
+		bData[bid][bP][4] = 5000;
+	}
+	else if(type == 6) // GYM
+	{
+		// $35.00 - GYM Membership
 		bData[bid][bP][0] = 3500;
-		bData[bid][bP][1] = 100;
-		bData[bid][bP][2] = 100;
-		bData[bid][bP][3] = 150;
-	}
-	else if(type == 6)
-	{
-		bData[bid][bP][0] = 3500;
-		bData[bid][bP][1] = 100;
-		bData[bid][bP][2] = 100;
-		bData[bid][bP][3] = 150;
+		// $5.00 - Energy Drink
+		bData[bid][bP][1] = 500;
+		// $3.00 - Water
+		bData[bid][bP][2] = 300;
+		// $3.00 - Snack
+		bData[bid][bP][3] = 300;
 	}
 	Bisnis_ProductNameRefresh(bid);
 	Bisnis_Type(bid);

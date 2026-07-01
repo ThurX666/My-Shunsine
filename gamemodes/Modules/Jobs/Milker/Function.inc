@@ -4,11 +4,18 @@ stock MilkerNextCow(playerid)
 {
     if(!MilkerActive[playerid]) return 0;
 
+    if(MilkerCP[playerid] != -1) DestroyDynamicCP(MilkerCP[playerid]), MilkerCP[playerid] = -1;
+
     new rand = random(6);
     MilkerCowIndex[playerid] = rand;
 
-    SetPlayerCheckpoint(playerid, g_MilkerCowPos[rand][0], g_MilkerCowPos[rand][1], g_MilkerCowPos[rand][2], 3.0);
-    SendCustomMessage(playerid, "MILKER", "Ikuti checkpoint ke sapi berikutnya! ("GREEN_E"%d/10"WHITE_E")", MilkerCycles[playerid] + 1);
+    MilkerCP[playerid] = CreateDynamicCP(
+        g_MilkerCowPos[rand][0],
+        g_MilkerCowPos[rand][1],
+        g_MilkerCowPos[rand][2],
+        3.0, 0, 0, -1, 30.0
+    );
+    SendCustomMessage(playerid, "MILKER", "Ikuti checkpoint ke sapi! Sapi ke-{00FF00}%d{FFFFFF} dari 10.", MilkerCycles[playerid] + 1);
     return 1;
 }
 
@@ -17,52 +24,92 @@ stock StartMilking(playerid)
     if(!MilkerActive[playerid]) return 0;
     if(MilkerMilkCount[playerid] > 0) return Error(playerid, "Antar susu ke drop-off point dulu!");
 
-    stop pData[playerid][pActivity];
+    if(pData[playerid][pActivity] != -1) KillTimer(pData[playerid][pActivity]), pData[playerid][pActivity] = -1;
     RemovePlayerAttachedObject(playerid, 9);
 
     ApplyAnimation(playerid, "BOMBER", "BOM_Plant_Loop", 4.0, 1, 0, 0, 0, 0, 1);
-    TogglePlayerControllable(playerid, 0);
 
-    pData[playerid][pActivity] = SetTimerEx("FinishMilking", 3000, false, "i", playerid);
+    pData[playerid][pActivityTime] = 0;
+    pData[playerid][pActivity] = SetTimerEx("UpdateMilkingProgress", 250, true, "i", playerid);
 
     SendCustomMessage(playerid, "MILKER", "Memerah susu...");
-    SetPlayerAttachedObject(playerid, 9, 19631, 6, 0.1180, 0.0669, 0.2469, 0.0000, 90.0, 0.0, 1.0, 1.0, 1.0);
 
-    for (new i; i < 3; i++) PlayerTextDrawShow(playerid, ProggresBar[playerid][i]);
-    PlayerTextDrawSetString(playerid, ProggresBar[playerid][2], "Memerah Susu...");
+    if(IsPlayerConnected(playerid))
+    {
+        for (new i; i < 3; i++) PlayerTextDrawShow(playerid, ProggresBar[playerid][i]);
+        PlayerTextDrawSetString(playerid, ProggresBar[playerid][2], "Memerah Susu...");
+    }
+    return 1;
+}
+
+function UpdateMilkingProgress(playerid)
+{
+    if(!IsPlayerConnected(playerid)) return 0;
+    if(!MilkerActive[playerid])
+    {
+        if(pData[playerid][pActivity] != -1) KillTimer(pData[playerid][pActivity]), pData[playerid][pActivity] = -1;
+        return 0;
+    }
+
+    pData[playerid][pActivityTime]++;
+
+    if(pData[playerid][pActivityTime] >= 100)
+    {
+        if(pData[playerid][pActivity] != -1) KillTimer(pData[playerid][pActivity]), pData[playerid][pActivity] = -1;
+        FinishMilking(playerid);
+    }
+    else
+    {
+        SetProgressBar(playerid, pData[playerid][pActivityTime]);
+    }
     return 1;
 }
 
 function FinishMilking(playerid)
 {
+    if(!IsPlayerConnected(playerid)) return 0;
     if(!MilkerActive[playerid]) return 0;
 
-    TogglePlayerControllable(playerid, 1);
     ClearAnimations(playerid);
     StopLoopingAnim(playerid);
 
-    for (new i; i < 3; i++) PlayerTextDrawHide(playerid, ProggresBar[playerid][i]);
+    if(IsPlayerConnected(playerid))
+    {
+        for (new i; i < 3; i++) PlayerTextDrawHide(playerid, ProggresBar[playerid][i]);
+    }
 
     RemovePlayerAttachedObject(playerid, 9);
-    SetPlayerAttachedObject(playerid, 9, 1550, 5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
+    SetPlayerAttachedObject(playerid, 9, 2912, 1, 0.233, 0.359, -0.198, 1.400, 0.000, 0.000, 0.640, 0.625, 0.654);
+
+    SetPlayerSpecialAction(playerid, SPECIAL_ACTION_CARRY);
 
     MilkerMilkCount[playerid]++;
 
     SendCustomMessage(playerid, "MILKER", "Susu berhasil diperah! Bawa ke tempat penyimpanan susu.");
-    DisablePlayerCheckpoint(playerid);
+    if(MilkerCP[playerid] != -1) DestroyDynamicCP(MilkerCP[playerid]), MilkerCP[playerid] = -1;
     MilkerCowIndex[playerid] = -1;
 
-    SetPlayerCheckpoint(playerid, g_MilkerDropOff[0], g_MilkerDropOff[1], g_MilkerDropOff[2], 3.0);
+    pData[playerid][pActivity] = -1;
+    MilkerCP[playerid] = CreateDynamicCP(
+        g_MilkerDropOff[0],
+        g_MilkerDropOff[1],
+        g_MilkerDropOff[2],
+        3.0, 0, 0, -1, 30.0
+    );
     return 1;
 }
 
 stock DeliverMilk(playerid)
 {
     if(!MilkerActive[playerid]) return 0;
+    if(MilkerCP[playerid] == -1) return 0;
 
-    if(!IsPlayerInRangeOfPoint(playerid, 4.0, g_MilkerDropOff[0], g_MilkerDropOff[1], g_MilkerDropOff[2]))
+    if(!IsPlayerInDynamicCP(playerid, MilkerCP[playerid]))
         return 0;
 
+    ClearAnimations(playerid);
+    StopLoopingAnim(playerid);
+    SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
     RemovePlayerAttachedObject(playerid, 9);
     MilkerMilkCount[playerid] = 0;
     MilkerCycles[playerid]++;
@@ -87,20 +134,23 @@ stock StopMilkerJob(playerid)
 {
     if(!MilkerActive[playerid]) return 0;
 
-    stop pData[playerid][pActivity];
-    TogglePlayerControllable(playerid, 1);
+    if(pData[playerid][pActivity] != -1) KillTimer(pData[playerid][pActivity]), pData[playerid][pActivity] = -1;
     ClearAnimations(playerid);
     StopLoopingAnim(playerid);
-    DisablePlayerCheckpoint(playerid);
+    if(MilkerCP[playerid] != -1) DestroyDynamicCP(MilkerCP[playerid]), MilkerCP[playerid] = -1;
     RemovePlayerAttachedObject(playerid, 9);
 
-    for (new i; i < 3; i++) PlayerTextDrawHide(playerid, ProggresBar[playerid][i]);
+    if(IsPlayerConnected(playerid))
+    {
+        for (new i; i < 3; i++) PlayerTextDrawHide(playerid, ProggresBar[playerid][i]);
+    }
 
     MilkerActive[playerid] = 0;
     MilkerCycles[playerid] = 0;
     MilkerMilkCount[playerid] = 0;
     MilkerCowIndex[playerid] = -1;
     MilkerObjects[playerid] = -1;
+    MilkerCP[playerid] = -1;
 
     if(IsPlayerAttachedObjectSlotUsed(playerid, 9))
         RemovePlayerAttachedObject(playerid, 9);

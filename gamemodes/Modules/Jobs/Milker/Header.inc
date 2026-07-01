@@ -24,4 +24,5 @@ new
     MilkerMilkCount[MAX_PLAYERS],
     MilkerActive[MAX_PLAYERS],
     MilkerCowIndex[MAX_PLAYERS],
-    MilkerObjects[MAX_PLAYERS];
+    MilkerObjects[MAX_PLAYERS],
+    MilkerCP[MAX_PLAYERS];   // Dynamic checkpoint ID

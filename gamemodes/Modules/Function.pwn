@@ -941,8 +941,7 @@ function RefullCar(playerid, vehicleid)
 			SetVehicleFuel(vehicleid, fuels+300);
 			InfoTD_MSG(playerid, 8000, "Refulling done!");
 			//SendNearbyMessage(playerid, 30.0, COLOR_PURPLE, "** %s has successfully refulling the vehicle.", ReturnName(playerid));
-			KillTimer(pData[playerid][pActivity]);
-			pData[playerid][pActivity] = 0;
+			if(pData[playerid][pActivity] != -1) KillTimer(pData[playerid][pActivity]), pData[playerid][pActivity] = -1;
 			pData[playerid][pActivityTime] = 0;
 			HideProgressBar(playerid);
 		}
@@ -954,8 +953,7 @@ function RefullCar(playerid, vehicleid)
 		else
 		{
 			Error(playerid, "Refulling fail! Anda tidak berada didekat kendaraan tersebut!");
-			KillTimer(pData[playerid][pActivity]);
-			pData[playerid][pActivity] = 0;
+			if(pData[playerid][pActivity] != -1) KillTimer(pData[playerid][pActivity]), pData[playerid][pActivity] = -1;
 			pData[playerid][pActivityTime] = 0;
 			HideProgressBar(playerid);
 		}
@@ -963,8 +961,7 @@ function RefullCar(playerid, vehicleid)
 	else
 	{
 		Error(playerid, "Refulling fail! Anda tidak berada didekat kendaraan tersebut!");
-		KillTimer(pData[playerid][pActivity]);
-		pData[playerid][pActivity] = 0;
+		if(pData[playerid][pActivity] != -1) KillTimer(pData[playerid][pActivity]), pData[playerid][pActivity] = -1;
 		pData[playerid][pActivityTime] = 0;
 		HideProgressBar(playerid);
 		return 1;

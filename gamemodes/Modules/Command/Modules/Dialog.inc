@@ -1048,7 +1048,7 @@ Dialog:DialogHelp(playerid, response, listitem, inputtext[]) {
 			}
 			case 15:
 			{
-				ShowPlayerDialog(playerid, DIALOG_UNUSED, DIALOG_STYLE_MSGBOX, "Donatur Commands", "/usegold /radio /usegold",  "", "Close");
+				ShowPlayerDialog(playerid, DIALOG_UNUSED, DIALOG_STYLE_MSGBOX, "Donatur Commands", "/usegold /boombox /usegold",  "", "Close");
 			}
 		}
 	}

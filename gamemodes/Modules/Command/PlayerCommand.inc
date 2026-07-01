@@ -737,16 +737,16 @@ CMD:givemoneyall(playerid, params[])
 {
     if(pData[playerid][pAdmin] < 6) return PermissionError(playerid);
         
-    new money[32], mstr[128], totalcash[25];
+    new money[32], totalcash[32], mstr[128], cash;
     if(sscanf(params, "s[32]", money)) return Usage(playerid, "/givemoneyall <money>");
 
-	format(totalcash, sizeof(totalcash), "%d00", strval(money));
-
+    format(totalcash, sizeof(totalcash), "%d00", strval(money));
+    cash = strval(totalcash);
     foreach(new pid : Player)
     {
-        GivePlayerMoneyEx(pid, strval(totalcash));
-		format(mstr, sizeof(mstr), "Admin %s telah memberikan $%s kepada semua player online", pData[playerid][pAdminname], FormatMoney(strval(totalcash)));
-		SendClientMessage(pid, COLOR_LIGHTRED, mstr);
+        GivePlayerMoneyEx(pid, cash);
+        format(mstr, sizeof(mstr), "Admin %s telah memberikan $%s kepada semua player online", pData[playerid][pAdminname], FormatMoney(cash));
+        SendClientMessage(pid, COLOR_LIGHTRED, mstr);
     }
     
     return 1;
@@ -757,15 +757,20 @@ CMD:pay(playerid, params[])
     static
         userid,
         amount,
-        targetid;
+        targetid,
+        duit[32];
 
-    if(sscanf(params, "dd", userid, amount)) return Usage(playerid, "/pay [playerid/mask] [amount]");
+    if(pData[playerid][pInjured] == 1) return Error(playerid, "Anda tidak bisa menggunakan pay saat terluka!");
+    if(sscanf(params, "ds[32]", userid, duit)) return Usage(playerid, "/pay [playerid/mask] [amount]");
+
+    format(duit, sizeof(duit), "%d00", strval(duit));
+    amount = strval(duit);
 
     if((targetid = GetMaskOwner(userid)) != INVALID_PLAYER_ID) {
 		if(!IsPlayerConnected(targetid) || !NearPlayer(playerid, targetid, 4.0))
         	return Error(playerid, "The specified player is disconnected or not near you.");
         if(targetid == playerid) return Error(playerid, "You can't give yourself money.");
-        if(amount < 1) return Error(playerid, "Please specify an amount abov 1 dollar.");
+        if(amount < 1) return Error(playerid, "Please specify an amount above $0.00.");
         if(amount > GetPlayerMoney(playerid)) return Error(playerid, "You don't have that much money.");
 
         static
@@ -781,38 +786,30 @@ CMD:pay(playerid, params[])
 
 		ApplyAnimation(playerid, "DEALER", "shop_pay", 4.0, 0, 0, 0, 0, 0);
 		ApplyAnimation(targetid, "DEALER", "shop_pay", 4.0, 0, 0, 0, 0, 0);
-
-		SendStaffMessage(COLOR_YELLOW, ""YELLOW_E"[PAY] %s to %s for %s", ReturnName2(playerid), FormatMoney(amount), ReturnName2(targetid));
-		new query[512];
-		mysql_format(g_SQL, query, sizeof(query), "INSERT INTO logpay (player,playerid,toplayer,toplayerid,ammount,time) VALUES('%s','%d','%s','%d','%d',UNIX_TIMESTAMP())", ReturnName(playerid), pData[playerid][pID], ReturnName(targetid), pData[targetid][pID], amount);
-		mysql_tquery(g_SQL, query);	
-	    return 1;
+        return 1;
     }
+    else {
+        if(targetid == INVALID_PLAYER_ID) return Error(playerid, "Invalid playerid!");
+        if(!IsPlayerConnected(targetid) || !NearPlayer(playerid, targetid, 4.0))
+            return Error(playerid, "The specified player is disconnected or not near you.");
+        if(targetid == playerid) return Error(playerid, "You can't give yourself money.");
+        if(amount < 1) return Error(playerid, "Please specify an amount above $0.00.");
+        if(amount > GetPlayerMoney(playerid)) return Error(playerid, "You don't have that much money.");
 
-	if(!IsPlayerConnected(userid) || !NearPlayer(playerid, userid, 4.0))
-        return Error(playerid, "The specified player is disconnected or not near you.");
-    if(userid == playerid) return Error(playerid, "You can't give yourself money.");
-    if(amount < 1) return Error(playerid, "Please specify an amount above 1 dollar.");
-    if(amount > GetPlayerMoney(playerid)) return Error(playerid, "You don't have that much money.");
+        static
+            string[72];
 
-    static
-        string[72];
+        GivePlayerMoneyEx(playerid, -amount);
+        GivePlayerMoneyEx(targetid, amount);
 
-    GivePlayerMoneyEx(playerid, -amount);
-    GivePlayerMoneyEx(userid, amount);
+        format(string, sizeof(string), "PAYINFO: "WHITE_E"You've paid "LG_E"$%s to "YELLOW_E"%s", FormatMoney(amount), ReturnName2(targetid));
+        SendClientMessageEx(playerid, COLOR_ARWIN, string);
+        format(string, sizeof(string), "PAYINFO: "WHITE_E"You've received "GREEN_E"$%s "WHITE_E"from "YELLOW_E"%s", FormatMoney(amount), ReturnName2(playerid));
+        SendClientMessageEx(targetid, COLOR_ARWIN, string);
 
-	format(string, sizeof(string), "PAYINFO: "WHITE_E"You've paid "GREEN_E"$%s to "YELLOW_E"%s", FormatMoney(amount), ReturnName2(userid));
-	SendClientMessageEx(playerid, COLOR_ARWIN, string);
-	format(string, sizeof(string), "PAYINFO: "YELLOW_E"%s "WHITE_E"has paid "GREEN_E"$%s "WHITE_E"to you", ReturnName2(playerid), FormatMoney(amount));
-	SendClientMessageEx(userid, COLOR_ARWIN, string);
-
-	ApplyAnimation(playerid, "DEALER", "shop_pay", 4.0, 0, 0, 0, 0, 0);
-	ApplyAnimation(userid, "DEALER", "shop_pay", 4.0, 0, 0, 0, 0, 0);
-
-	SendStaffMessage(COLOR_YELLOW, ""YELLOW_E"[PAY] %s to %s for %s", ReturnName2(playerid), FormatMoney(amount), ReturnName2(userid));
-	new query[512];
-	mysql_format(g_SQL, query, sizeof(query), "INSERT INTO logpay (player,playerid,toplayer,toplayerid,ammount,time) VALUES('%s','%d','%s','%d','%d',UNIX_TIMESTAMP())", ReturnName(playerid), pData[playerid][pID], ReturnName(userid), pData[userid][pID], amount);
-	mysql_tquery(g_SQL, query);	
+        ApplyAnimation(playerid, "DEALER", "shop_pay", 4.0, 0, 0, 0, 0, 0);
+        ApplyAnimation(targetid, "DEALER", "shop_pay", 4.0, 0, 0, 0, 0, 0);
+    }
     return 1;
 }
 
@@ -3227,13 +3224,13 @@ CMD:clear(playerid, params[])
 	return 1;
 }
 
-CMD:radio(playerid, params[])
+CMD:boombox(playerid, params[])
 {
 	if(pData[playerid][pVip] < 2)
 		return PermissionError(playerid);
 
 	if(isnull(params))
-		return Usage(playerid, "/radio [off/set]");
+		return Usage(playerid, "/boombox [off/set]");
 
 	if(strcmp(params, "off", true) == 0)
 	{
@@ -3259,7 +3256,7 @@ CMD:radio(playerid, params[])
 		return 1;
 	}
 
-	return Usage(playerid, "/radio [off/set]");
+	return Usage(playerid, "/boombox [off/set]");
 }
 
 CMD:jobduty(playerid, params[])
@@ -3571,17 +3568,17 @@ CMD:buyvehicle(playerid, params[])
 		{
 			new String[512], S3MP4K[512];
 			strcat(S3MP4K, "Model\tCost\n");
-			format(String, sizeof(String),"%s\t$%s\n", GetVehicleModelName(522), FormatMoney(GetVehicleCostVIP(522)));
+			format(String, sizeof(String),"%s\t$%s\n", GetVehicleModelName(522), FormatMoney(GetVehicleDealerCost(522)));
 			strcat(S3MP4K, String);
-			format(String, sizeof(String),"%s\t$%s\n", GetVehicleModelName(411), FormatMoney(GetVehicleCostVIP(411)));
+			format(String, sizeof(String),"%s\t$%s\n", GetVehicleModelName(411), FormatMoney(GetVehicleDealerCost(411)));
 			strcat(S3MP4K, String);
-			format(String, sizeof(String),"%s\t$%s\n", GetVehicleModelName(451), FormatMoney(GetVehicleCostVIP(451)));
+			format(String, sizeof(String),"%s\t$%s\n", GetVehicleModelName(451), FormatMoney(GetVehicleDealerCost(451)));
 			strcat(S3MP4K, String);
-			format(String, sizeof(String),"%s\t$%s\n", GetVehicleModelName(494), FormatMoney(GetVehicleCostVIP(494)));
+			format(String, sizeof(String),"%s\t$%s\n", GetVehicleModelName(494), FormatMoney(GetVehicleDealerCost(494)));
 			strcat(S3MP4K, String);
-			format(String, sizeof(String),"%s\t$%s\n", GetVehicleModelName(541), FormatMoney(GetVehicleCostVIP(541)));
+			format(String, sizeof(String),"%s\t$%s\n", GetVehicleModelName(541), FormatMoney(GetVehicleDealerCost(541)));
 			strcat(S3MP4K, String);
-			format(String, sizeof(String),"%s\t$%s\n", GetVehicleModelName(573), FormatMoney(GetVehicleCostVIP(573)));
+			format(String, sizeof(String),"%s\t$%s\n", GetVehicleModelName(573), FormatMoney(GetVehicleDealerCost(573)));
 			strcat(S3MP4K, String);
 			ShowPlayerDialog(playerid, DIALOG_BUYVEHVIP_CONFIRM, DIALOG_STYLE_TABLIST_HEADERS, "Buying Vehicle", S3MP4K, "Buy", "Cancel");
 		}

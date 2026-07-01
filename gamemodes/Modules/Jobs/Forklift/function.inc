@@ -11,7 +11,7 @@ function ForkliftJob(playerid)
 		    AttachDynamicObjectToVehicle(CoreVehicles[vehicleid][vehObject], vehicleid, 0.000, 0.530, 0.260, 0.000, 0.000, 0.000);
 			RuteForklift[playerid] = RandomEx(0, 3);
 			SetPlayerRaceCheckpoint(playerid, 1, forkliftrute[RuteForklift[playerid]][forklift_posx], forkliftrute[RuteForklift[playerid]][forklift_posy], forkliftrute[RuteForklift[playerid]][forklift_posz], 0, 0, 0, 3);
-			KillTimer(pData[playerid][pActivity]);
+			if(pData[playerid][pActivity] != -1) KillTimer(pData[playerid][pActivity]), pData[playerid][pActivity] = -1;
 			pData[playerid][pActivityTime] = 0;
 			for (new i; i < 3; i++) PlayerTextDrawHide(playerid, ProggresBar[playerid][i]);
 			return 1;

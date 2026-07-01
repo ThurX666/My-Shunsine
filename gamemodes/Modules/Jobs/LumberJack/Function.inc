@@ -40,7 +40,7 @@ Player_ResetCutting(playerid)
     
     if(pData[playerid][pActivity] != -1)
 	{
-	    KillTimer(pData[playerid][pActivity]);
+	    if(pData[playerid][pActivity] != -1) KillTimer(pData[playerid][pActivity]), pData[playerid][pActivity] = -1;
 		pData[playerid][pActivity] = -1;
 		pData[playerid][pActivityTime] = 0;
 	}
@@ -213,7 +213,7 @@ function LoadTimber(playerid, tid) {
 		GetVehicleBoot(pData[playerid][pLastCar], x, y, z);
 		if(GetPlayerDistanceFromPoint(playerid, x, y, z) > 6) {
 			Error(playerid, "Your last vehicle is too far away.");  
-			KillTimer(pData[playerid][pActivity]);
+			if(pData[playerid][pActivity] != -1) KillTimer(pData[playerid][pActivity]), pData[playerid][pActivity] = -1;
 			pData[playerid][pActivityTime] = 0;
 			for (new i; i < 3; i++) PlayerTextDrawHide(playerid, ProggresBar[playerid][i]);
 			ClearAnimations(playerid);
@@ -254,7 +254,7 @@ function LoadTimber(playerid, tid) {
 		if(IsValidDynamicObject(TreeData[tid][treeObjID])) DestroyDynamicObject(TreeData[tid][treeObjID]);
 		TreeData[tid][treeSeconds] = TREE_RESPAWN;
 		TreeData[tid][treeGettingCut] = false;
-		KillTimer(pData[playerid][pActivity]);
+		if(pData[playerid][pActivity] != -1) KillTimer(pData[playerid][pActivity]), pData[playerid][pActivity] = -1;
 		pData[playerid][pActivityTime] = 0;
 		for (new i; i < 3; i++) PlayerTextDrawHide(playerid, ProggresBar[playerid][i]);
 		Streamer_Update(playerid);

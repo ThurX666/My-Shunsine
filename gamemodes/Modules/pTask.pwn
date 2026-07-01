@@ -315,6 +315,7 @@ ptask CharacterUpdate[1000](playerid)
         ResetPlayerMoney(playerid);
         GivePlayerMoney(playerid, pData[playerid][pMoney]);
     }
+
 	return 1;
 }
 
@@ -865,10 +866,15 @@ ptask PlayerTD_Update[1000](playerid)
 	    	PlayerTextDrawTextSize(playerid, PHungerTD[playerid], 0, 0);
 	    	PlayerTextDrawTextSize(playerid, PThirstTD[playerid], 0, 0);
 	    }
-		format(str, sizeof(str), "%.0f%", pData[playerid][pHunger]);
+
+		if(pData[playerid][pHunger] >= 61.0) format(str, sizeof(str), "~g~%.0f%%", pData[playerid][pHunger]);
+		else if(pData[playerid][pHunger] >= 31.0) format(str, sizeof(str), "~y~%.0f%%", pData[playerid][pHunger]);
+		else format(str, sizeof(str), "~r~%.0f%%", pData[playerid][pHunger]);
 		PlayerTextDrawSetString(playerid, PHungerTD[playerid], str);
 
-		format(str, sizeof(str), "%.0f%", pData[playerid][pEnergy]);
+		if(pData[playerid][pEnergy] >= 61.0) format(str, sizeof(str), "~g~%.0f%%", pData[playerid][pEnergy]);
+		else if(pData[playerid][pEnergy] >= 31.0) format(str, sizeof(str), "~y~%.0f%%", pData[playerid][pEnergy]);
+		else format(str, sizeof(str), "~r~%.0f%%", pData[playerid][pEnergy]);
 		PlayerTextDrawSetString(playerid, PThirstTD[playerid], str);
 	}
     // Ensure pSpec is a valid player ID before using it as an index.

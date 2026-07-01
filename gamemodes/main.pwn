@@ -28,8 +28,8 @@
 #pragma option -E 
 new DB:AO_DB, DBResult:AO_RESULT;
 
-#define Production
-//#define Local
+//#define Production
+#define Local
 //#define DEBUG_MODE
 
 main(){}
@@ -51,6 +51,7 @@ main(){}
 #include "./Modules/Server/Anims.pwn"
 #include "./Modules/Server/Server.pwn"
 #include "./Modules/Server/SchoolLicense.pwn"
+#include "./Modules/Server/Economy.pwn"
 #include "./Modules/Server/AllTexture.pwn"
 #include "./Modules/Server/GreenZone.pwn"
 #include "./Modules/Server/ProggresBar.pwn"
@@ -177,6 +178,7 @@ public OnGameModeInit()
 	mysql_tquery(g_SQL, "SELECT * FROM `server`", "LoadServer");
 	mysql_tquery(g_SQL, "SELECT * FROM `crate`", "LoadCrate");
 	mysql_tquery(g_SQL, "SELECT * FROM `doors`", "LoadDoors");
+	mysql_tquery(g_SQL, "SELECT * FROM `economy_config`", "LoadEconomyConfig", "");
 	mysql_tquery(g_SQL, "SELECT * FROM `familys`", "LoadFamilys");
 	mysql_tquery(g_SQL, "SELECT * FROM `houses`", "LoadHouses");
 	mysql_tquery(g_SQL, "SELECT * FROM `bisnis`", "LoadBisnis");
@@ -408,7 +410,7 @@ public OnPlayerDisconnect(playerid, reason)
 	KillTimer(pData[playerid][pFreezeTimer]);
 	KillTimer(pData[playerid][pDragTimer]);
 	KillTimer(pData[playerid][pFareTimer]);
-	KillTimer(pData[playerid][pActivity]);
+	if(pData[playerid][pActivity] != -1) KillTimer(pData[playerid][pActivity]), pData[playerid][pActivity] = -1;
 	KillTimer(pData[playerid][pMechanic]);
 	KillTimer(pData[playerid][pProducting]);
 	KillTimer(pData[playerid][pCooking]);
@@ -640,7 +642,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 	KillTimer(pData[playerid][pFreezeTimer]);
 	KillTimer(pData[playerid][pDragTimer]);
 	KillTimer(pData[playerid][pFareTimer]);
-	KillTimer(pData[playerid][pActivity]);
+	if(pData[playerid][pActivity] != -1) KillTimer(pData[playerid][pActivity]), pData[playerid][pActivity] = -1;
 	KillTimer(pData[playerid][pMechanic]);
 	KillTimer(pData[playerid][pProducting]);
 	KillTimer(pData[playerid][pCooking]);
@@ -979,12 +981,12 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 	}
 	if(GetPlayerState(playerid) == PLAYER_STATE_ONFOOT)
 	{
-		// if(PRESSED(KEY_CTRL_BACK))
-		// {
-		// 	ClearAnimations(playerid);
-		// 	StopLoopingAnim(playerid);
-		// 	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
-		// }
+		if(PRESSED(KEY_CTRL_BACK))
+		{
+			ClearAnimations(playerid);
+			StopLoopingAnim(playerid);
+			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_NONE);
+		}
 		if(!pCBugging[playerid] && GetPlayerState(playerid) == PLAYER_STATE_ONFOOT)
 		{
 			if(PRESSED(KEY_FIRE))
@@ -1258,6 +1260,11 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys)
 				if(IsPlayerInDynamicCP(playerid, hData[hid][hCP][0])) {
 					if(hData[hid][hIntposX] == 0.0 && hData[hid][hIntposY] == 0.0 && hData[hid][hIntposZ] == 0.0) return Error(playerid, "Interior house masih kosong, atau tidak memiliki interior.");
 					if(hData[hid][hLocked]) return Error(playerid, "This house is locked!");
+					if(hData[hid][hSegel] == 1 && strcmp(hData[hid][hOwner], pData[playerid][pName]) && pData[playerid][pAdmin] < 6)
+					{
+					    Error(playerid, "Rumah ini sedang disegel oleh admin. Tidak dapat dimasuki.");
+					    return ~1;
+					}
 					pData[playerid][pInHouse] = hid;
 					SetPlayerPositionEx(playerid, hData[hid][hIntposX], hData[hid][hIntposY], hData[hid][hIntposZ], hData[hid][hIntposA]);
 
@@ -2291,7 +2298,7 @@ public OnPlayerLeaveRaceCheckpoint(playerid)
 		{
 			if(pData[playerid][pSideJob] == 401)
 			{
-				KillTimer(pData[playerid][pActivity]);
+				if(pData[playerid][pActivity] != -1) KillTimer(pData[playerid][pActivity]), pData[playerid][pActivity] = -1;
 				pData[playerid][pActivityTime] = 0;
 				HidePlayerProgressBar(playerid, pData[playerid][activitybar]);
 				PlayerTextDrawHide(playerid, ActiveTD[playerid]);
